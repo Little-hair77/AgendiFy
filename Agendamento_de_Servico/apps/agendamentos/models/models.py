@@ -38,7 +38,7 @@ class Agendamento(models.Model):
         default='pendente'
     )
     criado_em = models.DateTimeField(auto_now_add=True)
-    atualizaado_em = models.DateTimeField(auto_now_add=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.usuario.username} - {self.servico.nome} ({self.data_hora.strftime('%d/%m/%Y %H:%M')})"
