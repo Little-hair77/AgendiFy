@@ -6,14 +6,14 @@ class Empresa(models.Model):
     nome = models.CharField(max_length=100)
     descricao = models.TextField(blank=True)
     endereco = models.CharField(max_length=225)
-    telefone = models.IntegerField(max_length=20)
+    telefone = models.CharField()
     email = models.EmailField(unique=True)
     dono = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='empresas'
     )
-    servicos = models.ManyToManyField('Servico', related_name='empresas')
+    servicos = models.ManyToManyField('servicos.Servico', related_name='empresas')
 
     def __str__(self):
         return self.nome

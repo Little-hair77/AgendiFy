@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
-from django.models import Empresa
-from django.models import Servico
+from apps.empresas.models import Empresa
+from apps.servicos.models import Servico
 
 # Create your models here.
 class Agendamento(models.Model):
