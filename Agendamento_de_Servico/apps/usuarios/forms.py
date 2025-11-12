@@ -13,4 +13,24 @@ class RegistroUsuarioForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        return super().clean()
+        senha = cleaned_data.get('senha')
+        confirmar_senha = cleaned_data.get('confirmar_senha')
+
+        if senha and confirmar_senha and senha != confirmar_senha:
+            raise forms.ValidationError("As senhas não coincidem.")
+        
+        return cleaned_data
+    
+    def save(self, commit=True):
+        usuario = super().save(commit=False)
+        usuario.username = self.cleaned_data['email']
+        usuario.set_password(self. cleaned_data['senha'])
+        if commit: 
+            usuario.save()
+        
+        return usuario
+    
+class EditarUsuarioForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'email', 'telefone']
