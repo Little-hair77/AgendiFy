@@ -3,50 +3,44 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from usuarios.forms import RegistroUsuarioForm, EditarUsuarioForm
 
 User = get_user_model()
 
 def registrar_usuario(request):
     if request.method == 'POST':
-        nome = request.POST.get('nome')
-        email = request.POST.get('email')
-        telefone = request.POST.get('telefone')
-        senha = request.POST.get('senha')
+        form = RegistroUsuarioForm(request.POST)
 
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "Já existe um usuário com esse e-mail!")
-            return redirect('registrar_usuario')
-        
-        usuario = User.objects.create_user(
-            username = email,
-            email=email,
-            password=senha,
-            first_name=nome
-        )
-        usuario.telefone = telefone
-        usuario.save()
-        messages.success(request, "Usuário registrado com sucesso! Faça login.")
-        return redirect('login_usuario')
+        if form.is_valid() :
+            form.save()
+            messages.success(request, "Usuário registrado com sucesso! Faça login.")
+            return redirect('login_usuario')
+        else:
+            messages.error(request, "Erro ao registrar usuário. Verifique os campos.")
+    else:
+        form = RegistroUsuarioForm()
     
-    return render(request, 'usuarios/registrar.html')
+    return render(request, 'usuarios/registrar.html', {'form': form})
 
 def login_usuario(request):
     if request.method == 'POST':
-        nome = request.POST.get('nome')
         email = request.POST.get('email')
         senha = request.POST.get('senha')
 
-        if User is not None:
+        user = authenticate(request, username=email, password=senha)
+
+        if user is not None:
             login(request, user)
+            messages.success(request, f"Bem-vindo, {user.first_name}!")
             return redirect('inicio')
         else:
             messages.error(request, "E-mail ou senha inválidos.")
-            return redirect('login_usuario')
         
     return render(request, 'usuarios/login.html')
 
 def logout_usuario(request):
     logout(request)
+    messages.success(request, "Você saiu da sua conta.")
     return redirect('login_usuario')
 
 def perfil_usuario(request):
@@ -55,13 +49,16 @@ def perfil_usuario(request):
 def editar_usuario(request):
     usuario = request.user
     if request.method == 'POST':
-        usuario.first_name = request.POST.get('nome')
-        usuario.email = request.POST.get('email')
-        usuario.telefone = request.POST.get('telefone')
-        usuario.save()
-        messages.success(request, "Informações atualizadas com sucesso!")
-        return redirect('perfil_usuario')
-    
+        form = EditarUsuarioForm(request, instance=usuario)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Perfil atualizado com sucesso!")        
+            return redirect('perfil_usuario')
+        else:
+            messages.error(request, "Erro ao atualizar o perfil. Verifique os dados.")
+    else:
+        form = EditarUsuarioForm(instance=usuario)
+
     return render(request, 'usuarios/editar.html', {'usuario' : usuario})
 
 def deletar_usuario(request):
