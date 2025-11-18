@@ -39,3 +39,9 @@ def editar_agendamento(request):
             form = AgendamentoForm(instance=agendamento)
 
     return render(request, 'agendamentos/editar.html', {'form': form, 'agendamento': agendamento})
+
+@login_required
+def excluir_agendamento(request, id):
+    agendamento = get_object_or_404(Agendamento, id=id, usuario=request.user)
+    agendamento.delete()
+    return redirect('listar_agendamentos')
