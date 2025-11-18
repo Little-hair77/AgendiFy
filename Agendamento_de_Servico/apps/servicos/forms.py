@@ -16,11 +16,6 @@ class ServicoForm(forms.ModelForm):
                 'rows': 3,
                 'placeholder': 'Descreva o serviço oferecido'
             }),
-            'descricao': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 3,
-                'placeholder': 'Descreva o serviço oferecido'
-            }),
         }
         labels = {
             'empresa': 'Empresa responsável',
