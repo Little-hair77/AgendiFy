@@ -10,7 +10,7 @@ def listar_agendamentos(request):
     return render(request, 'agendamentos/listar.html', {'agendamentos': agendamentos})
 
 @login_required
-def criar_agendamentos(request):
+def criar_agendamento(request):
     if request.method == 'POST':
         form = AgendamentoForm(request.POST)
 
@@ -45,3 +45,8 @@ def excluir_agendamento(request, id):
     agendamento = get_object_or_404(Agendamento, id=id, usuario=request.user)
     agendamento.delete()
     return redirect('listar_agendamentos')
+
+@login_required
+def detalhes_agendamento(request, id):
+    agendamento = get_object_or_404(Agendamento, id=id, usuario=request.user)
+    return render(request, 'agendamentos/detalhes.html', {'agendamento': agendamento})
