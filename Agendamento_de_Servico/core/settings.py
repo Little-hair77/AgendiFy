@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.empresas',
     'apps.servicos',
     'apps.agendamentos',
+    'apps.home',
 ]
 
 AUTH_USER_MODEL = 'usuarios.Usuario'

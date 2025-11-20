@@ -26,4 +26,6 @@ urlpatterns = [
     path('servicos/', include('apps.servicos.urls')),
     path('agendamentos/', include('apps.agendamentos.urls')),
 
+    # Página Inicial
+    path('', include('apps.home.urls')),
 ]
