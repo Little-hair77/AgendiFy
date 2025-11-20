@@ -7,7 +7,7 @@ from forms import ServicoForm
 def listar_servicos(request):
     servicos = Servico.objects.all().order_by('nome')
 
-    return render(request, 'servicos/listar.html', {'servicos': servicos})
+    return render(request, 'templates/listar.html', {'servicos': servicos})
 
 def criar_servico(request):
     if request.method == 'POST':
@@ -19,7 +19,7 @@ def criar_servico(request):
         else:
             form = ServicoForm()
 
-    return render(request, 'servicos/listar.html', {'form': form})
+    return render(request, 'templates/listar.html', {'form': form})
 
 def editar_servico(request, id):
     servico = get_object_or_404(Servico, id=id)
@@ -33,7 +33,7 @@ def editar_servico(request, id):
         else:
             form = ServicoForm(instance=servico)
 
-    return render(request, 'servicos/editar.html', {'form': form, 'servico': servico})
+    return render(request, 'templates/editar.html', {'form': form, 'servico': servico})
 
 def excluir_servico(request, id):
     servico = get_object_or_404(Servico, id=id)
@@ -44,4 +44,4 @@ def excluir_servico(request, id):
 def detalhes_servico(request, id):
     servico = get_object_or_404(Servico, id)
 
-    return render(request, 'servicos/detalhes.html', {'servico': servico})
+    return render(request, 'templates/detalhes.html', {'servico': servico})

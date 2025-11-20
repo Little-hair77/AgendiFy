@@ -20,7 +20,7 @@ def registrar_usuario(request):
     else:
         form = RegistroUsuarioForm()
     
-    return render(request, 'usuarios/registrar.html', {'form': form})
+    return render(request, 'templates/registrar.html', {'form': form})
 
 def login_usuario(request):
     if request.method == 'POST':
@@ -36,7 +36,7 @@ def login_usuario(request):
         else:
             messages.error(request, "E-mail ou senha inválidos.")
         
-    return render(request, 'usuarios/login.html')
+    return render(request, 'templates/login.html')
 
 def logout_usuario(request):
     logout(request)
@@ -44,7 +44,7 @@ def logout_usuario(request):
     return redirect('login_usuario')
 
 def perfil_usuario(request):
-    return render(request, 'usuarios/perfil.html', {'usuarios': request.user})
+    return render(request, 'templates/perfil.html', {'usuarios': request.user})
 
 def editar_usuario(request):
     usuario = request.user
@@ -59,7 +59,7 @@ def editar_usuario(request):
     else:
         form = EditarUsuarioForm(instance=usuario)
 
-    return render(request, 'usuarios/editar.html', {'usuario' : usuario})
+    return render(request, 'templates/editar.html', {'usuario' : usuario})
 
 def deletar_usuario(request):
     usuario = request.user
@@ -68,4 +68,4 @@ def deletar_usuario(request):
         messages.success("Conta excluida com sucesso!")
         return redirect('inicio')
     
-    return render(request, 'usuarios/deletar.html')
+    return render(request, 'templates/deletar.html')

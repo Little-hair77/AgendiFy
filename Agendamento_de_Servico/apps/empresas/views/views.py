@@ -5,11 +5,11 @@ from forms import EmpresaForm, EditarEmpresaForm
 
 def listar_empresa(request):    
     empresas = Empresa.objects.all()
-    return render(request, 'empresas/listar.html', {'empresas':empresas})
+    return render(request, 'templates/listar.html', {'empresas':empresas})
 
 def detalhar_empresa(request):
     empresa = get_object_or_404(Empresa, id=empresa_id)
-    return render(request, 'empresas/detalhes.html', {'empresa': empresa})
+    return render(request, 'templates/detalhes.html', {'empresa': empresa})
 
 def cadastrar_empresa(request):
     if request.method == 'POST':
@@ -22,7 +22,7 @@ def cadastrar_empresa(request):
     else:
         form = EmpresaForm()
     
-    return render(request, 'empresas/cadastrar.html', {'form': form})
+    return render(request, 'templates/cadastrar.html', {'form': form})
 
 def editar_empresa(request):
     empresa = get_object_or_404()
@@ -31,7 +31,7 @@ def editar_empresa(request):
         form.save()
         return render('listar_empresas')
     
-    return render(request, 'empresas/editar.html', {'form':form, 'empresa':empresa})
+    return render(request, 'templates/editar.html', {'form':form, 'empresa':empresa})
 
 def deletar_empresa(request):
     empresa = get_object_or_404()
@@ -39,4 +39,4 @@ def deletar_empresa(request):
         empresa.delete()
         return redirect('listar_empresas')
     
-    return render(request, 'empresas/deletar.html', {'empresa': empresa})
+    return render(request, 'templates/deletar.html', {'empresa': empresa})

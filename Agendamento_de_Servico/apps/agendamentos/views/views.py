@@ -7,7 +7,7 @@ from forms import AgendamentoForm
 @login_required
 def listar_agendamentos(request):
     agendamentos = Agendamento.objects.all()
-    return render(request, 'agendamentos/listar.html', {'agendamentos': agendamentos})
+    return render(request, 'templates/listar.html', {'agendamentos': agendamentos})
 
 @login_required
 def criar_agendamento(request):
@@ -23,7 +23,7 @@ def criar_agendamento(request):
         else:
             form = AgendamentoForm()
     
-    return render(request, 'agendamentos/criar.html', {'form': form})
+    return render(request, 'templates/criar.html', {'form': form})
 
 @login_required
 def editar_agendamento(request):
@@ -38,7 +38,7 @@ def editar_agendamento(request):
         else:
             form = AgendamentoForm(instance=agendamento)
 
-    return render(request, 'agendamentos/editar.html', {'form': form, 'agendamento': agendamento})
+    return render(request, 'templates/editar.html', {'form': form, 'agendamento': agendamento})
 
 @login_required
 def excluir_agendamento(request, id):
@@ -49,4 +49,4 @@ def excluir_agendamento(request, id):
 @login_required
 def detalhes_agendamento(request, id):
     agendamento = get_object_or_404(Agendamento, id=id, usuario=request.user)
-    return render(request, 'agendamentos/detalhes.html', {'agendamento': agendamento})
+    return render(request, 'templates/detalhes.html', {'agendamento': agendamento})
