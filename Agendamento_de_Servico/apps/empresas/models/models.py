@@ -13,7 +13,6 @@ class Empresa(models.Model):
         on_delete=models.CASCADE,
         related_name='empresas'
     )
-    servicos = models.ManyToManyField('servicos.Servico', related_name='empresas')
 
     def __str__(self):
         return self.nome
