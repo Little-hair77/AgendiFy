@@ -7,7 +7,7 @@ from usuarios.forms import RegistroUsuarioForm, EditarUsuarioForm
 
 User = get_user_model()
 
-def registrar_usuario(request):
+def cadastrar_usuario(request):
     if request.method == 'POST':
         form = RegistroUsuarioForm(request.POST)
 

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from models.models import Empresa
 from forms import EmpresaForm, EditarEmpresaForm
 
-def listar_empresa(request):    
+def listar_empresas(request):    
     empresas = Empresa.objects.all()
     return render(request, 'templates/listar.html', {'empresas':empresas})
 

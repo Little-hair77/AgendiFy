@@ -9,7 +9,7 @@ def listar_servicos(request):
 
     return render(request, 'templates/listar.html', {'servicos': servicos})
 
-def criar_servico(request):
+def cadastrar_servico(request):
     if request.method == 'POST':
         form = ServicoForm(request.POST)
 
@@ -35,7 +35,7 @@ def editar_servico(request, id):
 
     return render(request, 'templates/editar.html', {'form': form, 'servico': servico})
 
-def excluir_servico(request, id):
+def deletar_servico(request, id):
     servico = get_object_or_404(Servico, id=id)
     servico.delete()
 
