@@ -1,5 +1,5 @@
 from django.urls import path
-from views import views
+from .views import views
 
 urlpatterns = [
     path('', views.listar_servicos, name='listar_servicos'),

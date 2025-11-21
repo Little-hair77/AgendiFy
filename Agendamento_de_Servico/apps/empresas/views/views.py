@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from models.models import Empresa
-from forms import EmpresaForm, EditarEmpresaForm
+from ..models import Empresa
+from ..forms import EmpresaForm, EditarEmpresaForm
 
 def listar_empresas(request):    
     empresas = Empresa.objects.all()
