@@ -25,4 +25,4 @@ class Profissional(models.Model):
     atualizado_em = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.nome}" ({self.empresa.nome})
+        return f"{self.nome} ({self.empresa.nome})"
