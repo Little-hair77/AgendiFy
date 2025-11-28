@@ -30,5 +30,5 @@ urlpatterns = [
     path('', include('apps.home.urls')),    
 
     # Página de Login e Logout
-    path('login/', include('apps.accounts.urls')),
+    path('accounts/', include('apps.accounts.urls')),
 ]
