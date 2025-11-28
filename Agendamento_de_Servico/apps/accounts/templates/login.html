@@ -1,14 +1,123 @@
 {% extends "_base.html" %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>Login</h2>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
+<style>
+    /* Estilo para garantir que o fundo ocupe 100% da altura da tela */
+    .login-wrapper {
+        min-height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* Degradê da marca AgediFy */
+        background: linear-gradient(135deg, #a617ff 0%, #004aad 100%);
+    }
 
-        <button class="btn btn-primary">Entrar</button>
-    </form>
+    /* O cartão branco */
+    .login-card {
+        background-color: #ffffff;
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .login-card h2 {
+        color: #004aad;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Botão Entrar */
+    .btn-custom-gradient {
+        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+        border: none;
+        color: white;
+        width: 100%;
+        padding: 12px;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: transform 0.2s;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .btn-custom-gradient:hover {
+        transform: scale(1.02);
+        opacity: 0.95;
+    }
+
+    /* Inputs */
+    .login-card input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+        background-color: #f9f9f9;
+    }
+
+    .login-card input:focus {
+        outline: none;
+        border-color: #a617ff;
+        background-color: #fff;
+    }
+    
+    .login-card label {
+        display: block;
+        text-align: left;
+        margin-bottom: 5px;
+        color: #555;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    /* === NOVO ESTILO: Texto de Registro === */
+    .register-text {
+        margin-top: 1.5rem;
+        font-size: 0.95rem;
+        color: #666;
+    }
+
+    .register-text a {
+        color: #a617ff; /* Roxo da marca */
+        font-weight: bold;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .register-text a:hover {
+        color: #004aad; /* Azul da marca ao passar o mouse */
+        text-decoration: underline;
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <h2>Bem-vindo ao AgediFy</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-custom-gradient">
+                Entrar
+            </button>
+        </form>
+
+        <div class="register-text mt-4">
+            <small>
+            Não possui conta ainda? 
+            <a class="ms-1" href="">Registre-se</a>
+            </small>
+        </div>
+
+    </div>
 </div>
+
 {% endblock %}
