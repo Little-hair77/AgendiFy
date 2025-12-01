@@ -38,7 +38,7 @@ class AgendamentoForm(forms.ModelForm):
             'status': 'Status do Agendamento'
         }
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         # Ajusta o formato do campo data_hora para exibição no form

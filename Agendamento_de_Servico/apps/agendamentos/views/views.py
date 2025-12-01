@@ -6,9 +6,16 @@ from ..forms import AgendamentoForm
 
 # Create your views here.
 @login_required
-def listar_agendamentos(request):
-    agendamentos = Agendamento.objects.all()
-    return render(request, 'listar_agendamentos.html', {'agendamentos': agendamentos})
+def listar_agendamentos_usuario(request):
+    agendamentos = Agendamento.objects.filter(usuario=request.user)
+    return render(request, 'listar_agedamentos.html', {'agendamentos': agendamentos})
+
+@login_required
+def listar_agendamentos_empresa(request):
+    agendamentos = Agendamento.objects.filter(
+        servico__empresa__dono=request.user
+    )
+    return render(request, 'listar_agendamentos_empresa.html', {'agendamentos': agendamentos})
 
 #@login_required
 def cadastrar_agendamento(request, id):
