@@ -1,1 +1,1 @@
-from .models import Servico
+from .models import Servico, Tag

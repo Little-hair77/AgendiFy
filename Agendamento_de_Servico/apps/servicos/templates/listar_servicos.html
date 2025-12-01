@@ -3,14 +3,12 @@
 
 {% block content %}
 <style>
-    /* Gradiente de fundo igual ao da página de login */
     .gradient-bg {
         background: linear-gradient(135deg, #9e00ff, #4a00e0);
         min-height: 100vh;
         padding: 60px 0;
     }
 
-    /* Card dos serviços / empresas */
     .service-card {
         border-radius: 20px;
         padding: 20px;
@@ -22,14 +20,6 @@
     .service-card:hover {
         transform: scale(1.02);
         box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-    }
-
-    .service-img {
-        width: 100%;
-        height: 170px;
-        object-fit: cover;
-        border-radius: 15px;
-        margin-bottom: 15px;
     }
 
     .title-gradient {
@@ -49,35 +39,40 @@
             <p class="text-light">{{ descricao }}</p>
         </div>
 
-        <!-- Grid de itens -->
+        <!-- Grid de Serviços -->
         <div class="row g-4">
-            {% for item in itens %}
+            {% for servico in servicos %}
             <div class="col-md-4">
                 <div class="service-card">
 
-                    <!-- Imagem -->
-                    <img src="{{ item.imagem.url|default:'/static/img/default.png' }}"
-                         class="service-img" alt="Imagem">
-
                     <!-- Nome -->
-                    <h4 class="fw-bold">{{ item.nome }}</h4>
+                    <h4 class="fw-bold">{{ servico.nome }}</h4>
 
                     <!-- Descrição curta -->
-                    {% if item.descricao %}
-                        <p class="text-muted">{{ item.descricao|truncatechars:80 }}</p>
+                    {% if servico.descricao %}
+                        <p class="text-muted">{{ servico.descricao|truncatechars:80 }}</p>
                     {% endif %}
 
-                    <!-- Rodapé do card -->
+                    <!-- Empresa -->
+                    <p class="text-secondary mb-1">
+                        <strong>Empresa:</strong> {{ servico.empresa.nome }}
+                    </p>
+
+                    <!-- Preço -->
+                    <p class="fw-bold text-dark mb-3">R$ {{ servico.preco }}</p>
+
+                    <!-- Rodapé -->
                     <div class="d-flex justify-content-between mt-3">
 
-                        <!-- Botão de detalhes -->
-                        <a href="{% url detalhe_url item.id %}"
+                        <!-- Link de detalhes -->
+                        <a href="{% url 'detalhe_servico' servico.id %}"
                            class="btn btn-primary rounded-pill px-4">
                             Ver Detalhes
                         </a>
 
-                        {% if editar_url %}
-                        <a href="{% url editar_url item.id %}"
+                        <!-- Link editar (se existir) -->
+                        {% if editar %}
+                        <a href="{% url 'editar_servico' servico.id %}"
                            class="btn btn-outline-primary rounded-pill px-4">
                             Editar
                         </a>
@@ -88,28 +83,32 @@
             </div>
             {% empty %}
             <div class="col-12 text-center">
-                <h5 class="text-light">Nenhum item encontrado.</h5>
+                <h5 class="text-light">Nenhum serviço encontrado.</h5>
             </div>
             {% endfor %}
         </div>
     </div>
 </div>
+
+
+<!-- Seção Sobre Nós -->
 <section class="bg-light py-5">
     <div class="container px-5">
         <div class="row gx-5 justify-content-center">
             <div class="col-xxl-8">
                 <div class="text-center my-5">
                     <h2 class="display-5 fw-bolder"><span class="text-gradient d-inline">Sobre Nós</span></h2>
-                    <p class="lead fw-light mb-4">Nossa missão é conectar pessoas e profissionais de forma rápida, simples e segura.</p>
-                    <p class="text-muted">Sabemos que o tempo é valioso. Por isso, oferecemos uma solução completa para que você encontre profissionais, consulte horários disponíveis e agende serviços de forma rápida e sem complicações. Tudo em um só lugar.</p>
-                    <div class="d-flex justify-content-center fs-2 gap-4">
-                        <a class="text-gradient" href="#!"><i class="bi bi-twitter"></i></a>
-                        <a class="text-gradient" href="#!"><i class="bi bi-linkedin"></i></a>
-                        <a class="text-gradient" href="#!"><i class="bi bi-github"></i></a>
-                    </div>
+                    <p class="lead fw-light mb-4">
+                        Nossa missão é conectar pessoas e profissionais de forma rápida, simples e segura.
+                    </p>
+                    <p class="text-muted">
+                        Sabemos que o tempo é valioso. Por isso, oferecemos uma solução completa para encontrar profissionais,
+                        consultar horários e agendar serviços sem complicação.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 {% endblock %}
