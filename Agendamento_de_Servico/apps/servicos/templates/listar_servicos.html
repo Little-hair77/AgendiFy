@@ -2,110 +2,199 @@
 {% load static %}
 
 {% block content %}
+
 <style>
-    .gradient-bg {
-        background: linear-gradient(135deg, #9e00ff, #4a00e0);
-        min-height: 100vh;
-        padding: 60px 0;
+    /* Fundo geral mais leve, igual ao da página de detalhes */
+    body {
+        background-color: #f8f9fa;
     }
 
+    /* Título com o degradê da marca (Texto) */
+    .text-gradient {
+        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+    }
+
+    /* Seção de Cabeçalho Clean */
+    .hero-section {
+        background-color: #ffffff;
+        padding: 60px 0 40px;
+        margin-bottom: 40px;
+        border-bottom: 1px solid #eef2f6;
+    }
+
+    /* Cartão do Serviço */
     .service-card {
-        border-radius: 20px;
-        padding: 20px;
         background: #ffffff;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        transition: transform .2s ease, box-shadow .2s ease;
+        border: 1px solid #edf2f7;
+        border-radius: 16px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        height: 100%; /* Garante que todos tenham a mesma altura */
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
     }
 
     .service-card:hover {
-        transform: scale(1.02);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 74, 173, 0.1); /* Sombra azulada suave */
+        border-color: #dbeafe;
     }
 
-    .title-gradient {
-        background: linear-gradient(90deg, #9e00ff, #4a00e0);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+    /* Badge da Empresa */
+    .badge-company {
+        background-color: #f0f4ff;
+        color: #004aad;
+        font-size: 0.8rem;
+        padding: 5px 10px;
+        border-radius: 8px;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+
+    /* Preço */
+    .price-tag {
+        font-size: 1.5rem;
         font-weight: 700;
+        color: #2d3748;
+    }
+
+    /* Botão Principal */
+    .btn-brand {
+        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 50px;
+        transition: opacity 0.2s;
+        width: 100%;
+        margin-top: auto; /* Empurra o botão para o final do card */
+    }
+
+    .btn-brand:hover {
+        opacity: 0.9;
+        color: white;
+    }
+    
+    /* Botão Editar (Outline) */
+    .btn-outline-brand {
+        background: transparent;
+        border: 2px solid #a617ff;
+        color: #a617ff;
+        font-weight: 600;
+        border-radius: 50px;
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .btn-outline-brand:hover {
+        background-color: #f3e6ff;
+        color: #004aad;
+    }
+
+    /* Ícone decorativo no card */
+    .card-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        color: white;
+        font-size: 1.5rem;
     }
 </style>
 
-<div class="gradient-bg">
-    <div class="container">
+<section class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3 text-gradient">
+            {{ titulo|default:"Nossos Serviços" }}
+        </h1>
+        <p class="lead text-muted mx-auto" style="max-width: 600px;">
+            {{ descricao|default:"Encontre os melhores profissionais e agende serviços com praticidade e segurança." }}
+        </p>
+    </div>
+</section>
 
-        <!-- Título -->
-        <div class="text-center mb-5">
-            <h1 class="title-gradient">{{ titulo }}</h1>
-            <p class="text-light">{{ descricao }}</p>
-        </div>
-
-        <!-- Grid de Serviços -->
-        <div class="row g-4">
-            {% for servico in servicos %}
-            <div class="col-md-4">
-                <div class="service-card">
-
-                    <!-- Nome -->
-                    <h4 class="fw-bold">{{ servico.nome }}</h4>
-
-                    <!-- Descrição curta -->
-                    {% if servico.descricao %}
-                        <p class="text-muted">{{ servico.descricao|truncatechars:80 }}</p>
-                    {% endif %}
-
-                    <!-- Empresa -->
-                    <p class="text-secondary mb-1">
-                        <strong>Empresa:</strong> {{ servico.empresa.nome }}
-                    </p>
-
-                    <!-- Preço -->
-                    <p class="fw-bold text-dark mb-3">R$ {{ servico.preco }}</p>
-
-                    <!-- Rodapé -->
-                    <div class="d-flex justify-content-between mt-3">
-
-                        <!-- Link de detalhes -->
-                        <a href="{% url 'detalhe_servico' servico.id %}"
-                           class="btn btn-primary rounded-pill px-4">
-                            Ver Detalhes
-                        </a>
-
-                        <!-- Link editar (se existir) -->
-                        {% if editar %}
-                        <a href="{% url 'editar_servico' servico.id %}"
-                           class="btn btn-outline-primary rounded-pill px-4">
-                            Editar
-                        </a>
-                        {% endif %}
-                    </div>
-
+<div class="container pb-5">
+    <div class="row g-4">
+        {% for servico in servicos %}
+        <div class="col-md-6 col-lg-4">
+            <div class="service-card">
+                
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="card-icon">
+                        <i class="bi bi-briefcase"></i> </div>
+                    <span class="badge-company">
+                        {{ servico.empresa.nome }}
+                    </span>
                 </div>
+
+                <h4 class="fw-bold text-dark mb-2">{{ servico.nome }}</h4>
+
+                {% if servico.descricao %}
+                    <p class="text-muted small mb-4">
+                        {{ servico.descricao|truncatechars:80 }}
+                    </p>
+                {% else %}
+                    <p class="text-muted small mb-4">
+                        Consulte os detalhes para mais informações sobre este serviço.
+                    </p>
+                {% endif %}
+
+                <div class="mb-4">
+                    <span class="text-muted small d-block">A partir de</span>
+                    <span class="price-tag">R$ {{ servico.preco }}</span>
+                </div>
+
+                <div>
+                    <a href="{% url 'detalhe_servico' servico.id %}" class="btn btn-brand">
+                        Ver Detalhes
+                    </a>
+
+                    {% if editar %} <a href="{% url 'editar_servico' servico.id %}" class="btn btn-outline-brand">
+                        Editar
+                    </a>
+                    {% endif %}
+                </div>
+
             </div>
-            {% empty %}
-            <div class="col-12 text-center">
-                <h5 class="text-light">Nenhum serviço encontrado.</h5>
-            </div>
-            {% endfor %}
         </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <div class="text-muted">
+                <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                <h3>Nenhum serviço encontrado.</h3>
+                <p>Tente ajustar seus filtros ou volte mais tarde.</p>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 
-
-<!-- Seção Sobre Nós -->
-<section class="bg-light py-5">
-    <div class="container px-5">
-        <div class="row gx-5 justify-content-center">
-            <div class="col-xxl-8">
-                <div class="text-center my-5">
-                    <h2 class="display-5 fw-bolder"><span class="text-gradient d-inline">Sobre Nós</span></h2>
-                    <p class="lead fw-light mb-4">
-                        Nossa missão é conectar pessoas e profissionais de forma rápida, simples e segura.
-                    </p>
-                    <p class="text-muted">
-                        Sabemos que o tempo é valioso. Por isso, oferecemos uma solução completa para encontrar profissionais,
-                        consultar horários e agendar serviços sem complicação.
-                    </p>
-                </div>
+<section class="bg-white py-5 border-top">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="fw-bold mb-3">Sobre o <span class="text-gradient">AgediFy</span></h2>
+                <p class="text-muted lead">
+                    Nossa missão é conectar pessoas e profissionais de forma rápida, simples e segura.
+                </p>
+                <p class="text-muted">
+                    Esqueça a complexidade de ligar para vários lugares. Com o AgediFy, você tem o controle da sua agenda e acesso aos melhores serviços da região em poucos cliques.
+                </p>
+            </div>
+            <div class="col-lg-6 text-center">
+               <div style="background: linear-gradient(135deg, #f0f4ff 0%, #e0c3fc 100%); height: 200px; border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+                    <span class="text-primary fw-bold">Sua Imagem Institucional</span>
+               </div>
             </div>
         </div>
     </div>

@@ -42,6 +42,6 @@ def deletar_servico(request, id):
     return redirect('listar_servicos')
 
 def detalhes_servico(request, id):
-    servico = get_object_or_404(Servico, id)
+    servico = get_object_or_404(Servico, id=id)
 
     return render(request, 'detalhes_servico.html', {'servico': servico})

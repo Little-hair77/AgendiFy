@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from apps.servicos.models import Servico
 from ..models import Agendamento
 from ..forms import AgendamentoForm
 
@@ -9,36 +10,44 @@ def listar_agendamentos(request):
     agendamentos = Agendamento.objects.all()
     return render(request, 'listar_agendamentos.html', {'agendamentos': agendamentos})
 
-@login_required
-def cadastrar_agendamento(request):
+#@login_required
+def cadastrar_agendamento(request, id):
+    servico = get_object_or_404(Servico, id=id)
+
     if request.method == 'POST':
         form = AgendamentoForm(request.POST)
 
         if form.is_valid():
             agendamento = form.save(commit=False)
             agendamento.usuario = request.user
+            agendamento.servico = servico
             agendamento.save()
-
             return redirect('listar_agendamentos')
-        else:
-            form = AgendamentoForm()
-    
-    return render(request, 'cadastrar_agendamento.html', {'form': form})
+
+    else:
+        form = AgendamentoForm()
+
+    return render(request, 'cadastrar_agendamento.html', {
+        'form': form,
+        'servico': servico
+    })
 
 @login_required
-def editar_agendamento(request):
-    agendamento = get_object_or_404(Agendamento, id=id, usuario=request.user)
-   
-    if request.method == 'POST':
-        form = Agendamento(request.POST, instance=agendamento)
+def editar_agendamento(request, agendamento_id):
+    agendamento = get_object_or_404(Agendamento, id=agendamento_id, usuario=request.user)
 
+    if request.method == 'POST':
+        form = AgendamentoForm(request.POST, instance=agendamento)
         if form.is_valid():
             form.save()
             return redirect('listar_agendamentos')
-        else:
-            form = AgendamentoForm(instance=agendamento)
+    else:
+        form = AgendamentoForm(instance=agendamento)
 
-    return render(request, 'cadastrar_agendamento.html', {'form': form, 'agendamento': agendamento})
+    return render(request, 'cadastrar_agendamento.html', {
+        'form': form,
+        'agendamento': agendamento
+    })
 
 @login_required
 def deletar_agendamento(request, id):
@@ -49,4 +58,4 @@ def deletar_agendamento(request, id):
 @login_required
 def detalhes_agendamento(request, id):
     agendamento = get_object_or_404(Agendamento, id=id, usuario=request.user)
-    return render(request, 'templates/perfil_agendamentos.html', {'agendamento': agendamento})
+    return render(request, 'perfil_agendamentos.html', {'agendamento': agendamento})
