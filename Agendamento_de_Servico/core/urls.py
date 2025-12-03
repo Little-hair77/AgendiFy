@@ -23,6 +23,7 @@ urlpatterns = [
     # Apps
     path('usuarios/', include('apps.usuarios.urls')),
     path('empresas/', include('apps.empresas.urls')),
+    path('profissionais/', include('apps.profissionais.urls')),
     path('servicos/', include('apps.servicos.urls')),
     path('agendamentos/', include('apps.agendamentos.urls')),
 
