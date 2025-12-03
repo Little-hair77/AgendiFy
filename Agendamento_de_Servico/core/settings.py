@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'apps.home',
     'apps.profissionais',
     'apps.accounts',
+    'apps.dashboard',
 ]
 
 AUTH_USER_MODEL = 'usuarios.Usuario'
@@ -130,6 +131,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+# Direcionamento de Login
+LOGIN_REDIRECT_URL = 'dashboard'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
