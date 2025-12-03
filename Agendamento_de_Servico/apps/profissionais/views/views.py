@@ -39,3 +39,4 @@ def deletar_profissional(request, pk):
     profissional.delete()
 
     return redirect('profissionais:listar')
+

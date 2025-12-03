@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'apps.agendamentos',
     'apps.home',
     'apps.profissionais',
-    'apps.accounts',
     'apps.dashboard',
 ]
 

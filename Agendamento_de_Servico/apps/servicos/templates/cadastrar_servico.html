@@ -1,0 +1,220 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* Fundo Clean (Cinza muito suave para destacar o branco) */
+    body {
+        background-color: #f8f9fa;
+    }
+
+    /* Container Central */
+    .form-wrapper {
+        min-height: 85vh; /* Garante que ocupe boa parte da tela */
+        display: flex;
+        justify-content: center;
+        align-items: center; /* Centraliza verticalmente se a tela for grande */
+        padding: 40px 0;
+    }
+
+    /* Cartão do Formulário */
+    .service-form-card {
+        background: #ffffff;
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 74, 173, 0.08); /* Sombra suave azulada */
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Detalhe visual no topo do card (Barra degradê) */
+    .service-form-card::top {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+    }
+
+    /* Título com Degradê */
+    .text-gradient {
+        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+    }
+
+    /* Estilização dos Labels */
+    .form-label {
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+
+    /* Estilização dos Inputs */
+    .form-control, .form-select {
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        padding: 12px 15px;
+        font-size: 1rem;
+        background-color: #fcfcfc;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus, .form-select:focus {
+        background-color: #fff;
+        border-color: #a617ff;
+        box-shadow: 0 0 0 4px rgba(166, 23, 255, 0.1);
+        outline: none;
+    }
+
+    /* Input Group (Para o Preço R$) */
+    .input-group-text {
+        background-color: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-right: none;
+        border-radius: 10px 0 0 10px;
+        color: #64748b;
+        font-weight: 600;
+    }
+    
+    .input-group .form-control {
+        border-radius: 0 10px 10px 0;
+        border-left: none;
+    }
+
+    /* Botão Salvar (Degradê) */
+    .btn-save {
+        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+        border: none;
+        color: white;
+        font-weight: 700;
+        padding: 12px 30px;
+        border-radius: 50px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        width: 100%;
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(166, 23, 255, 0.2);
+        color: white;
+    }
+
+    /* Botão Cancelar */
+    .btn-cancel {
+        color: #718096;
+        font-weight: 600;
+        background: transparent;
+        border: 2px solid #edf2f7;
+        padding: 12px 30px;
+        border-radius: 50px;
+        transition: all 0.2s;
+        width: 100%;
+        display: inline-block;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .btn-cancel:hover {
+        background-color: #edf2f7;
+        color: #2d3748;
+    }
+
+    /* Ícone flutuante decorativo */
+    .icon-header {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        color: #a617ff;
+        font-size: 1.8rem;
+    }
+</style>
+
+<div class="form-wrapper">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                
+                <div class="service-form-card">
+                    <!-- Ícone Decorativo -->
+                    <div class="d-flex justify-content-center">
+                        <div class="icon-header">
+                            <i class="bi bi-briefcase-fill"></i>
+                        </div>
+                    </div>
+
+                    <h2 class="text-center fw-bold mb-1">Novo Serviço</h2>
+                    <p class="text-center text-muted mb-4">Preencha os dados para adicionar ao seu portfólio.</p>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <!-- Nome do Serviço -->
+                        <div class="mb-4">
+                            <label for="{{ form.nome.id_for_label }}" class="form-label">Nome do Serviço</label>
+                            {{ form.nome }}
+                            {% if form.nome.errors %}
+                                <div class="text-danger small mt-1">{{ form.nome.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Preço (Com Input Group R$) -->
+                        <div class="mb-4">
+                            <label for="{{ form.preco.id_for_label }}" class="form-label">Valor (R$)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                {{ form.preco }}
+                            </div>
+                            {% if form.preco.errors %}
+                                <div class="text-danger small mt-1">{{ form.preco.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Descrição -->
+                        <div class="mb-4">
+                            <label for="{{ form.descricao.id_for_label }}" class="form-label">Descrição Detalhada</label>
+                            {{ form.descricao }}
+                            <div class="form-text text-muted small">Descreva o que está incluso no serviço.</div>
+                        </div>
+
+                        <!-- Tags (Select Multiple) -->
+                        <div class="mb-5">
+                            <label for="{{ form.tags.id_for_label }}" class="form-label">
+                                Tags / Categorias <i class="bi bi-tags ms-1 text-primary"></i>
+                            </label>
+                            {{ form.tags }}
+                            <div class="form-text text-muted small">Segure "Ctrl" (ou Cmd) para selecionar mais de uma opção.</div>
+                        </div>
+
+                        <!-- Botões de Ação -->
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <a href="{% url 'listar_servicos' %}" class="btn-cancel">Cancelar</a>
+                            </div>
+                            <div class="col-6">
+                                <button type="submit" class="btn-save">
+                                    Salvar Serviço
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

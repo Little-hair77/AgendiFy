@@ -21,7 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Apps
-    path('usuarios/', include('apps.usuarios.urls')),
     path('empresas/', include('apps.empresas.urls')),
     path('profissionais/', include('apps.profissionais.urls')),
     path('servicos/', include('apps.servicos.urls')),
@@ -33,6 +32,6 @@ urlpatterns = [
     # Dashboard
     path('dashboard/', include('apps.dashboard.urls')),
 
-    # Página de Login e Logout
-    path('accounts/', include('apps.accounts.urls')),
+    # Autenticação
+    path('accounts/', include('apps.usuarios.urls')),
 ]

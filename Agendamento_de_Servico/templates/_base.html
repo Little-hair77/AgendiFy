@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -17,75 +17,141 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- CSS principal -->
+    <!-- Bootstrap CSS (Via CDN para garantir funcionamento se não tiver local) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS Personalizado -->
+    <!-- Se você já tiver o styles.css, mantenha. Adicionei estilos inline de fallback para garantir o visual -->
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+
+    <style>
+        /* Estilos globais essenciais caso o css externo falhe */
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .text-gradient {
+            background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .btn-brand {
+            background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+            color: white;
+            border: none;
+            transition: opacity 0.2s;
+        }
+        .btn-brand:hover { color: white; opacity: 0.9; }
+
+        .navbar-nav .nav-link {
+            font-weight: 600;
+            color: #4a5568;
+            margin-right: 10px;
+        }
+        .navbar-nav .nav-link:hover { color: #a617ff; }
+        .navbar-nav .nav-link.active { color: #004aad; }
+
+        /* Avatar pequeno no menu */
+        .nav-avatar {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
+            color: #a617ff;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+    </style>
 </head>
 
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-100 bg-light">
     <main class="flex-shrink-0">
 
-        <!-- NAVBAR DINÂMICA -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm sticky-top">
             <div class="container px-5">
 
                 <!-- Logo -->
-                <a class="navbar-brand fw-bolder text-primary" href="{% url 'home' %}">
-                    AgendiFy
+                <a class="navbar-brand fw-bolder fs-4" href="{% url 'home' %}">
+                    <span class="text-gradient">AgendiFy</span>
                 </a>
 
-                <!-- Botão mobile -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
 
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-semibold">
-
-                        <!-- Links sempre visíveis -->
+                        <!-- === LINKS COMUNS (Sempre visíveis ou Home) === -->
                         <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'listar_servicos' %}">Serviços</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'listar_empresas' %}">Empresas</a></li>
 
                         {% if user.is_authenticated %}
-
-                            <!-- Usuário autenticado -->
                             
-                            {% if user.tipo_pessoa == "F" %}
-                                <!-- DASHBOARD PESSOA FÍSICA -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'dashboard_pf' %}">
-                                        <i class="bi bi-person-circle me-1"></i> Meu Painel
-                                    </a>
-                                </li>
-                            {% elif user.tipo_pessoa == "J" %}
-                                <!-- DASHBOARD EMPRESA -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'dashboard_pj' %}">
-                                        <i class="bi bi-building me-1"></i> Painel da Empresa
-                                    </a>
-                                </li>
+                            <!-- LOGICA: PESSOA FÍSICA (Cliente) -->
+                            {% if user.tipo_pessoa == 'F' %}
+                                <li class="nav-item"><a class="nav-link" href="{% url 'listar_servicos' %}">Serviços</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'listar_empresas' %}">Empresas</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Meus Agendamentos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
+                            
+                            <!-- LOGICA: PESSOA JURÍDICA (Empresa) -->
+                            {% elif user.tipo_pessoa == 'J' %}
+                                <li class="nav-item"><a class="nav-link" href="#">Meus Serviços</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'cadastrar_servico' %}">Cadastrar Serviço</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Agenda</a></li> <!-- Agendamentos recebidos -->
+                                <li class="nav-item"><a class="nav-link" href="{% url 'listar_empresas' %}">Empresas</a></li> <!-- Caso queira ver concorrentes -->
+                                <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
                             {% endif %}
 
-                            <!-- Logout -->
-                            <li class="nav-item">
-                                <a class="btn btn-danger ms-3 px-3" href="{% url 'logout' %}">
-                                    Sair
+                            <!-- MENU DO USUÁRIO (Dropdown com Nome + Sair) -->
+                            <li class="nav-item dropdown ms-3">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center border rounded-pill px-3 py-1 mt-2 mt-lg-0" 
+                                   id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <!-- Avatarzinho com a inicial -->
+                                    <div class="nav-avatar">
+                                        {{ user.first_name|slice:":1"|default:user.username|slice:":1"|upper }}
+                                    </div>
+                                    <span class="small text-dark">Olá, {{ user.first_name|default:user.username }}</span>
                                 </a>
+                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow" aria-labelledby="navbarDropdownUser">
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'perfil_usuario' %}">
+                                            <i class="bi bi-person me-2"></i> Meu Perfil
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <!-- Form de logout para segurança (POST) ou link simples se configurado GET -->
+                                        <form action="{% url 'logout' %}" method="post" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="dropdown-item text-danger">
+                                                <i class="bi bi-box-arrow-right me-2"></i> Sair
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
                             </li>
 
                         {% else %}
 
-                            <!-- Visitante (não logado) -->
+                            <!-- VISITANTE (Não logado) -->
+                            <li class="nav-item"><a class="nav-link" href="{% url 'listar_servicos' %}">Serviços</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'listar_empresas' %}">Empresas</a></li>
                             <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
-                            <li class="nav-item">
-                                <a class="btn btn-primary px-3 ms-3" href="{% url 'login' %}">Login</a>
+                            
+                            <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                                <a class="btn btn-brand rounded-pill px-4" href="{% url 'login' %}">Login</a>
                             </li>
 
                         {% endif %}
-                    </ul>
 
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -97,14 +163,23 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-white py-4 mt-auto shadow-sm">
-        <div class="container px-5 small text-center">
-            © AgendiFy — 2025
+    <footer class="bg-white py-4 mt-auto border-top">
+        <div class="container px-5">
+            <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+                <div class="col-auto"><div class="small m-0 text-muted">© AgendiFy 2025</div></div>
+                <div class="col-auto">
+                    <a class="link-dark small text-decoration-none" href="#!">Privacidade</a>
+                    <span class="text-white mx-1">&middot;</span>
+                    <a class="link-dark small text-decoration-none" href="#!">Termos</a>
+                    <span class="text-white mx-1">&middot;</span>
+                    <a class="link-dark small text-decoration-none" href="#!">Contato</a>
+                </div>
+            </div>
         </div>
     </footer>
 
     <!-- JS Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
 </body>
 </html>

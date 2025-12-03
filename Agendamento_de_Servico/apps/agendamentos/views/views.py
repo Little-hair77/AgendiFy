@@ -17,7 +17,7 @@ def listar_agendamentos_empresa(request):
     )
     return render(request, 'listar_agendamentos_empresa.html', {'agendamentos': agendamentos})
 
-#@login_required
+@login_required
 def cadastrar_agendamento(request, id):
     servico = get_object_or_404(Servico, id=id)
 

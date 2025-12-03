@@ -36,15 +36,15 @@ def login_usuario(request):
         else:
             messages.error(request, "E-mail ou senha inválidos.")
         
-    return render(request, 'templates/login.html')
+    return render(request, 'login.html')
 
 def logout_usuario(request):
     logout(request)
     messages.success(request, "Você saiu da sua conta.")
-    return redirect('login_usuario')
+    return redirect('login')
 
 def perfil_usuario(request):
-    return render(request, 'templates/perfil.html', {'usuarios': request.user})
+    return render(request, 'perfil_usuario.html', {'usuarios': request.user})
 
 def editar_usuario(request):
     usuario = request.user
@@ -59,7 +59,7 @@ def editar_usuario(request):
     else:
         form = EditarUsuarioForm(instance=usuario)
 
-    return render(request, 'templates/editar.html', {'usuario' : usuario})
+    return render(request, 'editar.html', {'usuario' : usuario})
 
 def deletar_usuario(request):
     usuario = request.user
@@ -68,4 +68,4 @@ def deletar_usuario(request):
         messages.success("Conta excluida com sucesso!")
         return redirect('inicio')
     
-    return render(request, 'templates/deletar.html')
+    return render(request, 'deletar.html')
