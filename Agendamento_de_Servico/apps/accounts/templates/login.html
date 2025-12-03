@@ -10,8 +10,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        /* Degradê da marca AgediFy */
-        background: linear-gradient(135deg, #a617ff 0%, #004aad 100%);
+        
+        /* ALTERAÇÃO AQUI: */
+        /* Aumentei a tonalidade para um Lilás/Azul visível e moderno */
+        /* Roxo Suave (#e2c2ff) -> Azul Suave (#c4ddff) */
+        background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
     }
 
     /* O cartão branco */
@@ -19,10 +22,12 @@
         background-color: #ffffff;
         padding: 2.5rem;
         border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        /* Sombra um pouco mais marcada para separar o cartão do fundo colorido */
+        box-shadow: 0 20px 40px rgba(0, 74, 173, 0.1); 
         width: 100%;
         max-width: 400px;
         text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.5); /* Borda translúcida */
     }
 
     .login-card h2 {
@@ -40,13 +45,14 @@
         padding: 12px;
         border-radius: 50px;
         font-weight: 600;
-        transition: transform 0.2s;
+        transition: transform 0.2s, box-shadow 0.2s;
         cursor: pointer;
         margin-top: 10px;
     }
 
     .btn-custom-gradient:hover {
-        transform: scale(1.02);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(166, 23, 255, 0.3);
         opacity: 0.95;
     }
 
@@ -55,16 +61,17 @@
         width: 100%;
         padding: 12px;
         margin-bottom: 15px;
-        border: 1px solid #ddd;
+        border: 1px solid #e0e0e0;
         border-radius: 8px;
         box-sizing: border-box;
-        background-color: #f9f9f9;
+        background-color: #fcfcfc;
     }
 
     .login-card input:focus {
         outline: none;
         border-color: #a617ff;
         background-color: #fff;
+        box-shadow: 0 0 0 4px rgba(166, 23, 255, 0.15); /* Glow um pouco mais forte */
     }
     
     .login-card label {
@@ -76,7 +83,7 @@
         font-size: 0.9rem;
     }
     
-    /* === NOVO ESTILO: Texto de Registro === */
+    /* Texto de Registro */
     .register-text {
         margin-top: 1.5rem;
         font-size: 0.95rem;
@@ -84,14 +91,14 @@
     }
 
     .register-text a {
-        color: #a617ff; /* Roxo da marca */
+        color: #a617ff;
         font-weight: bold;
         text-decoration: none;
         transition: color 0.2s;
     }
 
     .register-text a:hover {
-        color: #004aad; /* Azul da marca ao passar o mouse */
+        color: #004aad;
         text-decoration: underline;
     }
 </style>
