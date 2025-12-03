@@ -1,0 +1,47 @@
+{% extends '_base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Painel da Empresa</h2>
+
+    <h4>Suas Empresas</h4>
+    {% if empresas %}
+        <ul class="list-group mb-4">
+            {% for e in empresas %}
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        <strong>{{ e.nome }}</strong><br>
+                        {{ e.email }} — {{ e.telefone }}
+                    </div>
+                    <a href="{% url 'detalhes_empresa' e.id %}" class="btn btn-info btn-sm">
+                        Gerenciar
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">Nenhuma empresa cadastrada.</p>
+        <a href="{% url 'cadastrar_empresa' %}" class="btn btn-success">Cadastrar Empresa</a>
+    {% endif %}
+
+    <h4 class="mt-5">Agendamentos Recebidos</h4>
+    {% if agendamentos %}
+        <ul class="list-group">
+            {% for a in agendamentos %}
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        Cliente: <strong>{{ a.usuario.nome_completo }}</strong><br>
+                        Serviço: {{ a.servico.nome }}<br>
+                        Data: {{ a.data_hora|date:"d/m/Y H:i" }}
+                    </div>
+                    <a href="{% url 'detalhes_agendamento' a.id %}" class="btn btn-primary btn-sm">
+                        Ver
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">Nenhum agendamento recebido ainda.</p>
+    {% endif %}
+</div>
+{% endblock %}

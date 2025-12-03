@@ -1,0 +1,27 @@
+{% extends '_base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Bem-vindo, {{ request.user.nome_completo }}</h2>
+
+    <h4>Seus Agendamentos</h4>
+
+    {% if agendamentos %}
+        <ul class="list-group">
+            {% for a in agendamentos %}
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        <strong>{{ a.servico.nome }}</strong><br>
+                        {{ a.data_hora|date:"d/m/Y H:i" }} — {{ a.empresa.nome }}
+                    </div>
+                    <a href="{% url 'detalhes_agendamento' a.id %}" class="btn btn-primary btn-sm">
+                        Ver
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">Você ainda não possui agendamentos.</p>
+    {% endif %}
+</div>
+{% endblock %}

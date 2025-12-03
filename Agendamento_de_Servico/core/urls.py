@@ -29,6 +29,9 @@ urlpatterns = [
     # Página Inicial
     path('', include('apps.home.urls')),    
 
+    # Dashboard
+    path('dashboard/', include('apps.dashboard.urls')),
+
     # Página de Login e Logout
     path('accounts/', include('apps.accounts.urls')),
 ]
