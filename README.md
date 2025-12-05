@@ -1,111 +1,108 @@
-🏥 Sistema de Agendamento de Serviços – Controle de Profissionais e Empresas
-Projeto da disciplina Segurança em Sistemas de Informação — IF Baiano
-📌 Objetivo do Sistema
+# 🏥 Sistema de Agendamento de Serviços – AEE / Empresas Parceiras
 
-O objetivo deste projeto é desenvolver um sistema seguro de controle de empresas, serviços e profissionais, com foco em:
+Este projeto foi desenvolvido como parte da disciplina **Segurança em Sistemas de Informação** do **Instituto Federal Baiano**.  
+O sistema permite o gerenciamento de **empresas parceiras**, **serviços**, **profissionais** e **agendamentos**, oferecendo um ambiente simples e seguro para controle de atendimentos.
 
-Cadastro e gestão de empresas parceiras
+---
 
-Cadastro e gestão de serviços oferecidos
+## 🎯 Objetivo do Projeto
 
-Gerenciamento de profissionais vinculados
+O objetivo deste sistema é:
 
-Controle de acesso (Admin e Usuários comuns)
+- Facilitar o gerenciamento de **profissionais**, **empresas** e **serviços**;
+- Permitir que administradores cadastrem e controlem todos os recursos;
+- Oferecer aos usuários comuns apenas a função de visualização (sem edição);
+- Demonstrar boas práticas de segurança e autorização no **Django**;
+- Servir como base para aprendizado de desenvolvimento web seguro.
 
-Boas práticas de segurança no backend (Django)
+---
 
-O sistema foi desenvolvido como atividade prática da disciplina Segurança em Sistemas de Informação, aplicando conceitos fundamentais de autenticação, autorização e gestão segura de dados.
+## 🚀 Projeto Django: Sistema de Gestão de Atividades
 
-👥 Integrantes do Grupo
+ - Este é um projeto de aplicação web desenvolvido em Django e Python, focado em demonstrar conceitos de desenvolvimento full-stack, segurança básica e padrões de design (FBVs).
 
-Pablo Henrique Azevedo Gomes da Silva
+## 🛠️ Ferramentas Necessárias
 
-Higo Pereira Alves
+ - Para rodar este projeto em seu ambiente local, você precisará das seguintes ferramentas:
 
-▶️ Vídeo de Apresentação
+ - Python (Versão Recomendada 3.8+): Linguagem de programação principal.
 
-🔗 Insira aqui o link do vídeo após gravarem.
-Exemplo:
-https://youtu.be/seu-video
+ - pip (Gerenciador de Pacotes Python): Usado para instalar as dependências do Django.
+
+ - Git: Para clonar o repositório e gerenciar versões.
+
+ - Banco de Dados: SQLite (padrão do Django) ou outro SGBD configurado.
 
 ⚙️ Instruções de Execução
-📁 1. Clone o repositório
-git clone https://github.com/seu-repositorio/projeto-agendamento.git
-cd projeto-agendamento
 
-🐍 2. Crie e ative o ambiente virtual
+ - Siga os passos abaixo para colocar o projeto no ar:
+
+1. Clonar o Repositório e Configurar o Ambiente
+
+# 1. Clone o repositório
+git clone [URL_DO_SEU_REPOSITORIO]
+cd [NOME_DA_PASTA]
+
+# 2. Crie e ative um ambiente virtual (RECOMENDADO)
 python -m venv venv
+source venv/Scripts/activate  # No Windows
+# source venv/bin/activate    # No Linux/macOS
 
-
-Windows
-
-venv\Scripts\activate
-
-
-Linux/Mac
-
-source venv/bin/activate
-
-📦 3. Instale as dependências
+# 3. Instale as dependências (Django e outras bibliotecas)
 pip install -r requirements.txt
 
-🗂️ 4. Execute as migrações
-python manage.py makemigrations
+
+2. Configurar o Banco de Dados e Rodar Migrações
+
+Você deve aplicar as migrações e, em seguida, popular o banco de dados com os usuários de teste.
+
+# 1. Aplicar as migrações (cria as tabelas no BD)
 python manage.py migrate
 
-👑 5. Acesse com o superusuário padrão
-
-O sistema possui um superuser já definido para testes:
-
-Usuário: admin@gmail.com
-Senha: 1234
-
-
-Caso precise criar outro administrador:
-
+# 2. Criar o superusuário (necessário para o ambiente Admin)
 python manage.py createsuperuser
 
-▶️ 6. Inicie o servidor
+# 3. (OPCIONAL) Carregar dados de teste
+# Se houver um arquivo de fixtures (initial_data.json)
+# python manage.py loaddata initial_data.json
+
+
+3. Iniciar o Servidor
+
 python manage.py runserver
 
-🌐 7. Acesse no navegador
-http://127.0.0.1:8000/
 
-🔐 Papel dos Usuários
-🟣 Administrador (Superuser)
+Acesse a aplicação em seu navegador: http://127.0.0.1:8000/
 
-Cadastra empresas
+## 🔑 Credenciais de Acesso (Para Teste)
 
-Cadastra serviços
+ - Use estas contas para testar os diferentes níveis de acesso no sistema.
 
-Cadastra profissionais
+## ▶️ Instruções de Execução Super User
 
-Edita e remove qualquer registro
+Esta conta tem acesso total ao Admin Django e a todas as funcionalidades.
 
-Gerencia usuários
+SuperUser: admin@gmail.com
 
-🔵 Usuário Comum
+Senha: 1234
 
-Visualiza empresas parceiras
+## ▶️ Instruções de Execução Usuários
 
-Visualiza serviços disponíveis
+Estas contas são para simular o acesso de usuários comuns e testar as permissões padrão.
 
-Visualiza profissionais
+Usuário 1: pablo.henrique@gmail.com
 
-Não pode editar nem remover registros
+Usuário 2: higoalvesads@gmail.com
 
-🛡️ Principais Medidas de Segurança Implementadas
+Usuário 3: jhonrels@gmail.com
 
-Autenticação por sessão com Django Auth
+Usuário 4: joaopedro@gmail.com
 
-Permissões e restrição de acessos por nível de usuário
+Usuário 5: viniclussilva@gmail.com
 
-Templates protegidos (esconder botões de ação para usuários comuns)
+Senha (para todos os usuários): 1234 (Assumindo que você usou uma senha padrão para os testes)
 
-Sanitização e validação de formulários
-
-Regras de negócio controladas pela view e não pelo frontend
-
-📄 Licença
-
-Projeto acadêmico — uso livre para fins educacionais.
+### **1. Clone o repositório**
+```bash
+git clone <https://github.com/Little-hair77/Sistema-Agendamento-de-Servico>
+cd <Sistema de Agendamento>

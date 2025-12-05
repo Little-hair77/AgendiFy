@@ -5,8 +5,14 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from ..forms import RegistroUsuarioForm, EditarUsuarioForm
+from ..models import Usuario
 
 User = get_user_model()
+
+def listar_usuarios(request):
+    usuarios = Usuario.objects.all()
+
+    return render(request, 'listar_usuarios.html', {'usuarios': usuarios})
 
 def cadastrar_usuario(request):
     if request.method == 'POST':
