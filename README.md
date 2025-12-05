@@ -40,13 +40,13 @@ O objetivo deste sistema é:
 1. Clonar o Repositório e Configurar o Ambiente
 
 # 1. Clone o repositório
-git clone [URL_DO_SEU_REPOSITORIO]
-cd [NOME_DA_PASTA]
+git clone [(https://github.com/Little-hair77/Sistema-Agendamento-de-Servico)]
+cd [Sistema-Agendamento-de-Servico/Agendamento_de_Servico]
 
 # 2. Crie e ative um ambiente virtual (RECOMENDADO)
 python -m venv venv
 source venv/Scripts/activate  # No Windows
-# source venv/bin/activate    # No Linux/macOS
+source venv/bin/activate    # No Linux/macOS
 
 # 3. Instale as dependências (Django e outras bibliotecas)
 pip install -r requirements.txt
@@ -63,11 +63,11 @@ python manage.py migrate
 python manage.py createsuperuser
 
 # 3. (OPCIONAL) Carregar dados de teste
-# Se houver um arquivo de fixtures (initial_data.json)
-# python manage.py loaddata initial_data.json
+Se houver um arquivo de fixtures (initial_data.json)
+python manage.py loaddata initial_data.json
 
 
-3. Iniciar o Servidor
+# 4. Iniciar o Servidor
 
 python manage.py runserver
 
