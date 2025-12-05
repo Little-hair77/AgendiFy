@@ -1,4 +1,4 @@
-# 🏥 Sistema de Agendamento de Serviços – AEE / Empresas Parceiras
+# 🏥 Sistema de Agendamento de Serviços – Empresas Parceiras
 
 Este projeto foi desenvolvido como parte da disciplina **Segurança em Sistemas de Informação** do **Instituto Federal Baiano**.  
 O sistema permite o gerenciamento de **empresas parceiras**, **serviços**, **profissionais** e **agendamentos**, oferecendo um ambiente simples e seguro para controle de atendimentos.
