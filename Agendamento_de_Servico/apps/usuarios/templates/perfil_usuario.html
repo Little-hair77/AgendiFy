@@ -5,9 +5,7 @@
 
 <style>
     /* Fundo Clean */
-    body {
-        background-color: #f8f9fa;
-    }
+    body { background-color: #f8f9fa; }
 
     /* === CARTÃO DE IDENTIDADE (Esquerda) === */
     .profile-card-main {
@@ -18,120 +16,121 @@
         padding: 40px 30px;
         text-align: center;
         height: 100%;
+        transition: opacity 0.3s;
     }
 
-    /* Avatar Gerado (Sem foto) - Usando o Degradê Aurora */
+    /* Avatar Gerado */
     .avatar-placeholder {
-        width: 120px;
-        height: 120px;
-        margin: 0 auto 20px;
-        /* O degradê suave que você gostou na Home */
+        width: 120px; height: 120px; margin: 0 auto 20px;
         background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        
-        /* Texto (Iniciais) */
-        font-size: 3rem;
-        font-weight: 800;
-        color: #a617ff; /* Roxo da marca */
-        border: 4px solid #ffffff; /* Borda branca interna */
+        display: flex; align-items: center; justify-content: center;
+        font-size: 3rem; font-weight: 800; color: #a617ff;
+        border: 4px solid #ffffff;
         box-shadow: 0 5px 15px rgba(166, 23, 255, 0.15);
-    }
-
-    /* Badge Tipo de Pessoa */
-    .badge-type {
-        background-color: #f0f4ff;
-        color: #004aad;
-        padding: 8px 16px;
-        border-radius: 50px;
-        font-size: 0.85rem;
-        font-weight: 700;
-        display: inline-block;
-        margin-bottom: 20px;
     }
 
     /* === CARTÃO DE DETALHES (Direita) === */
     .details-card {
-        background: #ffffff;
-        border-radius: 20px;
-        border: none;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-        padding: 40px;
+        background: #ffffff; border-radius: 20px; border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); padding: 40px;
+        transition: opacity 0.3s;
     }
 
     .section-title {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #2d3748;
-        margin-bottom: 25px;
-        padding-bottom: 10px;
+        font-size: 1.1rem; font-weight: 700; color: #2d3748;
+        margin-bottom: 25px; padding-bottom: 10px;
         border-bottom: 1px solid #edf2f7;
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        display: flex; align-items: center; gap: 10px;
     }
-
-    .icon-title {
-        color: #a617ff;
-    }
-
-    /* Campos de Informação */
-    .info-group {
-        margin-bottom: 25px;
-    }
+    .icon-title { color: #a617ff; }
 
     .info-label {
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #a0aec0;
-        font-weight: 700;
-        margin-bottom: 5px;
+        font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;
+        color: #a0aec0; font-weight: 700; margin-bottom: 5px;
     }
+    .info-value { font-size: 1.05rem; color: #4a5568; font-weight: 500; }
+    .info-group { margin-bottom: 25px; }
 
-    .info-value {
-        font-size: 1.05rem;
-        color: #4a5568;
-        font-weight: 500;
-    }
-
-    /* Botão Editar (Outline) */
+    /* Botões */
     .btn-edit-profile {
-        margin-top: 20px;
-        background: transparent;
-        border: 2px solid #eef2f6;
-        color: #4a5568;
-        font-weight: 600;
-        border-radius: 50px;
-        padding: 10px 25px;
-        transition: all 0.3s;
-        width: 100%;
+        margin-top: 10px; background: transparent; border: 2px solid #eef2f6;
+        color: #4a5568; font-weight: 600; border-radius: 50px; padding: 10px 25px;
+        transition: all 0.3s; width: 100%;
+    }
+    .btn-edit-profile:hover { border-color: #a617ff; color: #a617ff; background-color: #fcfaff; }
+
+    .btn-delete-account {
+        color: #e53e3e; font-size: 0.85rem; font-weight: 600;
+        text-decoration: none; margin-top: 15px; display: inline-block;
+        transition: color 0.2s;
+    }
+    .btn-delete-account:hover { color: #c53030; text-decoration: underline; }
+
+    /* === ÁREA DE CONFIRMAÇÃO DE EXCLUSÃO === */
+    .delete-alert {
+        background-color: #fff;
+        border: 2px solid #fc8181;
+        border-radius: 20px;
+        padding: 40px;
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto 40px auto;
+        box-shadow: 0 20px 50px rgba(229, 62, 62, 0.15);
+        animation: slideDown 0.4s ease-out;
+        position: relative;
+        z-index: 10;
     }
 
-    .btn-edit-profile:hover {
-        border-color: #a617ff;
-        color: #a617ff;
-        background-color: #fcfaff;
+    @keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* Classe para o modo deletar */
+    .blur-mode {
+        opacity: 0.3;
+        pointer-events: none;
+        filter: grayscale(80%);
     }
 </style>
 
 <div class="container py-5">
     
-    <!-- Título da Página -->
+    <!-- Título -->
     <div class="mb-5">
         <h2 class="fw-bold" style="color: #2d3748;">Meu Perfil</h2>
         <p class="text-muted">Gerencie suas informações pessoais e de segurança.</p>
     </div>
 
-    <div class="row g-4">
+    <!-- === BLOCO DE DECISÃO: DELETAR === -->
+    {% if modo == 'deletar' %}
+    <div class="delete-alert">
+        <i class="bi bi-exclamation-triangle-fill text-danger mb-3" style="font-size: 3rem;"></i>
+        <h3 class="text-danger fw-bold mb-2">Tem certeza?</h3>
+        <p class="text-muted mb-4">
+            Você está prestes a excluir sua conta permanentemente. <br>
+            Todos os seus agendamentos e dados serão perdidos.
+        </p>
         
-        <!-- COLUNA 1: Identidade Visual -->
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'perfil_usuario' %}" class="btn btn-outline-secondary rounded-pill px-4 fw-bold">
+                    Cancelar
+                </a>
+                <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold">
+                    Sim, Excluir Minha Conta
+                </button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+
+    <!-- === CONTEÚDO PRINCIPAL === -->
+    <div class="row g-4 {% if modo == 'deletar' %}blur-mode{% endif %}">
+        
+        <!-- COLUNA 1: Identidade -->
         <div class="col-lg-4">
             <div class="profile-card-main">
                 
-                <!-- Avatar com Iniciais (Lógica: Pega 1ª letra do primeiro nome) -->
                 <div class="avatar-placeholder">
                     {% if user.first_name %}
                         {{ user.first_name|slice:":1"|upper }}
@@ -143,28 +142,28 @@
                 <h3 class="fw-bold mb-1 text-dark">{{ user.nome_completo|default:user.username }}</h3>
                 <p class="text-muted mb-3">{{ user.email }}</p>
 
-                <!-- Badge inteligente usando get_display do Django -->
-                <div class="badge-type">
-                    {{ user.get_tipo_pessoa_display }}
-                </div>
-
                 <div class="d-grid gap-2">
-                    <button class="btn-edit-profile">
+                    <!-- Botão Editar -->
+                    <a href="#" class="btn-edit-profile text-decoration-none">
                         <i class="bi bi-pencil me-2"></i> Editar Dados
-                    </button>
-                    <!-- Link para trocar senha se necessário -->
-                    <a href="#" class="text-muted small mt-3 text-decoration-none">
+                    </a>
+                    
+                    <a href="#" class="text-muted small mt-2 text-decoration-none">
                         <i class="bi bi-lock"></i> Alterar Senha
+                    </a>
+
+                    <!-- Botão para acionar a exclusão -->
+                    <a href="{% url 'deletar_usuario' %}" class="btn-delete-account">
+                        <i class="bi bi-trash"></i> Excluir conta
                     </a>
                 </div>
             </div>
         </div>
 
-        <!-- COLUNA 2: Detalhes Completos -->
+        <!-- COLUNA 2: Detalhes -->
         <div class="col-lg-8">
             <div class="details-card">
                 
-                <!-- Seção 1: Dados Pessoais -->
                 <h4 class="section-title">
                     <i class="bi bi-person-lines-fill icon-title"></i> Dados Pessoais
                 </h4>
@@ -174,29 +173,17 @@
                         <div class="info-label">Nome Completo</div>
                         <div class="info-value">{{ user.nome_completo|default:"-" }}</div>
                     </div>
-                    
                     <div class="col-md-6 info-group">
                         <div class="info-label">Data de Nascimento</div>
-                        <div class="info-value">
-                            {{ user.data_nascimento|date:"d/m/Y"|default:"Não informada" }}
-                        </div>
+                        <div class="info-value">{{ user.data_nascimento|date:"d/m/Y"|default:"Não informada" }}</div>
                     </div>
-
-                    <!-- Lógica para mostrar CPF ou CNPJ dependendo do tipo -->
-                    {% if user.tipo_pessoa == 'F' %}
-                        <div class="col-md-6 info-group">
-                            <div class="info-label">CPF</div>
-                            <div class="info-value">{{ user.cpf|default:"Não informado" }}</div>
-                        </div>
-                    {% else %}
-                        <div class="col-md-6 info-group">
-                            <div class="info-label">CNPJ</div>
-                            <div class="info-value">{{ user.cnpj|default:"Não informado" }}</div>
-                        </div>
-                    {% endif %}
+                    <!-- Exibe apenas o CPF agora, sem condicional de tipo -->
+                    <div class="col-md-6 info-group">
+                        <div class="info-label">CPF</div>
+                        <div class="info-value">{{ user.cpf|default:"Não informado" }}</div>
+                    </div>
                 </div>
 
-                <!-- Seção 2: Contato e Endereço -->
                 <h4 class="section-title mt-4">
                     <i class="bi bi-geo-alt-fill icon-title"></i> Contato
                 </h4>
@@ -212,12 +199,10 @@
                             {% endif %}
                         </div>
                     </div>
-
                     <div class="col-md-6 info-group">
                         <div class="info-label">E-mail Principal</div>
                         <div class="info-value">{{ user.email }}</div>
                     </div>
-
                     <div class="col-12 info-group">
                         <div class="info-label">Endereço Completo</div>
                         <div class="info-value">
@@ -227,21 +212,6 @@
                                 <span class="text-muted fst-italic">Endereço não cadastrado.</span>
                             {% endif %}
                         </div>
-                    </div>
-                </div>
-
-                <!-- Seção 3: Informações do Sistema -->
-                <h4 class="section-title mt-4">
-                    <i class="bi bi-shield-lock-fill icon-title"></i> Conta
-                </h4>
-                <div class="row">
-                    <div class="col-md-6 info-group">
-                        <div class="info-label">Usuário (Login)</div>
-                        <div class="info-value">{{ user.username }}</div>
-                    </div>
-                    <div class="col-md-6 info-group">
-                        <div class="info-label">Membro Desde</div>
-                        <div class="info-value">{{ user.date_joined|date:"d de F de Y" }}</div>
                     </div>
                 </div>
 

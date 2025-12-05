@@ -16,10 +16,12 @@ def cadastrar_servico(request):
         if form.is_valid():
             form.save()
             return redirect('listar_servicos')
-        else:
-            form = ServicoForm()
 
-    return render(request, 'listar_servicos.html', {'form': form})
+    else:
+        form = ServicoForm()
+
+    return render(request, 'cadastrar_servico.html', {'form': form})
+
 
 def editar_servico(request, id):
     servico = get_object_or_404(Servico, id=id)
@@ -33,13 +35,13 @@ def editar_servico(request, id):
         else:
             form = ServicoForm(instance=servico)
 
-    return render(request, 'templates/editar.html', {'form': form, 'servico': servico})
+    return render(request, 'editar.html', {'form': form, 'servico': servico, 'modo': 'editar'})
 
 def deletar_servico(request, id):
     servico = get_object_or_404(Servico, id=id)
     servico.delete()
 
-    return redirect('listar_servicos')
+    return redirect('listar_servicos', {'servico': servico, 'modo': 'deletar'})
 
 def detalhes_servico(request, id):
     servico = get_object_or_404(Servico, id=id)

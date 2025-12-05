@@ -9,34 +9,43 @@ def listar_empresas(request):
 
 def detalhes_empresa(request, id):
     empresa = get_object_or_404(Empresa, id=id)
-    return render(request, 'detalhes_empresas.html', {'empresa': empresa})
+    return render(request, 'detalhes_empresa.html', {'empresa': empresa})
 
 def cadastrar_empresa(request):
     if request.method == 'POST':
         form = EmpresaForm(request.POST)
         if form.is_valid():
             empresa = form.save(commit=False)
-            empresa.proprietario = request.user
+            empresa.dono = request.user   
             empresa.save()
             return redirect('listar_empresas')
     else:
         form = EmpresaForm()
-    
+
     return render(request, 'cadastrar_empresa.html', {'form': form})
 
-def editar_empresa(request):
-    empresa = get_object_or_404()
+def editar_empresa(request, id):
+    empresa = get_object_or_404(Empresa, id=id)
     form = EditarEmpresaForm(request.POST or None, instance=empresa)
-    if form.is_valid():
-        form.save()
-        return render('listar_empresas')
-    
-    return render(request, 'templates/editar.html', {'form':form, 'empresa':empresa})
 
-def deletar_empresa(request):
-    empresa = get_object_or_404()
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('listar_empresas')
+    
+    return render(request, 'editar.html', {
+        'form': form,
+        'empresa': empresa,
+        'modo': 'editar'
+    })
+
+def deletar_empresa(request, id):
+    empresa = get_object_or_404(Empresa, id=id)
+
     if request.method == 'POST':
         empresa.delete()
         return redirect('listar_empresas')
     
-    return render(request, 'templates/deletar.html', {'empresa': empresa})
+    return render(request, 'deletar.html', {
+        'empresa': empresa,
+        'modo': 'deletar'
+    })

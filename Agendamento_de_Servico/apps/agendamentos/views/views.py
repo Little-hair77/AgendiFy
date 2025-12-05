@@ -53,14 +53,22 @@ def editar_agendamento(request, agendamento_id):
 
     return render(request, 'cadastrar_agendamento.html', {
         'form': form,
-        'agendamento': agendamento
+        'agendamento': agendamento,
+        'modo': 'editar'
     })
 
 @login_required
 def deletar_agendamento(request, id):
     agendamento = get_object_or_404(Agendamento, id=id, usuario=request.user)
-    agendamento.delete()
-    return redirect('listar_agendamentos')
+
+    if request.method == 'POST':
+        agendamento.delete()
+        return redirect('listar_agendamentos')
+
+    return render(request, 'perfil_agendamentos.html', {
+        'agendamento': agendamento,
+        'modo': 'deletar'
+    })
 
 @login_required
 def detalhes_agendamento(request, id):

@@ -112,8 +112,14 @@
     <div class="register-card">
         
         <div class="register-header">
-            <h2>Crie sua conta</h2>
-            <p class="text-muted">Junte-se ao AgendiFy em segundos.</p>
+            <!-- ALTERAÇÃO AQUI: Título condicional -->
+            {% if tipo_tela == 'editar' %}
+                <h2>Editar Perfil</h2>
+                <p class="text-muted">Atualize suas informações.</p>
+            {% else %}
+                <h2>Crie sua conta</h2>
+                <p class="text-muted">Junte-se ao AgendiFy em segundos.</p>
+            {% endif %}
         </div>
 
         <form method="post">
@@ -154,6 +160,9 @@
                 {% endif %}
             </div>
 
+            <!-- Lógica para SENHA: Só mostra se NÃO estiver editando -->
+            <!-- Na edição, geralmente se usa um form separado para trocar senha, ou deixa opcional -->
+            {% if tipo_tela != 'editar' %}
             <div class="row">
                 <!-- Senha -->
                 <div class="col-md-6 mb-3">
@@ -177,15 +186,26 @@
                     {% endif %}
                 </div>
             </div>
+            {% endif %}
 
             <button type="submit" class="btn btn-register">
-                Finalizar Cadastro
+                {% if tipo_tela == 'editar' %}
+                    Salvar Alterações
+                {% else %}
+                    Finalizar Cadastro
+                {% endif %}
             </button>
+            
+            {% if tipo_tela == 'editar' %}
+                <a href="{% url 'perfil_usuario' %}" class="btn btn-link w-100 mt-2 text-decoration-none text-muted">Cancelar</a>
+            {% endif %}
         </form>
 
+        {% if tipo_tela != 'editar' %}
         <div class="login-link">
             Já tem uma conta? <a href="{% url 'login' %}">Fazer Login</a>
         </div>
+        {% endif %}
 
     </div>
 </div>

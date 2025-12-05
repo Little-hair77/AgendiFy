@@ -60,13 +60,13 @@ def editar_usuario(request):
     else:
         form = EditarUsuarioForm(instance=usuario)
 
-    return render(request, 'editar.html', {'usuario' : usuario})
+    return render(request, 'editar.html', {'usuario' : usuario, 'modo': 'editar'})
 
 def deletar_usuario(request):
     usuario = request.user
     if request.method == 'POST':
         usuario.delete()
-        messages.success("Conta excluida com sucesso!")
-        return redirect('inicio')
+        messages.success(request, "Conta excluida com sucesso!")
+        return redirect('home')
     
-    return render(request, 'deletar.html')
+    return render(request, 'perfil_usuario.html', {'usuario':usuario, 'modo': 'deletar'})
