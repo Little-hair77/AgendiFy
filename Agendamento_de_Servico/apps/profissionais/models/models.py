@@ -12,7 +12,6 @@ class Profissional(models.Model):
         related_name='profissionais'
     )
 
-    # Profissional para atender vários serviços
     servicos = models.ManyToManyField(
         Servico,
         related_name='profissionais',

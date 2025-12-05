@@ -1,5 +1,5 @@
 from django import forms
-from .models.models import Profissional
+from .models import Profissional
 
 class ProfissionalForm(forms.ModelForm):
     class Meta:

@@ -88,6 +88,7 @@
         border: 1px solid #e2e8f0;
         color: #718096;
         background: white;
+        text-decoration: none; /* Garante que não tenha sublinhado */
     }
     .btn-icon:hover {
         background-color: #f0f4ff;
@@ -159,12 +160,18 @@
 
                 <!-- Ações -->
                 <div class="pro-actions">
-                    <a href="{% url 'editar_profissional' profissional.id %}" class="btn-icon" title="Editar">
+                    <!-- NOVO BOTÃO: Ver Perfil -->
+                    <a href="{% url 'detalhes_profissional' profissional.pk %}" class="btn-icon" title="Ver Perfil">
+                        <i class="bi bi-eye-fill"></i>
+                    </a>
+
+                    <!-- Editar -->
+                    <a href="{% url 'editar_profissional' profissional.pk %}" class="btn-icon" title="Editar">
                         <i class="bi bi-pencil-fill"></i>
                     </a>
-                    <!-- Ação de excluir -->
-                    <!-- Lembre-se de criar a view e rota 'deletar_profissional' -->
-                    <a href="{% url 'deletar_profissional' profissional.id %}" class="btn-icon delete" title="Excluir">
+                    
+                    <!-- Excluir -->
+                    <a href="{% url 'deletar_profissional' profissional.pk %}" class="btn-icon delete" title="Excluir">
                         <i class="bi bi-trash-fill"></i>
                     </a>
                 </div>

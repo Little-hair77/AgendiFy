@@ -156,7 +156,7 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="d-flex justify-content-center gap-3">
-                    <a href="{% url 'detalhe_profissional' profissional.id %}" class="btn btn-outline-secondary rounded-pill px-4 fw-bold">
+                    <a href="{% url 'detalhes_profissional' profissional.id %}" class="btn btn-outline-secondary rounded-pill px-4 fw-bold">
                         Cancelar
                     </a>
                     <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold">
