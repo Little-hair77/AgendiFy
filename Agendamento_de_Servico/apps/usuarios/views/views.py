@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import AuthenticationForm
 from ..forms import RegistroUsuarioForm, EditarUsuarioForm
 
 User = get_user_model()
@@ -14,29 +15,29 @@ def cadastrar_usuario(request):
         if form.is_valid() :
             form.save()
             messages.success(request, "Usuário registrado com sucesso! Faça login.")
-            return redirect('login_usuario')
+            return redirect('login')
         else:
             messages.error(request, "Erro ao registrar usuário. Verifique os campos.")
     else:
         form = RegistroUsuarioForm()
     
-    return render(request, 'templates/registrar.html', {'form': form})
+    return render(request, 'cadastrar_usuario.html', {'form': form})
 
 def login_usuario(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
-        senha = request.POST.get('senha')
-
-        user = authenticate(request, username=email, password=senha)
-
-        if user is not None:
+        form = AuthenticationForm(request, data=request.POST)
+        
+        if form.is_valid():
+            user = form.get_user()
             login(request, user)
             messages.success(request, f"Bem-vindo, {user.first_name}!")
-            return redirect('inicio')
+            return redirect('home') 
         else:
-            messages.error(request, "E-mail ou senha inválidos.")
-        
-    return render(request, 'login.html')
+            messages.error(request, "Usuário ou senha inválidos.")
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'login.html', {'form': form})
 
 def logout_usuario(request):
     logout(request)

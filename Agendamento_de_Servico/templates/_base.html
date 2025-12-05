@@ -17,15 +17,14 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Bootstrap CSS (Via CDN para garantir funcionamento se não tiver local) -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- CSS Personalizado -->
-    <!-- Se você já tiver o styles.css, mantenha. Adicionei estilos inline de fallback para garantir o visual -->
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
 
     <style>
-        /* Estilos globais essenciais caso o css externo falhe */
+        /* Estilos globais */
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         
         .text-gradient {
@@ -40,30 +39,43 @@
             color: white;
             border: none;
             transition: opacity 0.2s;
+            font-size: 0.85rem;
         }
         .btn-brand:hover { color: white; opacity: 0.9; }
 
+        /* === NAV LINKS (FONTE MENOR E ALINHADA) === */
         .navbar-nav .nav-link {
             font-weight: 600;
             color: #4a5568;
-            margin-right: 10px;
+            margin-left: 15px;
+            transition: color 0.2s;
+            font-size: 0.85rem; /* Fonte reduzida conforme solicitado */
+            letter-spacing: 0.3px;
+            text-transform: uppercase; /* Opcional: Deixa mais clean em tamanho pequeno */
         }
         .navbar-nav .nav-link:hover { color: #a617ff; }
         .navbar-nav .nav-link.active { color: #004aad; }
 
-        /* Avatar pequeno no menu */
+        /* Link Admin Destaque */
+        .nav-link-admin {
+            color: #d63384 !important;
+        }
+
+        /* Avatar */
         .nav-avatar {
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
             color: #a617ff;
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
             margin-right: 8px;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -73,7 +85,7 @@
 
         <!-- NAVBAR -->
         <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm sticky-top">
-            <div class="container px-5">
+            <div class="container-fluid px-5"> <!-- container-fluid espalha mais -->
 
                 <!-- Logo -->
                 <a class="navbar-brand fw-bolder fs-4" href="{% url 'home' %}">
@@ -86,51 +98,69 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- ms-auto = Margin Start Auto (Empurra para a direita) -->
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
 
-                        <!-- === LINKS COMUNS (Sempre visíveis ou Home) === -->
+                        <!-- Link Home -->
                         <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
 
                         {% if user.is_authenticated %}
                             
-                            <!-- LOGICA: PESSOA FÍSICA (Cliente) -->
-                            {% if user.tipo_pessoa == 'F' %}
+                            <!-- === 1. SUPERUSER (ADMIN) === -->
+                            {% if user.is_superuser %}
+                                <li class="nav-item">
+                                    <!-- Link para o painel administrativo do Django -->
+                                    <a class="nav-link nav-link-admin" href="/admin" target="_blank">
+                                        <i class="bi bi-gear-fill me-1"></i> Cadastros (Admin)
+                                    </a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'listar_servicos' %}">Gerenciar Serviços</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'listar_empresas' %}">Empresas</a></li>
+                            
+                            <!-- === 2. PESSOA JURÍDICA (EMPRESA) === -->
+                            {% elif user.tipo_pessoa == 'J' %}
+                                <li class="nav-item"><a class="nav-link" href="#">Meus Serviços</a></li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-primary" href="{% url 'cadastrar_servico' %}">
+                                        Cadastrar Serviço
+                                    </a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link" href="#">Minha Agenda</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
+
+                            <!-- === 3. PESSOA FÍSICA (CLIENTE) === -->
+                            {% else %}
                                 <li class="nav-item"><a class="nav-link" href="{% url 'listar_servicos' %}">Serviços</a></li>
                                 <li class="nav-item"><a class="nav-link" href="{% url 'listar_empresas' %}">Empresas</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#">Meus Agendamentos</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
-                            
-                            <!-- LOGICA: PESSOA JURÍDICA (Empresa) -->
-                            {% elif user.tipo_pessoa == 'J' %}
-                                <li class="nav-item"><a class="nav-link" href="#">Meus Serviços</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'cadastrar_servico' %}">Cadastrar Serviço</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#">Agenda</a></li> <!-- Agendamentos recebidos -->
-                                <li class="nav-item"><a class="nav-link" href="{% url 'listar_empresas' %}">Empresas</a></li> <!-- Caso queira ver concorrentes -->
-                                <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
                             {% endif %}
 
-                            <!-- MENU DO USUÁRIO (Dropdown com Nome + Sair) -->
-                            <li class="nav-item dropdown ms-3">
-                                <a class="nav-link dropdown-toggle d-flex align-items-center border rounded-pill px-3 py-1 mt-2 mt-lg-0" 
-                                   id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <!-- Avatarzinho com a inicial -->
+                            <!-- === DROPDOWN USUÁRIO === -->
+                            <li class="nav-item dropdown ms-lg-4">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center border rounded-pill px-3 py-1 mt-2 mt-lg-0 bg-light" 
+                                   id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                   style="font-size: 0.8rem;">
+                                    
                                     <div class="nav-avatar">
                                         {{ user.first_name|slice:":1"|default:user.username|slice:":1"|upper }}
                                     </div>
-                                    <span class="small text-dark">Olá, {{ user.first_name|default:user.username }}</span>
+                                    <span class="fw-bold text-dark">
+                                        {{ user.first_name|default:user.username }}
+                                    </span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow" aria-labelledby="navbarDropdownUser">
+                                
+                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg mt-2" aria-labelledby="navbarDropdownUser" style="border-radius: 12px;">
                                     <li>
-                                        <a class="dropdown-item" href="{% url 'perfil_usuario' %}">
-                                            <i class="bi bi-person me-2"></i> Meu Perfil
+                                        <a class="dropdown-item py-2 small" href="{% url 'perfil_usuario' %}">
+                                            <i class="bi bi-person me-2 text-primary"></i> Meu Perfil
                                         </a>
                                     </li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li>
-                                        <!-- Form de logout para segurança (POST) ou link simples se configurado GET -->
                                         <form action="{% url 'logout' %}" method="post" class="d-inline">
                                             {% csrf_token %}
-                                            <button type="submit" class="dropdown-item text-danger">
+                                            <button type="submit" class="dropdown-item py-2 text-danger small fw-bold">
                                                 <i class="bi bi-box-arrow-right me-2"></i> Sair
                                             </button>
                                         </form>
@@ -140,13 +170,15 @@
 
                         {% else %}
 
-                            <!-- VISITANTE (Não logado) -->
+                            <!-- === VISITANTE === -->
                             <li class="nav-item"><a class="nav-link" href="{% url 'listar_servicos' %}">Serviços</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'listar_empresas' %}">Empresas</a></li>
                             <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
                             
                             <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                                <a class="btn btn-brand rounded-pill px-4" href="{% url 'login' %}">Login</a>
+                                <a class="btn btn-brand rounded-pill px-4 fw-bold shadow-sm" href="{% url 'login' %}">
+                                    Entrar
+                                </a>
                             </li>
 
                         {% endif %}
@@ -156,7 +188,7 @@
             </div>
         </nav>
 
-        <!-- CONTEÚDO DAS PÁGINAS -->
+        <!-- CONTEÚDO -->
         {% block content %}
         {% endblock %}
 
@@ -168,11 +200,8 @@
             <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                 <div class="col-auto"><div class="small m-0 text-muted">© AgendiFy 2025</div></div>
                 <div class="col-auto">
-                    <a class="link-dark small text-decoration-none" href="#!">Privacidade</a>
-                    <span class="text-white mx-1">&middot;</span>
-                    <a class="link-dark small text-decoration-none" href="#!">Termos</a>
-                    <span class="text-white mx-1">&middot;</span>
-                    <a class="link-dark small text-decoration-none" href="#!">Contato</a>
+                    <a class="link-dark small text-decoration-none mx-2" href="#!">Privacidade</a>
+                    <a class="link-dark small text-decoration-none mx-2" href="#!">Termos</a>
                 </div>
             </div>
         </div>
@@ -180,6 +209,7 @@
 
     <!-- JS Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'js/scripts.js' %}"></script>
+    {% block scripts %}
+    {% endblock %}
 </body>
 </html>

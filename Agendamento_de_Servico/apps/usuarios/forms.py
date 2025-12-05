@@ -10,6 +10,28 @@ class RegistroUsuarioForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'email', 'telefone', 'senha', 'confirmar_senha']
+        widgets = {
+            'first_name': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Ex: João da Silva'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'seu@email.com'
+            }),
+            'telefone': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': '(00) 00000-0000'
+            }),
+            'senha': forms.PasswordInput(attrs={
+                'class': 'form-control', 
+                'placeholder': '••••••••'
+            }),
+            'confirmar_senha': forms.PasswordInput(attrs={
+                'class': 'form-control', 
+                'placeholder': '••••••••'
+            }),
+        }
 
     def clean(self):
         cleaned_data = super().clean()

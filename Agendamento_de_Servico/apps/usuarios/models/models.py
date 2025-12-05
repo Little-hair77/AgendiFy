@@ -1,10 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from ..managers import UsuarioManager
 
-# Create your models here.
+
 class Usuario(AbstractUser):
 
-    TIPO_PESSOA_CHOICES=[
+    # REMOVER username
+    username = None
+
+    # EMAIL vira o campo de login
+    email = models.EmailField(unique=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []   
+
+    objects = UsuarioManager()
+
+    TIPO_PESSOA_CHOICES = [
         ('F', 'Pessoa Física'),
         ('J', 'Pessoa Jurídica'),
     ]
@@ -16,11 +28,11 @@ class Usuario(AbstractUser):
     cpf = models.CharField(max_length=14, blank=True, null=True)
     cnpj = models.CharField(max_length=18, blank=True, null=True)
 
+    def __str__(self):
+        if self.tipo_pessoa == 'F':
+            return self.nome_completo or self.email
+        return f"{self.email} (PJ)"
+
     @property
     def nome_completo(self):
         return f"{self.first_name} {self.last_name}".strip()
-    
-    def __str__(self):
-        if self.tipo_pessoa == 'F':
-            return self.nome_completo or self.username
-        return f"{self.username} (PJ)"

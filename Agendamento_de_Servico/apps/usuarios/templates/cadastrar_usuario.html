@@ -1,0 +1,193 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* Fundo Aurora (Lilás -> Azul Suave) - Igual ao Login Clean */
+    .register-wrapper {
+        min-height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
+        padding: 40px 0; /* Espaço extra para mobile */
+    }
+
+    /* O cartão branco */
+    .register-card {
+        background-color: #ffffff;
+        padding: 3rem;
+        border-radius: 20px;
+        /* Sombra levemente roxa */
+        box-shadow: 0 20px 50px rgba(0, 74, 173, 0.1); 
+        width: 100%;
+        max-width: 500px; /* Um pouco mais largo que o login */
+        border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .register-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .register-header h2 {
+        color: #004aad;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Botão Cadastrar (Degradê Forte) */
+    .btn-register {
+        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+        border: none;
+        color: white;
+        width: 100%;
+        padding: 12px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-top: 10px;
+    }
+
+    .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(166, 23, 255, 0.25);
+        color: white;
+        opacity: 0.95;
+    }
+
+    /* Estilização dos Labels e Inputs */
+    .form-label {
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 12px 15px;
+        border: 1px solid #e2e8f0;
+        background-color: #fcfcfc;
+        font-size: 0.95rem;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus {
+        background-color: #fff;
+        border-color: #a617ff;
+        box-shadow: 0 0 0 4px rgba(166, 23, 255, 0.1);
+        outline: none;
+    }
+
+    /* Ícones dentro dos labels */
+    .label-icon {
+        color: #a617ff;
+        margin-right: 5px;
+    }
+
+    /* Link de Login */
+    .login-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: #64748b;
+    }
+    
+    .login-link a {
+        color: #a617ff;
+        font-weight: 700;
+        text-decoration: none;
+    }
+    .login-link a:hover {
+        text-decoration: underline;
+        color: #004aad;
+    }
+</style>
+
+<div class="register-wrapper">
+    <div class="register-card">
+        
+        <div class="register-header">
+            <h2>Crie sua conta</h2>
+            <p class="text-muted">Junte-se ao AgendiFy em segundos.</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Renderização Manual para controle total do layout -->
+            
+            <!-- Nome -->
+            <div class="mb-3">
+                <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                    <i class="bi bi-person label-icon"></i> Nome Completo
+                </label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                    <div class="text-danger small mt-1">{{ form.first_name.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="{{ form.email.id_for_label }}" class="form-label">
+                    <i class="bi bi-envelope label-icon"></i> E-mail
+                </label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Telefone -->
+            <div class="mb-3">
+                <label for="{{ form.telefone.id_for_label }}" class="form-label">
+                    <i class="bi bi-telephone label-icon"></i> Telefone / Celular
+                </label>
+                {{ form.telefone }}
+                {% if form.telefone.errors %}
+                    <div class="text-danger small mt-1">{{ form.telefone.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="row">
+                <!-- Senha -->
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.senha.id_for_label }}" class="form-label">
+                        <i class="bi bi-lock label-icon"></i> Senha
+                    </label>
+                    {{ form.senha }}
+                    {% if form.senha.errors %}
+                        <div class="text-danger small mt-1">{{ form.senha.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Confirmar Senha -->
+                <div class="col-md-6 mb-4">
+                    <label for="{{ form.confirmar_senha.id_for_label }}" class="form-label">
+                        <i class="bi bi-shield-lock label-icon"></i> Confirmar
+                    </label>
+                    {{ form.confirmar_senha }}
+                    {% if form.confirmar_senha.errors %}
+                        <div class="text-danger small mt-1">{{ form.confirmar_senha.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-register">
+                Finalizar Cadastro
+            </button>
+        </form>
+
+        <div class="login-link">
+            Já tem uma conta? <a href="{% url 'login' %}">Fazer Login</a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
