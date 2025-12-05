@@ -1,12 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from ..models import Profissional        
 from ..forms import ProfissionalForm
+from apps.empresas.models import Empresa
 
 
 def listar_profissionais(request):
     profissionais = Profissional.objects.all()
     return render(request, 'listar_profissionais.html', {'profissionais': profissionais})
 
+def listar_profissionais_por_empresa(request, empresa_id):
+    empresa = get_object_or_404(Empresa, id=empresa_id)
+    profissionais = Profissional.objects.filter(empresa=empresa)
+
+    return render(request, 'listar_profissionais.html', {
+        'profissionais': profissionais,
+        'empresa': empresa
+    })
 
 def cadastrar_profissional(request):
     if request.method == 'POST':

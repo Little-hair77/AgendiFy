@@ -140,7 +140,7 @@
     <div class="container">
         
         <a href="{% url 'listar_profissionais' %}" class="btn-back">
-            <i class="bi bi-arrow-left me-2"></i> Voltar para Equipe
+            <i class="bi bi-arrow-left me-2"></i> Voltar
         </a>
 
         <!-- === 1. BLOCO DE DECISÃO: DELETAR === -->
@@ -209,14 +209,16 @@
                             </div>
 
                             <!-- Botões de Ação (Topo) -->
-                            <div class="pb-3 d-flex gap-2">
-                                <a href="{% url 'editar_profissional' profissional.id %}" class="btn btn-outline-primary rounded-pill px-4 fw-bold">
-                                    <i class="bi bi-pencil me-2"></i> Editar
-                                </a>
-                                <a href="{% url 'deletar_profissional' profissional.id %}" class="btn btn-outline-danger rounded-pill px-4 fw-bold">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </div>
+                             {% if request.user.is_superuser %}
+                                <div class="pb-3 d-flex gap-2">
+                                    <a href="{% url 'editar_profissional' profissional.id %}" class="btn btn-outline-primary rounded-pill px-4 fw-bold">
+                                        <i class="bi bi-pencil me-2"></i> Editar
+                                    </a>
+                                    <a href="{% url 'deletar_profissional' profissional.id %}" class="btn btn-outline-danger rounded-pill px-4 fw-bold">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            {% endif %}
                         </div>
 
                         <hr class="my-5">

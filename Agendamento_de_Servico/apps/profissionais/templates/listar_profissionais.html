@@ -4,10 +4,8 @@
 {% block content %}
 
 <style>
-    /* Fundo Clean */
     body { background-color: #f8f9fa; }
 
-    /* Cabeçalho da Seção */
     .section-header {
         display: flex;
         justify-content: space-between;
@@ -15,7 +13,6 @@
         margin-bottom: 40px;
     }
 
-    /* Cartão do Profissional */
     .pro-card {
         background: #ffffff;
         border: 1px solid #edf2f7;
@@ -33,7 +30,6 @@
         border-color: #e2c2ff;
     }
 
-    /* Avatar com Iniciais */
     .pro-avatar {
         width: 80px;
         height: 80px;
@@ -50,15 +46,10 @@
         box-shadow: 0 5px 15px rgba(166, 23, 255, 0.1);
     }
 
-    /* Status Badge (Ponto colorido) */
-    .status-dot {
-        width: 12px; height: 12px; border-radius: 50%;
-        display: inline-block; margin-right: 5px;
-    }
+    .status-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 5px; }
     .status-active { background-color: #25d366; box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.2); }
     .status-inactive { background-color: #cbd5e0; }
 
-    /* Badge de Serviço */
     .service-badge {
         font-size: 0.75rem;
         background-color: #f7fafc;
@@ -70,7 +61,6 @@
         display: inline-block;
     }
 
-    /* Botões de Ação (Aparecem no hover ou fixos) */
     .pro-actions {
         margin-top: 20px;
         padding-top: 20px;
@@ -88,18 +78,10 @@
         border: 1px solid #e2e8f0;
         color: #718096;
         background: white;
-        text-decoration: none; /* Garante que não tenha sublinhado */
+        text-decoration: none;
     }
-    .btn-icon:hover {
-        background-color: #f0f4ff;
-        color: #004aad;
-        border-color: #004aad;
-    }
-    .btn-icon.delete:hover {
-        background-color: #fff5f5;
-        color: #e53e3e;
-        border-color: #e53e3e;
-    }
+    .btn-icon:hover { background-color: #f0f4ff; color: #004aad; border-color: #004aad; }
+    .btn-icon.delete:hover { background-color: #fff5f5; color: #e53e3e; border-color: #e53e3e; }
 </style>
 
 <div class="container py-5">
@@ -110,25 +92,24 @@
             <h2 class="fw-bold text-dark">Minha Equipe</h2>
             <p class="text-muted mb-0">Gerencie os profissionais da sua empresa.</p>
         </div>
-        
-        <!-- Botão Novo (Só para PJ) -->
+
+        {% if request.user.is_superuser %}
         <a href="{% url 'cadastrar_profissional' %}" class="btn btn-brand rounded-pill px-4 py-2 fw-bold shadow-sm">
             <i class="bi bi-person-plus-fill me-2"></i> Novo Profissional
         </a>
+        {% endif %}
     </div>
 
-    <!-- Grid de Profissionais -->
+    <!-- Grid -->
     <div class="row g-4">
         {% for profissional in profissionais %}
         <div class="col-md-6 col-lg-3">
             <div class="pro-card">
-                
-                <!-- Avatar -->
+
                 <div class="pro-avatar">
                     {{ profissional.nome|slice:":1"|upper }}
                 </div>
 
-                <!-- Nome e Status -->
                 <h5 class="fw-bold text-dark mb-1">{{ profissional.nome }}</h5>
                 <p class="text-muted small mb-2">{{ profissional.cargo|default:"Cargo não definido" }}</p>
                 
@@ -144,7 +125,6 @@
                     {% endif %}
                 </div>
 
-                <!-- Serviços (Lista limitada) -->
                 <div class="mb-3" style="min-height: 50px;">
                     <small class="text-uppercase text-muted fw-bold d-block mb-2" style="font-size: 0.7rem;">Serviços:</small>
                     {% for servico in profissional.servicos.all|slice:":3" %}
@@ -152,43 +132,39 @@
                     {% empty %}
                         <small class="text-muted fst-italic">Nenhum serviço vinculado.</small>
                     {% endfor %}
-                    
                     {% if profissional.servicos.count > 3 %}
                         <span class="service-badge">+{{ profissional.servicos.count|add:"-3" }}</span>
                     {% endif %}
                 </div>
 
-                <!-- Ações -->
                 <div class="pro-actions">
-                    <!-- NOVO BOTÃO: Ver Perfil -->
+
+                    <!-- Ver Perfil -->
                     <a href="{% url 'detalhes_profissional' profissional.pk %}" class="btn-icon" title="Ver Perfil">
                         <i class="bi bi-eye-fill"></i>
                     </a>
 
+                    {% if request.user.is_superuser %}
                     <!-- Editar -->
                     <a href="{% url 'editar_profissional' profissional.pk %}" class="btn-icon" title="Editar">
                         <i class="bi bi-pencil-fill"></i>
                     </a>
-                    
+
                     <!-- Excluir -->
                     <a href="{% url 'deletar_profissional' profissional.pk %}" class="btn-icon delete" title="Excluir">
                         <i class="bi bi-trash-fill"></i>
                     </a>
+                    {% endif %}
                 </div>
 
             </div>
         </div>
         {% empty %}
-        <!-- Estado Vazio -->
         <div class="col-12 text-center py-5">
-            <div style="width: 80px; height: 80px; background: #f8f9fa; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                <i class="bi bi-people text-muted" style="font-size: 2rem;"></i>
-            </div>
-            <h4 class="fw-bold text-muted">Nenhum profissional na equipe.</h4>
-            <p class="text-muted mb-4">Comece adicionando quem trabalha com você.</p>
-            <a href="{% url 'cadastrar_profissional' %}" class="btn btn-outline-primary rounded-pill px-4">
-                Adicionar Primeiro Profissional
-            </a>
+            <h4 class="fw-bold text-muted">Nenhum profissional encontrado.</h4>
+            {% if request.user.is_superuser %}
+            <a href="{% url 'cadastrar_profissional' %}" class="btn btn-outline-primary rounded-pill px-4">Adicionar Profissional</a>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
