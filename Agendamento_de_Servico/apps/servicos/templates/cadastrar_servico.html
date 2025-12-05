@@ -4,215 +4,245 @@
 {% block content %}
 
 <style>
-    /* Fundo Aurora (Lilás -> Azul Suave) - Igual ao Login Clean */
-    .register-wrapper {
-        min-height: 100vh;
-        width: 100%;
+    /* Fundo Clean */
+    body {
+        background-color: #f8f9fa;
+    }
+
+    /* Container Central */
+    .form-wrapper {
+        min-height: 85vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
-        padding: 40px 0; /* Espaço extra para mobile */
+        padding: 40px 0;
     }
 
-    /* O cartão branco */
-    .register-card {
-        background-color: #ffffff;
-        padding: 3rem;
-        border-radius: 20px;
-        /* Sombra levemente roxa */
-        box-shadow: 0 20px 50px rgba(0, 74, 173, 0.1); 
-        width: 100%;
-        max-width: 500px; /* Um pouco mais largo que o login */
-        border: 1px solid rgba(255, 255, 255, 0.6);
-    }
-
-    .register-header {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    .register-header h2 {
-        color: #004aad;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-    }
-
-    /* Botão Cadastrar (Degradê Forte) */
-    .btn-register {
-        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+    /* Cartão do Formulário */
+    .service-form-card {
+        background: #ffffff;
         border: none;
-        color: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 74, 173, 0.08);
+        padding: 45px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Barra decorativa no topo */
+    .service-form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        padding: 12px;
-        border-radius: 50px;
-        font-weight: 700;
-        font-size: 1.05rem;
-        transition: transform 0.2s, box-shadow 0.2s;
-        margin-top: 10px;
+        height: 6px;
+        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
     }
 
-    .btn-register:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(166, 23, 255, 0.25);
-        color: white;
-        opacity: 0.95;
+    /* Ícone Flutuante */
+    .form-header-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        color: #a617ff;
+        font-size: 1.8rem;
     }
 
-    /* Estilização dos Labels e Inputs */
+    /* Estilização dos Labels */
     .form-label {
-        font-weight: 600;
+        font-weight: 700;
         color: #4a5568;
+        margin-bottom: 8px;
         font-size: 0.9rem;
-        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    .form-control {
-        border-radius: 10px;
-        padding: 12px 15px;
+    /* Inputs */
+    .form-control, .form-select {
+        border-radius: 12px;
         border: 1px solid #e2e8f0;
+        padding: 12px 15px;
+        font-size: 1rem;
         background-color: #fcfcfc;
-        font-size: 0.95rem;
         transition: all 0.3s;
     }
 
-    .form-control:focus {
+    .form-control:focus, .form-select:focus {
         background-color: #fff;
         border-color: #a617ff;
         box-shadow: 0 0 0 4px rgba(166, 23, 255, 0.1);
         outline: none;
     }
 
-    /* Ícones dentro dos labels */
-    .label-icon {
-        color: #a617ff;
-        margin-right: 5px;
-    }
-
-    /* Link de Login */
-    .login-link {
-        text-align: center;
-        margin-top: 1.5rem;
-        font-size: 0.9rem;
+    /* Input Group (Preço) */
+    .input-group-text {
+        background-color: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-right: none;
+        border-radius: 10px 0 0 10px;
         color: #64748b;
+        font-weight: 600;
     }
     
-    .login-link a {
-        color: #a617ff;
+    .input-group .form-control {
+        border-radius: 0 10px 10px 0;
+        border-left: none;
+    }
+
+    /* Botão Salvar */
+    .btn-save {
+        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+        border: none;
+        color: white;
         font-weight: 700;
+        padding: 14px 30px;
+        border-radius: 50px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        width: 100%;
+        font-size: 1.05rem;
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(166, 23, 255, 0.2);
+        color: white;
+    }
+
+    /* Botão Cancelar */
+    .btn-cancel {
+        color: #718096;
+        font-weight: 600;
+        background: transparent;
+        border: 2px solid #edf2f7;
+        padding: 12px 30px;
+        border-radius: 50px;
+        transition: all 0.2s;
+        width: 100%;
+        display: inline-block;
+        text-align: center;
         text-decoration: none;
     }
-    .login-link a:hover {
-        text-decoration: underline;
-        color: #004aad;
+
+    .btn-cancel:hover {
+        background-color: #edf2f7;
+        color: #2d3748;
     }
 </style>
 
-<div class="register-wrapper">
-    <div class="register-card">
-        
-        <div class="register-header">
-            <!-- 1. Título Condicional (Agora usando 'modo') -->
-            {% if modo == 'editar' %}
-                <h2>Editar Perfil</h2>
-                <p class="text-muted">Atualize suas informações pessoais.</p>
-            {% else %}
-                <h2>Crie sua conta</h2>
-                <p class="text-muted">Junte-se ao AgendiFy em segundos.</p>
-            {% endif %}
+<div class="form-wrapper">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                
+                <div class="service-form-card">
+                    
+                    <!-- Ícone Decorativo (Muda conforme o modo) -->
+                    <div class="d-flex justify-content-center">
+                        <div class="form-header-icon">
+                            {% if modo == 'editar' %}
+                                <i class="bi bi-pencil-square"></i>
+                            {% else %}
+                                <i class="bi bi-briefcase-fill"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Título Dinâmico -->
+                    <div class="text-center mb-5">
+                        {% if modo == 'editar' %}
+                            <h2 class="fw-bold mb-2 text-dark">Editar Serviço</h2>
+                            <p class="text-muted">Atualize as informações deste serviço.</p>
+                        {% else %}
+                            <h2 class="fw-bold mb-2 text-dark">Novo Serviço</h2>
+                            <p class="text-muted">Preencha os dados para adicionar ao seu portfólio.</p>
+                        {% endif %}
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <!-- Empresa Responsável -->
+                        <div class="mb-4">
+                            <label for="{{ form.empresa.id_for_label }}" class="form-label">
+                                <i class="bi bi-building me-1 text-primary"></i> Empresa responsável
+                            </label>
+                            {{ form.empresa }}
+                            {% if form.empresa.errors %}
+                                <div class="text-danger small mt-1">{{ form.empresa.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <!-- Nome do Serviço -->
+                        <div class="mb-4">
+                            <label for="{{ form.nome.id_for_label }}" class="form-label">
+                                <i class="bi bi-tag me-1 text-primary"></i> Nome do Serviço
+                            </label>
+                            {{ form.nome }}
+                            {% if form.nome.errors %}
+                                <div class="text-danger small mt-1">{{ form.nome.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Preço -->
+                        <div class="mb-4">
+                            <label for="{{ form.preco.id_for_label }}" class="form-label">
+                                <i class="bi bi-currency-dollar me-1 text-primary"></i> Valor (R$)
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                {{ form.preco }}
+                            </div>
+                            {% if form.preco.errors %}
+                                <div class="text-danger small mt-1">{{ form.preco.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Descrição -->
+                        <div class="mb-4">
+                            <label for="{{ form.descricao.id_for_label }}" class="form-label">
+                                <i class="bi bi-file-text me-1 text-primary"></i> Descrição Detalhada
+                            </label>
+                            {{ form.descricao }}
+                            <div class="form-text small text-muted">Descreva o que está incluso.</div>
+                        </div>
+
+                        <!-- Tags (Select Multiple) -->
+                        <div class="mb-5">
+                            <label for="{{ form.tags.id_for_label }}" class="form-label">
+                                <i class="bi bi-bookmarks me-1 text-primary"></i> Tags / Categorias
+                            </label>
+                            {{ form.tags }}
+                            <div class="form-text small text-muted">
+                                Segure "Ctrl" (ou Cmd) para selecionar múltiplas categorias.
+                            </div>
+                        </div>
+
+                        <!-- Botões de Ação -->
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <a href="{% url 'listar_servicos' %}" class="btn-cancel">Cancelar</a>
+                            </div>
+                            <div class="col-6">
+                                <button type="submit" class="btn-save">
+                                    {% if modo == 'editar' %}
+                                        Salvar Alterações
+                                    {% else %}
+                                        Cadastrar Serviço
+                                    {% endif %}
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
         </div>
-
-        <form method="post">
-            {% csrf_token %}
-            
-            <!-- Renderização Manual para controle total do layout -->
-            
-            <!-- Nome -->
-            <div class="mb-3">
-                <label for="{{ form.first_name.id_for_label }}" class="form-label">
-                    <i class="bi bi-person label-icon"></i> Nome Completo
-                </label>
-                {{ form.first_name }}
-                {% if form.first_name.errors %}
-                    <div class="text-danger small mt-1">{{ form.first_name.errors.0 }}</div>
-                {% endif %}
-            </div>
-
-            <!-- Email -->
-            <div class="mb-3">
-                <label for="{{ form.email.id_for_label }}" class="form-label">
-                    <i class="bi bi-envelope label-icon"></i> E-mail
-                </label>
-                {{ form.email }}
-                {% if form.email.errors %}
-                    <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
-                {% endif %}
-            </div>
-
-            <!-- Telefone -->
-            <div class="mb-3">
-                <label for="{{ form.telefone.id_for_label }}" class="form-label">
-                    <i class="bi bi-telephone label-icon"></i> Telefone / Celular
-                </label>
-                {{ form.telefone }}
-                {% if form.telefone.errors %}
-                    <div class="text-danger small mt-1">{{ form.telefone.errors.0 }}</div>
-                {% endif %}
-            </div>
-
-            <!-- 2. Campos de Senha (Só aparecem no Cadastro) -->
-            {% if modo != 'editar' %}
-            <div class="row">
-                <!-- Senha -->
-                <div class="col-md-6 mb-3">
-                    <label for="{{ form.senha.id_for_label }}" class="form-label">
-                        <i class="bi bi-lock label-icon"></i> Senha
-                    </label>
-                    {{ form.senha }}
-                    {% if form.senha.errors %}
-                        <div class="text-danger small mt-1">{{ form.senha.errors.0 }}</div>
-                    {% endif %}
-                </div>
-
-                <!-- Confirmar Senha -->
-                <div class="col-md-6 mb-4">
-                    <label for="{{ form.confirmar_senha.id_for_label }}" class="form-label">
-                        <i class="bi bi-shield-lock label-icon"></i> Confirmar
-                    </label>
-                    {{ form.confirmar_senha }}
-                    {% if form.confirmar_senha.errors %}
-                        <div class="text-danger small mt-1">{{ form.confirmar_senha.errors.0 }}</div>
-                    {% endif %}
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- 3. Texto do Botão Condicional -->
-            <button type="submit" class="btn btn-register">
-                {% if modo == 'editar' %}
-                    Salvar Alterações
-                {% else %}
-                    Finalizar Cadastro
-                {% endif %}
-            </button>
-
-            <!-- Botão Cancelar se estiver editando -->
-            {% if modo == 'editar' %}
-                <div class="text-center mt-3">
-                    <a href="{% url 'perfil_usuario' %}" class="text-decoration-none text-muted fw-bold small">
-                        Cancelar
-                    </a>
-                </div>
-            {% endif %}
-        </form>
-
-        <!-- 4. Link de Login (Só aparece no Cadastro) -->
-        {% if modo != 'editar' %}
-        <div class="login-link">
-            Já tem uma conta? <a href="{% url 'login' %}">Fazer Login</a>
-        </div>
-        {% endif %}
-
     </div>
 </div>
 

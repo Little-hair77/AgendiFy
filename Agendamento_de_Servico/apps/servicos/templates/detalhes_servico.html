@@ -4,211 +4,152 @@
 {% block content %}
 
 <style>
-    /* Fundo Aurora (Lilás -> Azul Suave) - Igual ao Login Clean */
-    .register-wrapper {
-        min-height: 100vh;
-        width: 100%;
+    .page-wrapper {
+        min-height: 90vh;
         display: flex;
         justify-content: center;
         align-items: center;
         background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
-        padding: 40px 0; /* Espaço extra para mobile */
+        padding: 40px 0;
     }
 
-    /* O cartão branco */
-    .register-card {
-        background-color: #ffffff;
-        padding: 3rem;
+    .service-card {
+        background: #ffffff;
+        padding: 2.8rem;
         border-radius: 20px;
-        /* Sombra levemente roxa */
-        box-shadow: 0 20px 50px rgba(0, 74, 173, 0.1); 
         width: 100%;
-        max-width: 500px; /* Um pouco mais largo que o login */
-        border: 1px solid rgba(255, 255, 255, 0.6);
+        max-width: 600px;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.5);
     }
 
-    .register-header {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    .register-header h2 {
-        color: #004aad;
+    .service-title {
         font-weight: 800;
-        margin-bottom: 0.5rem;
+        color: #004aad;
+        margin-bottom: .3rem;
     }
 
-    /* Botão Cadastrar (Degradê Forte) */
-    .btn-register {
+    .badge-tag {
+        background: #e8d4ff;
+        color: #7a22c6;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        border-radius: 50px;
+        margin-right: 6px;
+    }
+
+    .btn-primary-gradient {
         background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
-        border: none;
         color: white;
-        width: 100%;
-        padding: 12px;
+        padding: 12px 25px;
         border-radius: 50px;
         font-weight: 700;
-        font-size: 1.05rem;
-        transition: transform 0.2s, box-shadow 0.2s;
-        margin-top: 10px;
+        width: 100%;
+        border: none;
+        transition: 0.2s ease;
     }
 
-    .btn-register:hover {
+    .btn-primary-gradient:hover {
+        opacity: 0.9;
         transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(166, 23, 255, 0.25);
-        color: white;
-        opacity: 0.95;
     }
 
-    /* Estilização dos Labels e Inputs */
-    .form-label {
-        font-weight: 600;
-        color: #4a5568;
-        font-size: 0.9rem;
-        margin-bottom: 6px;
-    }
-
-    .form-control {
-        border-radius: 10px;
-        padding: 12px 15px;
-        border: 1px solid #e2e8f0;
-        background-color: #fcfcfc;
-        font-size: 0.95rem;
-        transition: all 0.3s;
-    }
-
-    .form-control:focus {
-        background-color: #fff;
-        border-color: #a617ff;
-        box-shadow: 0 0 0 4px rgba(166, 23, 255, 0.1);
-        outline: none;
-    }
-
-    /* Ícones dentro dos labels */
-    .label-icon {
-        color: #a617ff;
-        margin-right: 5px;
-    }
-
-    /* Link de Login */
-    .login-link {
-        text-align: center;
-        margin-top: 1.5rem;
-        font-size: 0.9rem;
-        color: #64748b;
-    }
-    
-    .login-link a {
-        color: #a617ff;
+    .btn-danger-rounded {
+        background: #dd2b2b;
+        padding: 12px 25px;
+        border-radius: 50px;
         font-weight: 700;
-        text-decoration: none;
+        width: 100%;
+        color: white;
+        border: none;
     }
-    .login-link a:hover {
-        text-decoration: underline;
-        color: #004aad;
+
+    .btn-danger-rounded:hover {
+        opacity: 0.9;
+    }
+
+    .btn-cancel {
+        background: transparent;
+        border: 2px solid #ccc;
+        padding: 12px 25px;
+        border-radius: 50px;
+        color: #444;
+        font-weight: 600;
+        width: 100%;
+    }
+
+    .btn-cancel:hover {
+        background: #f2f2f2;
     }
 </style>
 
-<div class="register-wrapper">
-    <div class="register-card">
-        
-        <div class="register-header">
-            <!-- Título Condicional -->
-            {% if modo == 'editar' %}
-                <h2>Editar Perfil</h2>
-                <p class="text-muted">Atualize suas informações pessoais.</p>
-            {% else %}
-                <h2>Crie sua conta</h2>
-                <p class="text-muted">Junte-se ao AgendiFy em segundos.</p>
-            {% endif %}
-        </div>
 
-        <form method="post">
-            {% csrf_token %}
-            
-            <!-- Renderização Manual para controle total do layout -->
-            
-            <!-- Nome -->
-            <div class="mb-3">
-                <label for="{{ form.first_name.id_for_label }}" class="form-label">
-                    <i class="bi bi-person label-icon"></i> Nome Completo
-                </label>
-                {{ form.first_name }}
-                {% if form.first_name.errors %}
-                    <div class="text-danger small mt-1">{{ form.first_name.errors.0 }}</div>
-                {% endif %}
-            </div>
+<div class="page-wrapper">
+    <div class="service-card">
 
-            <!-- Email -->
-            <div class="mb-3">
-                <label for="{{ form.email.id_for_label }}" class="form-label">
-                    <i class="bi bi-envelope label-icon"></i> E-mail
-                </label>
-                {{ form.email }}
-                {% if form.email.errors %}
-                    <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
-                {% endif %}
-            </div>
+        {% if modo == 'deletar' %}
+            <h2 class="service-title text-danger"><i class="bi bi-trash"></i> Confirmar Exclusão</h2>
+            <p class="text-muted">
+                Tem certeza que deseja excluir o serviço <strong>{{ servico.nome }}</strong>?  
+                Essa ação não pode ser desfeita.
+            </p>
 
-            <!-- Telefone -->
-            <div class="mb-3">
-                <label for="{{ form.telefone.id_for_label }}" class="form-label">
-                    <i class="bi bi-telephone label-icon"></i> Telefone / Celular
-                </label>
-                {{ form.telefone }}
-                {% if form.telefone.errors %}
-                    <div class="text-danger small mt-1">{{ form.telefone.errors.0 }}</div>
-                {% endif %}
-            </div>
-
-            <!-- Senhas: Só aparecem se NÃO estiver editando -->
-            {% if modo != 'editar' %}
-            <div class="row">
-                <!-- Senha -->
-                <div class="col-md-6 mb-3">
-                    <label for="{{ form.senha.id_for_label }}" class="form-label">
-                        <i class="bi bi-lock label-icon"></i> Senha
-                    </label>
-                    {{ form.senha }}
-                    {% if form.senha.errors %}
-                        <div class="text-danger small mt-1">{{ form.senha.errors.0 }}</div>
-                    {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <a href="{% url 'listar_servicos' %}" class="btn-cancel text-center">Cancelar</a>
+                    </div>
+                    <div class="col-6">
+                        <button type="submit" class="btn-danger-rounded">Excluir Permanentemente</button>
+                    </div>
                 </div>
+            </form>
 
-                <!-- Confirmar Senha -->
-                <div class="col-md-6 mb-4">
-                    <label for="{{ form.confirmar_senha.id_for_label }}" class="form-label">
-                        <i class="bi bi-shield-lock label-icon"></i> Confirmar
-                    </label>
-                    {{ form.confirmar_senha }}
-                    {% if form.confirmar_senha.errors %}
-                        <div class="text-danger small mt-1">{{ form.confirmar_senha.errors.0 }}</div>
-                    {% endif %}
-                </div>
-            </div>
-            {% endif %}
+        {% else %}
+            <!-- MODO DE VISUALIZAÇÃO -->
+            <h2 class="service-title">{{ servico.nome }}</h2>
+            <p class="text-muted mb-2">
+                <i class="bi bi-building"></i> Empresa: <strong>{{ servico.empresa.nome }}</strong>
+            </p>
 
-            <!-- Botão Condicional -->
-            <button type="submit" class="btn btn-register">
-                {% if modo == 'editar' %}
-                    Salvar Alterações
-                {% else %}
-                    Finalizar Cadastro
-                {% endif %}
-            </button>
+            <h5 class="mt-4 fw-bold text-primary">Descrição</h5>
+            <p>{{ servico.descricao }}</p>
 
-            <!-- Botão Cancelar para Edição -->
-            {% if modo == 'editar' %}
-                <div class="text-center mt-3">
-                    <a href="{% url 'perfil_usuario' %}" class="text-decoration-none text-muted small">Cancelar</a>
+            <h5 class="fw-bold text-primary mt-4">Preço</h5>
+            <p class="fs-4 fw-bold">R$ {{ servico.preco }}</p>
+
+            {% if servico.tags.all %}
+                <h5 class="fw-bold text-primary mt-4">Tags</h5>
+                <div>
+                    {% for t in servico.tags.all %}
+                        <span class="badge-tag">{{ t.nome }}</span>
+                    {% endfor %}
                 </div>
             {% endif %}
-        </form>
 
-        <!-- Link de Login só no Cadastro -->
-        {% if modo != 'editar' %}
-        <div class="login-link">
-            Já tem uma conta? <a href="{% url 'login' %}">Fazer Login</a>
-        </div>
+            <div class="mt-5 row g-3">
+                
+                <!-- Botão usuário agendar -->
+                {% if request.user.is_authenticated and not request.user.is_staff %}
+                <div class="col-12">
+                    <a href="{% url 'cadastrar_agendamento' servico.id %}" class="btn-primary-gradient text-center d-block">
+                        Agendar Serviço
+                    </a>
+                </div>
+                {% endif %}
+
+                <!-- Botão admin excluir -->
+                {% if request.user.is_staff %}
+                <div class="col-12">
+                    <a href="{% url 'deletar_servico' servico.id %}" class="btn-danger-rounded text-center d-block">
+                        Excluir Serviço
+                    </a>
+                </div>
+                {% endif %}
+
+            </div>
         {% endif %}
 
     </div>

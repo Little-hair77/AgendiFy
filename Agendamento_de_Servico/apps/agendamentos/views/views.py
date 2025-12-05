@@ -8,14 +8,14 @@ from ..forms import AgendamentoForm
 @login_required
 def listar_agendamentos_usuario(request):
     agendamentos = Agendamento.objects.filter(usuario=request.user)
-    return render(request, 'listar_agedamentos.html', {'agendamentos': agendamentos})
+    return render(request, 'listar_agendamentos.html', {'agendamentos': agendamentos})
 
 @login_required
 def listar_agendamentos_empresa(request):
     agendamentos = Agendamento.objects.filter(
         servico__empresa__dono=request.user
     )
-    return render(request, 'listar_agendamentos_empresa.html', {'agendamentos': agendamentos})
+    return render(request, 'listar_agendamentos.html', {'agendamentos': agendamentos})
 
 @login_required
 def cadastrar_agendamento(request, id):
@@ -28,8 +28,10 @@ def cadastrar_agendamento(request, id):
             agendamento = form.save(commit=False)
             agendamento.usuario = request.user
             agendamento.servico = servico
+            agendamento.empresa = servico.empresa
             agendamento.save()
-            return redirect('listar_agendamentos')
+
+            return redirect('listar_agendamentos_usuario')
 
     else:
         form = AgendamentoForm()
@@ -40,14 +42,14 @@ def cadastrar_agendamento(request, id):
     })
 
 @login_required
-def editar_agendamento(request, agendamento_id):
-    agendamento = get_object_or_404(Agendamento, id=agendamento_id, usuario=request.user)
+def editar_agendamento(request, id):
+    agendamento = get_object_or_404(Agendamento, id= id, usuario=request.user)
 
     if request.method == 'POST':
         form = AgendamentoForm(request.POST, instance=agendamento)
         if form.is_valid():
             form.save()
-            return redirect('listar_agendamentos')
+            return redirect('listar_agendamentos_usuario')
     else:
         form = AgendamentoForm(instance=agendamento)
 
@@ -63,7 +65,7 @@ def deletar_agendamento(request, id):
 
     if request.method == 'POST':
         agendamento.delete()
-        return redirect('listar_agendamentos')
+        return redirect('listar_agendamentos_usuario')
 
     return render(request, 'perfil_agendamentos.html', {
         'agendamento': agendamento,

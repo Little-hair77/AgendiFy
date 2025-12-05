@@ -176,6 +176,11 @@
                         </p>
 
                         <form method="post">
+                            {% if form.errors %}
+                            <div class="alert alert-danger">
+                                {{ form.errors }}
+                            </div>
+                            {% endif %}
                             {% csrf_token %}
 
                             <!-- Campo Data e Hora -->
@@ -208,10 +213,11 @@
                                 {% endif %}
                             </button>
 
-                            <a href="{% url 'detalhe_servico' servico.id %}" class="btn-cancel">
-                                Cancelar e voltar
-                            </a>
-
+                            {% if modo == 'editar' %}
+                                <a href="{% url 'detalhes_agendamento' agendamento.id %}" class="btn-cancel">Cancelar</a>
+                            {% else %}
+                                <a href="{% url 'detalhe_servico' servico.id %}" class="btn-cancel">Cancelar e voltar</a>
+                            {% endif %}
                         </form>
                     </div>
 

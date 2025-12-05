@@ -49,18 +49,23 @@ def perfil_usuario(request):
 
 def editar_usuario(request):
     usuario = request.user
+
     if request.method == 'POST':
-        form = EditarUsuarioForm(request, instance=usuario)
+        form = EditarUsuarioForm(request.POST, instance=usuario)
         if form.is_valid():
             form.save()
-            messages.success(request, "Perfil atualizado com sucesso!")        
+            messages.success(request, "Perfil atualizado com sucesso!")
             return redirect('perfil_usuario')
         else:
             messages.error(request, "Erro ao atualizar o perfil. Verifique os dados.")
     else:
         form = EditarUsuarioForm(instance=usuario)
 
-    return render(request, 'editar.html', {'usuario' : usuario, 'modo': 'editar'})
+    return render(request, 'cadastrar_usuario.html', {
+        'usuario': usuario,
+        'form': form,
+        'modo': 'editar'
+    })
 
 def deletar_usuario(request):
     usuario = request.user
