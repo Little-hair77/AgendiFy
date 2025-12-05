@@ -22,7 +22,7 @@
     .company-form-card {
         background: #ffffff;
         border: none;
-        border-radius: 24px; /* Bordas um pouco mais arredondadas */
+        border-radius: 24px;
         box-shadow: 0 15px 40px rgba(0, 74, 173, 0.06);
         padding: 45px;
         position: relative;
@@ -130,13 +130,25 @@
                 
                 <div class="company-form-card">
                     
-                    <!-- Ícone no topo -->
+                    <!-- Ícone no topo (Muda se for edição) -->
                     <div class="form-header-icon">
-                        <i class="bi bi-building-add"></i>
+                        {% if modo == 'editar' %}
+                            <i class="bi bi-building-gear"></i>
+                        {% else %}
+                            <i class="bi bi-building-add"></i>
+                        {% endif %}
                     </div>
 
-                    <h2 class="text-center fw-bold mb-2 text-dark">Cadastrar Empresa</h2>
-                    <p class="text-center text-muted mb-5">Preencha as informações para divulgar seus serviços.</p>
+                    <!-- Título Dinâmico -->
+                    <div class="text-center mb-5">
+                        {% if modo == 'editar' %}
+                            <h2 class="fw-bold mb-2 text-dark">Editar Empresa</h2>
+                            <p class="text-muted">Atualize os dados da sua empresa.</p>
+                        {% else %}
+                            <h2 class="fw-bold mb-2 text-dark">Cadastrar Empresa</h2>
+                            <p class="text-muted">Preencha as informações para divulgar seus serviços.</p>
+                        {% endif %}
+                    </div>
 
                     <form method="post">
                         {% csrf_token %}
@@ -194,9 +206,13 @@
                             <div class="form-text small text-muted">Uma breve apresentação do que vocês fazem.</div>
                         </div>
 
-                        <!-- Botões -->
+                        <!-- Botão Dinâmico -->
                         <button type="submit" class="btn-save-company">
-                            Salvar</i>
+                            {% if modo == 'editar' %}
+                                Salvar Alterações
+                            {% else %}
+                                Cadastrar Empresa
+                            {% endif %}
                         </button>
 
                         <a href="{% url 'home' %}" class="btn-cancel">

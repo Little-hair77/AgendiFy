@@ -1,0 +1,226 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* Fundo Clean */
+    body {
+        background-color: #f8f9fa;
+    }
+
+    /* Container Central */
+    .form-wrapper {
+        min-height: 85vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 0;
+    }
+
+    /* Cartão do Formulário */
+    .professional-form-card {
+        background: #ffffff;
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 74, 173, 0.08);
+        padding: 45px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Barra decorativa no topo */
+    .professional-form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+    }
+
+    /* Ícone Flutuante */
+    .form-header-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #a617ff;
+        font-size: 2rem;
+        margin: 0 auto 20px;
+        box-shadow: 0 8px 20px rgba(166, 23, 255, 0.15);
+    }
+
+    /* Estilização dos Labels */
+    .form-label {
+        font-weight: 700;
+        color: #4a5568;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Inputs */
+    .form-control, .form-select {
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        padding: 12px 15px;
+        font-size: 1rem;
+        background-color: #fcfcfc;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus, .form-select:focus {
+        background-color: #fff;
+        border-color: #a617ff;
+        box-shadow: 0 0 0 4px rgba(166, 23, 255, 0.1);
+        outline: none;
+    }
+
+    /* Checkbox (Ativo) */
+    .form-check-label {
+        font-weight: 600;
+        color: #2d3748;
+        margin-left: 8px;
+        cursor: pointer;
+    }
+
+    /* Botão Salvar */
+    .btn-save-pro {
+        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+        border: none;
+        color: white;
+        font-weight: 700;
+        padding: 14px 30px;
+        border-radius: 50px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        width: 100%;
+        font-size: 1.05rem;
+    }
+
+    .btn-save-pro:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(166, 23, 255, 0.25);
+        color: white;
+    }
+
+    /* Botão Cancelar */
+    .btn-cancel {
+        color: #718096;
+        font-weight: 600;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        transition: color 0.2s;
+    }
+    
+    .btn-cancel:hover {
+        color: #e53e3e;
+    }
+</style>
+
+<div class="form-wrapper">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                
+                <div class="professional-form-card">
+                    
+                    <!-- Ícone Decorativo (Muda conforme o modo) -->
+                    <div class="form-header-icon">
+                        {% if modo == 'editar' %}
+                            <i class="bi bi-person-gear"></i>
+                        {% else %}
+                            <i class="bi bi-person-badge"></i>
+                        {% endif %}
+                    </div>
+
+                    <!-- Título Dinâmico -->
+                    <div class="text-center mb-5">
+                        {% if modo == 'editar' %}
+                            <h2 class="fw-bold mb-2 text-dark">Editar Profissional</h2>
+                            <p class="text-muted">Atualize os dados e serviços deste colaborador.</p>
+                        {% else %}
+                            <h2 class="fw-bold mb-2 text-dark">Novo Profissional</h2>
+                            <p class="text-muted">Cadastre um membro da equipe para realizar serviços.</p>
+                        {% endif %}
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <!-- Nome -->
+                        <div class="mb-4">
+                            <label for="{{ form.nome.id_for_label }}" class="form-label">
+                                <i class="bi bi-person me-1 text-primary"></i> Nome Completo
+                            </label>
+                            {{ form.nome }}
+                            {% if form.nome.errors %}
+                                <div class="text-danger small mt-1">{{ form.nome.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Cargo -->
+                        <div class="mb-4">
+                            <label for="{{ form.cargo.id_for_label }}" class="form-label">
+                                <i class="bi bi-briefcase me-1 text-primary"></i> Cargo / Especialidade
+                            </label>
+                            {{ form.cargo }}
+                            {% if form.cargo.errors %}
+                                <div class="text-danger small mt-1">{{ form.cargo.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Serviços (Select Multiple) -->
+                        <div class="mb-4">
+                            <label for="{{ form.servicos.id_for_label }}" class="form-label">
+                                <i class="bi bi-tools me-1 text-primary"></i> Serviços que atende
+                            </label>
+                            {{ form.servicos }}
+                            <div class="form-text small text-muted">
+                                Segure "Ctrl" (ou Cmd) para selecionar múltiplos serviços que este profissional realiza.
+                            </div>
+                            {% if form.servicos.errors %}
+                                <div class="text-danger small mt-1">{{ form.servicos.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Ativo (Checkbox estilizado) -->
+                        <div class="mb-5">
+                            <div class="d-flex align-items-center p-3 border rounded-3 bg-light">
+                                {{ form.ativo }}
+                                <label for="{{ form.ativo.id_for_label }}" class="form-check-label mb-0 ms-3">
+                                    Profissional Ativo?
+                                    <span class="d-block small text-muted fw-normal">Se desmarcado, ele não aparecerá para agendamentos.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Botão Dinâmico -->
+                        <button type="submit" class="btn-save-pro">
+                            {% if modo == 'editar' %}
+                                Salvar Alterações
+                            {% else %}
+                                Cadastrar Profissional
+                            {% endif %}
+                        </button>
+
+                        <a href="{% url 'home' %}" class="btn-cancel"> <!-- Ajuste a URL para onde deve voltar (ex: listar_profissionais) -->
+                            Cancelar e voltar
+                        </a>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

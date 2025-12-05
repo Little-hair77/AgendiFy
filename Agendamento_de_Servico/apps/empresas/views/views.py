@@ -32,7 +32,7 @@ def editar_empresa(request, id):
         form.save()
         return redirect('listar_empresas')
     
-    return render(request, 'editar.html', {
+    return render(request, 'cadastrar_empresa.html', {
         'form': form,
         'empresa': empresa,
         'modo': 'editar'
@@ -45,7 +45,7 @@ def deletar_empresa(request, id):
         empresa.delete()
         return redirect('listar_empresas')
     
-    return render(request, 'deletar.html', {
+    return render(request, 'detalhes_empresa.html', {
         'empresa': empresa,
         'modo': 'deletar'
     })

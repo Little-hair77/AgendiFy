@@ -157,8 +157,23 @@
 
                     <!-- LADO DIREITO: Formulário -->
                     <div class="col-md-7 form-column">
-                        <h2 class="fw-bold mb-2" style="color: #2d3748;">Finalizar Agendamento</h2>
-                        <p class="text-muted mb-4">Preencha os dados abaixo para reservar seu horário.</p>
+                        
+                        <!-- TÍTULO CONDICIONAL -->
+                        <h2 class="fw-bold mb-2" style="color: #2d3748;">
+                            {% if modo == 'editar' %}
+                                Editar Agendamento
+                            {% else %}
+                                Finalizar Agendamento
+                            {% endif %}
+                        </h2>
+                        
+                        <p class="text-muted mb-4">
+                            {% if modo == 'editar' %}
+                                Atualize os dados do seu agendamento.
+                            {% else %}
+                                Preencha os dados abaixo para reservar seu horário.
+                            {% endif %}
+                        </p>
 
                         <form method="post">
                             {% csrf_token %}
@@ -186,7 +201,11 @@
 
                             <!-- Botões de Ação -->
                             <button type="submit" class="btn btn-confirm">
-                                Confirmar Agendamento <i class="bi bi-check-lg ms-2"></i>
+                                {% if modo == 'editar' %}
+                                    Salvar Alterações
+                                {% else %}
+                                    Confirmar Agendamento <i class="bi bi-check-lg ms-2"></i>
+                                {% endif %}
                             </button>
 
                             <a href="{% url 'detalhe_servico' servico.id %}" class="btn-cancel">

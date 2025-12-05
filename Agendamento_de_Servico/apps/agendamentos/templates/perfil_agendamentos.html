@@ -1,0 +1,298 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* Fundo Clean */
+    body { background-color: #f8f9fa; }
+
+    /* Container Principal */
+    .appointment-wrapper {
+        min-height: 85vh;
+        padding: 40px 0;
+    }
+
+    /* Cartão Principal */
+    .appointment-card {
+        background: #ffffff;
+        border: none;
+        border-radius: 24px;
+        box-shadow: 0 15px 40px rgba(0, 74, 173, 0.06);
+        overflow: hidden;
+        position: relative;
+        transition: opacity 0.3s;
+    }
+
+    /* Barra decorativa no topo */
+    .appointment-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 8px;
+        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+    }
+
+    /* Cabeçalho do Card */
+    .card-header-custom {
+        padding: 40px 40px 20px;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    /* Status Badges Personalizados */
+    .status-badge {
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .status-pendente { background-color: #fff3cd; color: #856404; }
+    .status-confirmado { background-color: #d1e7dd; color: #0f5132; }
+    .status-cancelado { background-color: #f8d7da; color: #842029; }
+    .status-concluido { background-color: #e2e3e5; color: #41464b; }
+
+    /* Seções Internas */
+    .info-section {
+        padding: 30px 40px;
+    }
+
+    .info-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: #a0aec0;
+        font-weight: 700;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+        color: #2d3748;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Ícones Coloridos */
+    .icon-box {
+        width: 40px; height: 40px;
+        background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
+        color: #a617ff;
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem;
+    }
+
+    /* Preço Grande */
+    .price-display {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #004aad;
+    }
+
+    /* Bloco de Observações */
+    .notes-box {
+        background-color: #fcfcfc;
+        border: 1px dashed #cbd5e0;
+        border-radius: 12px;
+        padding: 20px;
+        color: #718096;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    /* Botões de Ação */
+    .action-bar {
+        background-color: #f8f9fa;
+        padding: 20px 40px;
+        border-top: 1px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* === MODO DELETAR (Alerta) === */
+    .delete-alert {
+        background-color: #fff;
+        border: 2px solid #fc8181;
+        border-radius: 20px;
+        padding: 30px;
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto 30px auto;
+        box-shadow: 0 20px 50px rgba(229, 62, 62, 0.15);
+        animation: slideDown 0.4s ease-out;
+        z-index: 10;
+        position: relative;
+    }
+    @keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    .blur-mode {
+        opacity: 0.4;
+        pointer-events: none;
+        filter: grayscale(100%);
+    }
+</style>
+
+<div class="appointment-wrapper">
+    <div class="container">
+        
+        <!-- Botão Voltar -->
+        <a href="{% url 'listar_agendamentos' %}" class="btn btn-link text-decoration-none text-muted fw-bold mb-4 ps-0">
+            <i class="bi bi-arrow-left me-2"></i> Voltar para Agenda
+        </a>
+
+        <!-- === 1. BLOCO DE DECISÃO: DELETAR === -->
+        {% if modo == 'deletar' %}
+        <div class="delete-alert">
+            <i class="bi bi-x-circle-fill text-danger mb-3" style="font-size: 3rem;"></i>
+            <h3 class="text-danger fw-bold mb-2">Cancelar Agendamento?</h3>
+            <p class="text-muted mb-4">
+                Você tem certeza que deseja cancelar/remover o agendamento do serviço <strong>"{{ agendamento.servico.nome }}"</strong>?<br>
+                Esta ação pode não ser reversível dependendo das regras da empresa.
+            </p>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'detalhes_agendamento' agendamento.id %}" class="btn btn-outline-secondary rounded-pill px-4 fw-bold">
+                        Não, Voltar
+                    </a>
+                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold">
+                        Sim, Cancelar Agendamento
+                    </button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- === 2. CONTEÚDO PRINCIPAL === -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                
+                <div class="appointment-card {% if modo == 'deletar' %}blur-mode{% endif %}">
+                    
+                    <!-- Cabeçalho: Título e Status -->
+                    <div class="card-header-custom">
+                        <div>
+                            <h6 class="text-muted text-uppercase fw-bold mb-1" style="font-size: 0.8rem; letter-spacing: 1px;">
+                                Agendamento #{{ agendamento.id }}
+                            </h6>
+                            <h2 class="fw-bold text-dark mb-0">{{ agendamento.servico.nome }}</h2>
+                        </div>
+                        
+                        <!-- Badge de Status Dinâmica -->
+                        <div class="status-badge status-{{ agendamento.status }}">
+                            <i class="bi bi-circle-fill me-1 small"></i> {{ agendamento.get_status_display }}
+                        </div>
+                    </div>
+
+                    <!-- Corpo: Grid de Informações -->
+                    <div class="info-section">
+                        <div class="row g-5">
+                            
+                            <!-- Coluna Esquerda: Detalhes do Serviço -->
+                            <div class="col-md-7">
+                                <div class="mb-4">
+                                    <div class="info-label">Data e Horário</div>
+                                    <div class="info-value text-primary fs-4">
+                                        <i class="bi bi-calendar-check me-2"></i> 
+                                        {{ agendamento.data_hora|date:"d/m/Y" }} 
+                                        <span class="text-muted mx-2">às</span> 
+                                        {{ agendamento.data_hora|date:"H:i" }}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6 mb-4">
+                                        <div class="info-label">Empresa Responsável</div>
+                                        <div class="info-value">
+                                            <div class="icon-box"><i class="bi bi-building"></i></div>
+                                            {{ agendamento.empresa.nome }}
+                                        </div>
+                                    </div>
+                                    <div class="col-6 mb-4">
+                                        <div class="info-label">Cliente</div>
+                                        <div class="info-value">
+                                            <div class="icon-box"><i class="bi bi-person"></i></div>
+                                            {{ agendamento.usuario.first_name }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-2">
+                                    <div class="info-label">Observações</div>
+                                    <div class="notes-box">
+                                        {% if agendamento.observacoes %}
+                                            {{ agendamento.observacoes|linebreaks }}
+                                        {% else %}
+                                            <em class="text-muted">Nenhuma observação adicionada.</em>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Coluna Direita: Valor e Resumo -->
+                            <div class="col-md-5">
+                                <div class="p-4 bg-light rounded-4 h-100 border">
+                                    <div class="info-label mb-3">Resumo Financeiro</div>
+                                    
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Serviço Base</span>
+                                        <span class="fw-bold">R$ {{ agendamento.servico.preco }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-4">
+                                        <span class="text-muted">Taxas</span>
+                                        <span class="fw-bold text-success">Grátis</span>
+                                    </div>
+                                    
+                                    <hr>
+                                    
+                                    <div class="text-end mt-3">
+                                        <div class="small text-muted text-uppercase fw-bold">Total a Pagar</div>
+                                        <div class="price-display">R$ {{ agendamento.servico.preco }}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Rodapé: Ações -->
+                    <div class="action-bar">
+                        <div class="text-muted small">
+                            Criado em: {{ agendamento.criado_em|date:"d/m/Y H:i" }}
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <!-- Se o agendamento não estiver cancelado ou concluído, permite editar/cancelar -->
+                            {% if agendamento.status == 'pendente' or agendamento.status == 'confirmado' %}
+                                
+                                <a href="{% url 'editar_agendamento' agendamento.id %}" class="btn btn-outline-primary rounded-pill px-4 fw-bold">
+                                    <i class="bi bi-pencil me-1"></i> Editar
+                                </a>
+                                
+                                <!-- Botão que ativa o modo deletar -->
+                                <a href="{% url 'deletar_agendamento' agendamento.id %}" class="btn btn-outline-danger rounded-pill px-4 fw-bold">
+                                    <i class="bi bi-x-circle me-1"></i> Cancelar
+                                </a>
+                                
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

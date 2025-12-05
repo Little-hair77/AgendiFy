@@ -1,0 +1,190 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* Fundo Clean */
+    body { background-color: #f8f9fa; }
+
+    /* Cabeçalho da Seção */
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    /* Cartão do Profissional */
+    .pro-card {
+        background: #ffffff;
+        border: 1px solid #edf2f7;
+        border-radius: 20px;
+        padding: 30px 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        height: 100%;
+    }
+
+    .pro-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+        border-color: #e2c2ff;
+    }
+
+    /* Avatar com Iniciais */
+    .pro-avatar {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
+        color: #a617ff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 800;
+        margin: 0 auto 15px;
+        border: 3px solid #fff;
+        box-shadow: 0 5px 15px rgba(166, 23, 255, 0.1);
+    }
+
+    /* Status Badge (Ponto colorido) */
+    .status-dot {
+        width: 12px; height: 12px; border-radius: 50%;
+        display: inline-block; margin-right: 5px;
+    }
+    .status-active { background-color: #25d366; box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.2); }
+    .status-inactive { background-color: #cbd5e0; }
+
+    /* Badge de Serviço */
+    .service-badge {
+        font-size: 0.75rem;
+        background-color: #f7fafc;
+        color: #4a5568;
+        border: 1px solid #e2e8f0;
+        padding: 4px 10px;
+        border-radius: 50px;
+        margin: 2px;
+        display: inline-block;
+    }
+
+    /* Botões de Ação (Aparecem no hover ou fixos) */
+    .pro-actions {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px dashed #edf2f7;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn-icon {
+        width: 35px; height: 35px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        transition: all 0.2s;
+        border: 1px solid #e2e8f0;
+        color: #718096;
+        background: white;
+    }
+    .btn-icon:hover {
+        background-color: #f0f4ff;
+        color: #004aad;
+        border-color: #004aad;
+    }
+    .btn-icon.delete:hover {
+        background-color: #fff5f5;
+        color: #e53e3e;
+        border-color: #e53e3e;
+    }
+</style>
+
+<div class="container py-5">
+    
+    <!-- Cabeçalho -->
+    <div class="section-header">
+        <div>
+            <h2 class="fw-bold text-dark">Minha Equipe</h2>
+            <p class="text-muted mb-0">Gerencie os profissionais da sua empresa.</p>
+        </div>
+        
+        <!-- Botão Novo (Só para PJ) -->
+        <a href="{% url 'cadastrar_profissional' %}" class="btn btn-brand rounded-pill px-4 py-2 fw-bold shadow-sm">
+            <i class="bi bi-person-plus-fill me-2"></i> Novo Profissional
+        </a>
+    </div>
+
+    <!-- Grid de Profissionais -->
+    <div class="row g-4">
+        {% for profissional in profissionais %}
+        <div class="col-md-6 col-lg-3">
+            <div class="pro-card">
+                
+                <!-- Avatar -->
+                <div class="pro-avatar">
+                    {{ profissional.nome|slice:":1"|upper }}
+                </div>
+
+                <!-- Nome e Status -->
+                <h5 class="fw-bold text-dark mb-1">{{ profissional.nome }}</h5>
+                <p class="text-muted small mb-2">{{ profissional.cargo|default:"Cargo não definido" }}</p>
+                
+                <div class="mb-3">
+                    {% if profissional.ativo %}
+                        <span class="badge bg-light text-success border border-success rounded-pill px-3">
+                            <span class="status-dot status-active"></span> Ativo
+                        </span>
+                    {% else %}
+                        <span class="badge bg-light text-secondary border rounded-pill px-3">
+                            <span class="status-dot status-inactive"></span> Inativo
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Serviços (Lista limitada) -->
+                <div class="mb-3" style="min-height: 50px;">
+                    <small class="text-uppercase text-muted fw-bold d-block mb-2" style="font-size: 0.7rem;">Serviços:</small>
+                    {% for servico in profissional.servicos.all|slice:":3" %}
+                        <span class="service-badge">{{ servico.nome }}</span>
+                    {% empty %}
+                        <small class="text-muted fst-italic">Nenhum serviço vinculado.</small>
+                    {% endfor %}
+                    
+                    {% if profissional.servicos.count > 3 %}
+                        <span class="service-badge">+{{ profissional.servicos.count|add:"-3" }}</span>
+                    {% endif %}
+                </div>
+
+                <!-- Ações -->
+                <div class="pro-actions">
+                    <a href="{% url 'editar_profissional' profissional.id %}" class="btn-icon" title="Editar">
+                        <i class="bi bi-pencil-fill"></i>
+                    </a>
+                    <!-- Ação de excluir -->
+                    <!-- Lembre-se de criar a view e rota 'deletar_profissional' -->
+                    <a href="{% url 'deletar_profissional' profissional.id %}" class="btn-icon delete" title="Excluir">
+                        <i class="bi bi-trash-fill"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        {% empty %}
+        <!-- Estado Vazio -->
+        <div class="col-12 text-center py-5">
+            <div style="width: 80px; height: 80px; background: #f8f9fa; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <i class="bi bi-people text-muted" style="font-size: 2rem;"></i>
+            </div>
+            <h4 class="fw-bold text-muted">Nenhum profissional na equipe.</h4>
+            <p class="text-muted mb-4">Comece adicionando quem trabalha com você.</p>
+            <a href="{% url 'cadastrar_profissional' %}" class="btn btn-outline-primary rounded-pill px-4">
+                Adicionar Primeiro Profissional
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
