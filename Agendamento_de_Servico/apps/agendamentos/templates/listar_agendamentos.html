@@ -104,12 +104,12 @@
             <h2 class="fw-bold text-dark mb-1">Minha Agenda</h2>
             <p class="text-muted mb-0">Gerencie seus compromissos futuros e passados.</p>
         </div>
-        <!-- Filtros Visuais (Lógica pode ser implementada na view depois) -->
+        <!-- Filtros Visuais -->
         <div class="col-md-6 text-md-end mt-3 mt-md-0">
             <div class="d-inline-flex gap-2">
                 <a href="#" class="filter-btn active text-decoration-none">Todos</a>
-                <a href="#" class="filter-btn text-decoration-none">Pendentes</a>
-                <a href="#" class="filter-btn text-decoration-none">Confirmados</a>
+                <a href="#" class="filter-btn text-decoration-none">Ativos</a>
+                <a href="#" class="filter-btn text-decoration-none">Histórico</a>
             </div>
         </div>
     </div>
@@ -119,7 +119,8 @@
         <div class="col-12">
             
             {% for agendamento in agendamentos %}
-            <div class="appointment-item status-{{ agendamento.status }}">
+            <!-- ALTERAÇÃO 1: Forcei o estilo 'status-confirmado' (borda verde) -->
+            <div class="appointment-item status-confirmado">
                 
                 <!-- 1. Data e Hora -->
                 <div class="date-box">
@@ -132,7 +133,6 @@
                 <div class="info-box">
                     <h4 class="service-title">{{ agendamento.servico.nome }}</h4>
                     
-                    <!-- Mostra a Empresa (se for Cliente logado) ou Cliente (se for Empresa logada) -->
                     <div class="entity-name">
                         {% if user.tipo_pessoa == 'F' %}
                             <i class="bi bi-building"></i> {{ agendamento.empresa.nome }}
@@ -141,7 +141,6 @@
                         {% endif %}
                     </div>
                     
-                    <!-- Preço Pequeno -->
                     <small class="text-muted mt-2 d-block">
                         Valor: <strong>R$ {{ agendamento.servico.preco }}</strong>
                     </small>
@@ -149,8 +148,9 @@
 
                 <!-- 3. Status -->
                 <div class="text-center px-3">
-                    <span class="status-badge badge-{{ agendamento.status }}">
-                        {{ agendamento.get_status_display }}
+                    <!-- ALTERAÇÃO 2: Forcei o badge 'badge-confirmado' (verde) e o texto 'Ativo' -->
+                    <span class="status-badge badge-confirmado">
+                        Ativo
                     </span>
                 </div>
 
@@ -163,7 +163,6 @@
 
             </div>
             {% empty %}
-                <!-- Estado Vazio -->
                 <div class="text-center py-5">
                     <div class="mb-3">
                         <div style="width: 80px; height: 80px; background: #f0f4ff; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;">
@@ -173,7 +172,6 @@
                     <h4 class="fw-bold text-muted">Nenhum agendamento encontrado.</h4>
                     <p class="text-muted mb-4">Que tal marcar um novo serviço agora?</p>
                     
-                    <!-- Botão muda dependendo se é empresa ou cliente -->
                     {% if user.tipo_pessoa == 'F' %}
                         <a href="{% url 'listar_servicos' %}" class="btn btn-primary rounded-pill px-4 fw-bold">
                             Buscar Serviços
