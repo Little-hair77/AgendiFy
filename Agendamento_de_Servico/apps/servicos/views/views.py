@@ -28,20 +28,29 @@ def editar_servico(request, id):
 
     if request.method == 'POST':
         form = ServicoForm(request.POST, instance=servico)
-
         if form.is_valid():
             form.save()
             return redirect('listar_servicos')
-        else:
-            form = ServicoForm(instance=servico)
+    else:
+        form = ServicoForm(instance=servico)
 
-    return render(request, 'editar.html', {'form': form, 'servico': servico, 'modo': 'editar'})
+    return render(request, 'cadastrar_servico.html', {
+        'form': form,
+        'servico': servico,
+        'modo': 'editar'
+    })
 
 def deletar_servico(request, id):
     servico = get_object_or_404(Servico, id=id)
-    servico.delete()
 
-    return redirect('listar_servicos', {'servico': servico, 'modo': 'deletar'})
+    if request.method == 'POST':
+        servico.delete()
+        return redirect('listar_servicos')
+
+    return render(request, 'detalhes_servico.html', {
+        'servico': servico,
+        'modo': 'deletar'  # Isso ativa o alerta vermelho no HTML
+    })
 
 def detalhes_servico(request, id):
     servico = get_object_or_404(Servico, id=id)

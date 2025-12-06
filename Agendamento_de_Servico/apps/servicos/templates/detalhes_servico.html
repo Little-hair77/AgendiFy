@@ -4,83 +4,140 @@
 {% block content %}
 
 <style>
+    /* Fundo Clean (Cinza Suave) */
     .page-wrapper {
-        min-height: 90vh;
+        min-height: 85vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
+        background-color: #f8f9fa;
         padding: 40px 0;
     }
 
+    /* Cartão Principal - Mais compacto e elegante */
     .service-card {
         background: #ffffff;
-        padding: 2.8rem;
-        border-radius: 20px;
+        padding: 2.5rem; /* Padding reduzido */
+        border-radius: 24px;
         width: 100%;
-        max-width: 600px;
-        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.5);
+        max-width: 550px; /* Largura controlada para não ficar "esticado" */
+        box-shadow: 0 15px 40px rgba(0, 74, 173, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Barra decorativa fina no topo */
+    .service-card::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+        background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
+    }
+
+    /* Títulos e Badges */
+    .company-badge {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #718096;
+        font-weight: 700;
+        margin-bottom: 10px;
+        display: block;
     }
 
     .service-title {
         font-weight: 800;
+        color: #2d3748;
+        margin-bottom: 0.2rem;
+        font-size: 1.6rem; /* Fonte reduzida */
+        line-height: 1.2;
+    }
+
+    .price-tag {
+        font-size: 1.8rem;
+        font-weight: 800;
         color: #004aad;
-        margin-bottom: .3rem;
+        margin-top: 5px;
     }
 
+    /* Texto de Descrição */
+    .description-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #a0aec0;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .description-text {
+        font-size: 0.95rem;
+        color: #4a5568;
+        line-height: 1.6;
+    }
+
+    /* === NOVA SEÇÃO: DESTAQUES (Para preencher o vazio) === */
+    .highlights-box {
+        background-color: #fcfaff;
+        border: 1px dashed #d6bcfa;
+        border-radius: 12px;
+        padding: 15px 20px;
+        margin-top: 25px;
+        margin-bottom: 25px;
+    }
+    
+    .highlight-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.85rem;
+        color: #555;
+        margin-bottom: 8px;
+    }
+    .highlight-item:last-child { margin-bottom: 0; }
+    .highlight-item i { color: #a617ff; font-size: 1rem; }
+
+    /* Tags */
     .badge-tag {
-        background: #e8d4ff;
-        color: #7a22c6;
-        padding: 6px 12px;
-        font-size: 0.8rem;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
+        padding: 4px 12px;
+        font-size: 0.75rem;
         border-radius: 50px;
-        margin-right: 6px;
+        margin-right: 4px;
+        display: inline-block;
+        margin-bottom: 4px;
     }
 
+    /* Botões */
     .btn-primary-gradient {
         background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
-        color: white;
-        padding: 12px 25px;
-        border-radius: 50px;
-        font-weight: 700;
-        width: 100%;
-        border: none;
-        transition: 0.2s ease;
+        color: white; padding: 12px 25px; border-radius: 50px; font-weight: 700;
+        width: 100%; border: none; transition: 0.2s ease; font-size: 0.95rem;
+        text-decoration: none; display: block; text-align: center;
     }
-
-    .btn-primary-gradient:hover {
-        opacity: 0.9;
-        transform: translateY(-2px);
-    }
+    .btn-primary-gradient:hover { opacity: 0.9; transform: translateY(-2px); color: white; }
 
     .btn-danger-rounded {
-        background: #dd2b2b;
-        padding: 12px 25px;
-        border-radius: 50px;
-        font-weight: 700;
-        width: 100%;
-        color: white;
-        border: none;
+        background: #fff5f5; color: #e53e3e; border: 1px solid #fc8181;
+        padding: 10px; border-radius: 50px; font-weight: 700; width: 100%;
+        font-size: 0.9rem; transition: 0.2s;
     }
-
-    .btn-danger-rounded:hover {
-        opacity: 0.9;
-    }
+    .btn-danger-rounded:hover { background: #e53e3e; color: white; }
 
     .btn-cancel {
-        background: transparent;
-        border: 2px solid #ccc;
-        padding: 12px 25px;
-        border-radius: 50px;
-        color: #444;
-        font-weight: 600;
-        width: 100%;
+        background: transparent; border: 1px solid #cbd5e0; padding: 10px;
+        border-radius: 50px; color: #718096; font-weight: 600; width: 100%;
+        font-size: 0.9rem; text-decoration: none; display: block; text-align: center;
     }
-
-    .btn-cancel:hover {
-        background: #f2f2f2;
+    .btn-cancel:hover { background: #f7fafc; color: #2d3748; }
+    
+    .btn-edit { /* Botão de editar */
+        background: white; border: 1px solid #a617ff; color: #a617ff;
+        padding: 10px; border-radius: 50px; font-weight: 600; width: 100%;
+        font-size: 0.9rem; text-decoration: none; display: block; text-align: center;
     }
+    .btn-edit:hover { background: #fcfaff; }
 </style>
 
 
@@ -88,64 +145,95 @@
     <div class="service-card">
 
         {% if modo == 'deletar' %}
-            <h2 class="service-title text-danger"><i class="bi bi-trash"></i> Confirmar Exclusão</h2>
-            <p class="text-muted">
-                Tem certeza que deseja excluir o serviço <strong>{{ servico.nome }}</strong>?  
-                Essa ação não pode ser desfeita.
-            </p>
+            <!-- === MODO EXCLUSÃO === -->
+            <div class="text-center py-4">
+                <i class="bi bi-exclamation-triangle-fill text-danger mb-3" style="font-size: 3rem;"></i>
+                <h3 class="fw-bold text-danger mb-2">Excluir Serviço?</h3>
+                <p class="text-muted mb-4 font-monospace small">
+                    Você está prestes a remover <strong>"{{ servico.nome }}"</strong>.<br>Esta ação é irreversível.
+                </p>
 
-            <form method="post">
-                {% csrf_token %}
-                
-                <div class="row mt-4">
-                    <div class="col-6">
-                        <a href="{% url 'listar_servicos' %}" class="btn-cancel text-center">Cancelar</a>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row g-2 justify-content-center mt-2">
+                        <div class="col-6">
+                            <a href="{% url 'listar_servicos' %}" class="btn-cancel">Cancelar</a>
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" class="btn-danger-rounded">Sim, Excluir</button>
+                        </div>
                     </div>
-                    <div class="col-6">
-                        <button type="submit" class="btn-danger-rounded">Excluir Permanentemente</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
 
         {% else %}
-            <!-- MODO DE VISUALIZAÇÃO -->
-            <h2 class="service-title">{{ servico.nome }}</h2>
-            <p class="text-muted mb-2">
-                <i class="bi bi-building"></i> Empresa: <strong>{{ servico.empresa.nome }}</strong>
-            </p>
+            <!-- === MODO VISUALIZAÇÃO === -->
+            
+            <!-- Empresa e Título -->
+            <span class="company-badge">
+                <i class="bi bi-building me-1"></i> {{ servico.empresa.nome }}
+            </span>
+            
+            <div class="d-flex justify-content-between align-items-start">
+                <h1 class="service-title">{{ servico.nome }}</h1>
+                <div class="price-tag">R$ {{ servico.preco }}</div>
+            </div>
 
-            <h5 class="mt-4 fw-bold text-primary">Descrição</h5>
-            <p>{{ servico.descricao }}</p>
+            <!-- Descrição -->
+            <div class="description-label">Sobre o Serviço</div>
+            <p class="description-text">{{ servico.descricao }}</p>
 
-            <h5 class="fw-bold text-primary mt-4">Preço</h5>
-            <p class="fs-4 fw-bold">R$ {{ servico.preco }}</p>
+            <!-- Conteúdo Extra (Destaques) -->
+            <div class="highlights-box">
+                <div class="highlight-item">
+                    <i class="bi bi-check-circle-fill"></i> <span>Profissionais qualificados</span>
+                </div>
+                <div class="highlight-item">
+                    <i class="bi bi-shield-check"></i> <span>Garantia de serviço AgendiFy</span>
+                </div>
+                <div class="highlight-item">
+                    <i class="bi bi-clock-history"></i> <span>Cancelamento grátis até 24h</span>
+                </div>
+            </div>
 
+            <!-- Tags -->
             {% if servico.tags.all %}
-                <h5 class="fw-bold text-primary mt-4">Tags</h5>
-                <div>
+                <div class="mb-4">
+                    <div class="description-label" style="margin-top: 0;">Tags</div>
                     {% for t in servico.tags.all %}
                         <span class="badge-tag">{{ t.nome }}</span>
                     {% endfor %}
                 </div>
             {% endif %}
 
-            <div class="mt-5 row g-3">
+            <!-- Botões de Ação -->
+            <div class="row g-2 mt-4 pt-2 border-top">
                 
-                <!-- Botão usuário agendar -->
-                {% if request.user.is_authenticated and not request.user.is_staff %}
-                <div class="col-12">
-                    <a href="{% url 'cadastrar_agendamento' servico.id %}" class="btn-primary-gradient text-center d-block">
-                        Agendar Serviço
+                <!-- Botão Agendar (Para todos menos staff) -->
+                {% if not request.user.is_staff %}
+                <div class="col-12 mt-3">
+                    <a href="{% url 'cadastrar_agendamento' servico.id %}" class="btn-primary-gradient">
+                        Agendar Agora
                     </a>
                 </div>
                 {% endif %}
 
-                <!-- Botão admin excluir -->
+                <!-- Botões Admin (Editar e Excluir) -->
                 {% if request.user.is_staff %}
-                <div class="col-12">
-                    <a href="{% url 'deletar_servico' servico.id %}" class="btn-danger-rounded text-center d-block">
-                        Excluir Serviço
-                    </a>
+                <div class="col-12 mt-2">
+                    <p class="text-center text-muted small mb-2 fw-bold" style="font-size: 0.7rem;">ADMINISTRAÇÃO</p>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <a href="{% url 'editar_servico' servico.id %}" class="btn-edit">
+                                <i class="bi bi-pencil me-1"></i> Editar
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="{% url 'deletar_servico' servico.id %}" class="btn-danger-rounded text-center text-decoration-none">
+                                <i class="bi bi-trash me-1"></i> Excluir
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 {% endif %}
 
