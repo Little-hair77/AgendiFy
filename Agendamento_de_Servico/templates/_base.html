@@ -44,39 +44,28 @@
         }
         .btn-brand:hover { color: white; opacity: 0.9; }
 
-        /* === NAV LINKS (FONTE MENOR E ALINHADA) === */
+        /* === NAV LINKS === */
         .navbar-nav .nav-link {
             font-weight: 600;
             color: #4a5568;
             margin-left: 15px;
             transition: color 0.2s;
-            font-size: 0.85rem; /* Fonte reduzida conforme solicitado */
+            font-size: 0.85rem;
             letter-spacing: 0.3px;
-            text-transform: uppercase; /* Opcional: Deixa mais clean em tamanho pequeno */
+            text-transform: uppercase;
         }
         .navbar-nav .nav-link:hover { color: #a617ff; }
         .navbar-nav .nav-link.active { color: #004aad; }
 
-        /* Link Admin Destaque */
-        .nav-link-admin {
-            color: #d63384 !important;
-        }
+        .nav-link-admin { color: #d63384 !important; }
 
-        /* Avatar */
         .nav-avatar {
-            width: 28px;
-            height: 28px;
+            width: 28px; height: 28px;
             background: linear-gradient(135deg, #e2c2ff 0%, #c4ddff 100%);
-            color: #a617ff;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-right: 8px;
-            border: 2px solid white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            color: #a617ff; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: bold; margin-right: 8px;
+            border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -86,9 +75,8 @@
 
         <!-- NAVBAR -->
         <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm sticky-top">
-            <div class="container-fluid px-5"> <!-- container-fluid espalha mais -->
+            <div class="container-fluid px-5">
 
-                <!-- Logo -->
                 <a class="navbar-brand fw-bolder fs-4" href="{% url 'home' %}">
                     <span class="text-gradient">AgendiFy</span>
                 </a>
@@ -99,47 +87,59 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- ms-auto = Margin Start Auto (Empurra para a direita) -->
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
 
-                        <!-- Link Home -->
                         <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
 
                         {% if user.is_authenticated %}
                             
-                            <!-- === 1. SUPERUSER (ADMIN) === -->
+                            <!-- === 1. ADMINISTRAÇÃO (Superuser) === -->
                             {% if user.is_superuser %}
                                 <li class="nav-item">
-                                    <!-- Link para o painel administrativo do Django -->
                                     <a class="nav-link nav-link-admin" href="/admin" target="_blank">
-                                        <i class="bi bi-gear-fill me-1"></i> Cadastros (Admin)
+                                        <i class="bi bi-gear-fill me-1"></i> Admin
                                     </a>
                                 </li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'cadastrar_empresa' %}">Cadastrar Empesa</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'cadastrar_servico' %}">Cadastrar Serviço</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'cadastrar_empresa' %}">Nova Empresa</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'cadastrar_servico' %}">Novo Serviço</a></li>
                                 <li class="nav-item"><a class="nav-link" href="{% url 'listar_profissionais' %}">Profissionais</a></li>
                                 <li class="nav-item"><a class="nav-link" href="{% url 'listar_usuarios' %}">Usuários</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'listar_servicos' %}">Serviços</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'listar_empresas' %}">Empresas</a></li>
-                            
-                            <!-- === 2. PESSOA JURÍDICA (EMPRESA) === -->
-                            {% elif user.tipo_pessoa == 'J' %}
-                                <li class="nav-item"><a class="nav-link" href="#">Meus Serviços</a></li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-primary" href="{% url 'cadastrar_servico' %}">
-                                        Cadastrar Serviço
-                                    </a>
-                                </li>
-                                <li class="nav-item"><a class="nav-link" href="#">Minha Agenda</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'contato' %}">Contato</a></li>
+                            {% endif %}
 
-                            <!-- === 3. PESSOA FÍSICA (CLIENTE) === -->
+                            <!-- === 2. GRUPO 'Muita Moral' (Verificação via Loop HTML) === -->
+                            <!-- Se não for superuser, verifica se tem o grupo -->
+                            {% if not user.is_superuser %}
+                                {% for group in user.groups.all %}
+                                    {% if group.name == 'Muita Moral' %}
+                                        <li class="nav-item">
+                                            <a class="nav-link nav-link-admin" href="/admin" target="_blank">
+                                                <i class="bi bi-shield-lock-fill me-1"></i> Admin (Grupo)
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'listar_profissionais' %}" style="color: #004aad;">
+                                                <i class="bi bi-briefcase-fill me-1"></i> Profissionais
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            
+                            <!-- === 3. LINKS COMUNS === -->
+                            <!-- Se for PJ -->
+                            {% if user.tipo_pessoa == 'J' %}
+                                <li class="nav-item"><a class="nav-link" href="#">Meus Serviços</a></li>
+                                <li class="nav-item"><a class="nav-link text-primary" href="{% url 'cadastrar_servico' %}">Cadastrar Serviço</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Minha Agenda</a></li>
+                            
+                            <!-- Se for Cliente (PF) -->
                             {% else %}
                                 <li class="nav-item"><a class="nav-link" href="{% url 'listar_servicos' %}">Serviços</a></li>
                                 <li class="nav-item"><a class="nav-link" href="{% url 'listar_empresas' %}">Empresas</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'listar_agendamentos_usuario'%}">Meus Agendamentos</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'contato' %}">Contato</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Meus Agendamentos</a></li>
                             {% endif %}
+                            
+                            <li class="nav-item"><a class="nav-link" href="{% url 'contato' %}">Contato</a></li>
 
                             <!-- === DROPDOWN USUÁRIO === -->
                             <li class="nav-item dropdown ms-lg-4">
@@ -150,8 +150,10 @@
                                     <div class="nav-avatar">
                                         {{ user.first_name|slice:":1"|default:user.username|slice:":1"|upper }}
                                     </div>
+                                    
+                                    <!-- CORREÇÃO DO NOME: Pega só a primeira palavra -->
                                     <span class="fw-bold text-dark">
-                                        {{ user.first_name|default:user.username }}
+                                        {{ user.first_name|truncatewords:1|cut:"..."|default:user.username }}
                                     </span>
                                 </a>
                                 
@@ -193,7 +195,6 @@
             </div>
         </nav>
 
-        <!-- CONTEÚDO -->
         {% block content %}
         {% endblock %}
 
@@ -212,7 +213,6 @@
         </div>
     </footer>
 
-    <!-- JS Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     {% block scripts %}
     {% endblock %}
