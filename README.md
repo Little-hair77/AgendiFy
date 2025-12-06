@@ -45,7 +45,9 @@ cd [Sistema-Agendamento-de-Servico/Agendamento_de_Servico]
 
 # 2. Crie e ative um ambiente virtual (RECOMENDADO)
 python -m venv venv
+
 source venv/Scripts/activate  # No Windows
+
 source venv/bin/activate    # No Linux/macOS
 
 # 3. Instale as dependências (Django e outras bibliotecas)
@@ -56,18 +58,18 @@ pip install -r requirements.txt
 
 Você deve aplicar as migrações e, em seguida, popular o banco de dados com os usuários de teste.
 
-# 1. Aplicar as migrações (cria as tabelas no BD)
+# 4. Aplicar as migrações (cria as tabelas no BD)
 python manage.py migrate
 
-# 2. Criar o superusuário (necessário para o ambiente Admin)
+# 5. Criar o superusuário (necessário para o ambiente Admin)
 python manage.py createsuperuser
 
-# 3. (OPCIONAL) Carregar dados de teste
+# 6. (OPCIONAL) Carregar dados de teste
 Se houver um arquivo de fixtures (initial_data.json)
 python manage.py loaddata initial_data.json
 
 
-# 4. Iniciar o Servidor
+# 7. Iniciar o Servidor
 
 python manage.py runserver
 
