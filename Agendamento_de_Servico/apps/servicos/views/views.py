@@ -49,7 +49,7 @@ def deletar_servico(request, id):
 
     return render(request, 'detalhes_servico.html', {
         'servico': servico,
-        'modo': 'deletar'  # Isso ativa o alerta vermelho no HTML
+        'modo': 'deletar'  
     })
 
 def detalhes_servico(request, id):
