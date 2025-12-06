@@ -40,38 +40,46 @@ O objetivo deste sistema é:
 1. Clonar o Repositório e Configurar o Ambiente
 
 # 1. Clone o repositório
+```bash
  git clone [(https://github.com/Little-hair77/Sistema-Agendamento-de-Servico)]
  cd [Sistema-Agendamento-de-Servico/Agendamento_de_Servico]
-
+```
 # 2. Crie e ative um ambiente virtual (RECOMENDADO)
+```bash
  python -m venv venv
  source venv/Scripts/activate  # No Windows
  source venv/bin/activate    # No Linux/macOS
-
+```
 # 3. Instale as dependências (Django e outras bibliotecas)
+```bash
  pip install -r requirements.txt
-
+```
 
 2. Configurar o Banco de Dados e Rodar Migrações
 
 Você deve aplicar as migrações e, em seguida, popular o banco de dados com os usuários de teste.
 
 # 4. Aplicar as migrações (cria as tabelas no BD)
+```bash
  python manage.py migrate
+ ```
 
 # 5. Criar o superusuário (necessário para o ambiente Admin)
+```bash
  python manage.py createsuperuser
-
+```
 # 6. (OPCIONAL) Carregar dados de teste
 Se houver um arquivo de fixtures (initial_data.json)
+```bash
  python manage.py loaddata initial_data.json
-
+```
 
 # 7. Iniciar o Servidor
+```bash
 
  python manage.py runserver
 
-
+```
 Acesse a aplicação em seu navegador: http://127.0.0.1:8000/
 
 ## 🔑 Credenciais de Acesso (Para Teste)
