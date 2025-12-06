@@ -11,7 +11,7 @@ O objetivo deste sistema é:
 
 - Facilitar o gerenciamento de **profissionais**, **empresas** e **serviços**;
 - Permitir que administradores cadastrem e controlem todos os recursos;
-- Oferecer aos usuários comuns apenas a função de visualização (sem edição);
+- Oferecer aos usuários comuns apenas a função de visualização e **Agendar** seus **Serviços**;
 - Demonstrar boas práticas de segurança e autorização no **Django**;
 - Servir como base para aprendizado de desenvolvimento web seguro.
 
@@ -100,13 +100,15 @@ Estas contas são para simular o acesso de usuários comuns e testar as permiss�
 
 Usuário 1: pablo.henrique@gmail.com
 
-Usuário 2: higoalvesads@gmail.com
+Usuário 2: pablohenrique@gmail.com - (Usuário Privilegiado)
 
-Usuário 3: jhonrels@gmail.com
+Usuário 3: higoalvesads@gmail.com - (Usuário Privilegiado)
 
-Usuário 4: joaopedro@gmail.com
+Usuário 4: jhonrels@gmail.com
 
-Usuário 5: viniclussilva@gmail.com
+Usuário 5: joaopedro@gmail.com
+
+Usuário 6: viniclussilva@gmail.com
 
 Senha (para todos os usuários): 1234 
 
@@ -115,5 +117,5 @@ Senha (para todos os usuários): 1234
 git clone <https://github.com/Little-hair77/Sistema-Agendamento-de-Servico>
 cd <Sistema de Agendamento>
 ```
-## ▶️ Link do Vídeo no Youtube
+## ▶️ Link do vídeo no Youtube
 https://youtu.be/gxNI8q4tj4U
