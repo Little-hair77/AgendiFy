@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
 from ..models import Servico
 from ..forms import ServicoForm
 
 # Create your views here.
-def listar_servicos(request):
-    servicos = Servico.objects.all().order_by('nome')
-
-    return render(request, 'listar_servicos.html', {'servicos': servicos})
+class ServicoListView(ListView):
+    model = Servico
+    template_name = 'listar_servicos.html'
+    context_object_name = 'servicos'
 
 def cadastrar_servico(request):
     if request.method == 'POST':
