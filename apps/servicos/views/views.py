@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.urls import reverse_lazy
 from ..models import Servico
 from ..forms import ServicoForm
 
@@ -10,18 +12,12 @@ class ServicoListView(ListView):
     template_name = 'listar_servicos.html'
     context_object_name = 'servicos'
 
-def cadastrar_servico(request):
-    if request.method == 'POST':
-        form = ServicoForm(request.POST)
+class ServicoCreateView(CreateView):
+    model = Servico
+    form_class = ServicoForm
+    template_name = 'cadastrar_servico.html'
 
-        if form.is_valid():
-            form.save()
-            return redirect('listar_servicos')
-
-    else:
-        form = ServicoForm()
-
-    return render(request, 'cadastrar_servico.html', {'form': form})
+    success_url = reverse_lazy('listar_servicos')
 
 
 def editar_servico(request, id):
