@@ -19,6 +19,9 @@ class ServicoCreateView(CreateView):
 
     success_url = reverse_lazy('listar_servicos')
 
+    def test_func(self):
+        
+        return self.request.user.is_superuser
 
 def editar_servico(request, id):
     servico = get_object_or_404(Servico, id=id)
