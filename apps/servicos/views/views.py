@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse_lazy
 from ..models import Servico
@@ -16,7 +16,6 @@ class ServicoCreateView(UserPassesTestMixin,CreateView):
     model = Servico
     form_class = ServicoForm
     template_name = 'cadastrar_servico.html'
-
     success_url = reverse_lazy('listar_servicos')
 
     def test_func(self):
@@ -53,7 +52,7 @@ class ServicoDeleteView(UserPassesTestMixin,DeleteView):
         context['servico'] = self.get_object
         return context
 
-def detalhes_servico(request, id):
-    servico = get_object_or_404(Servico, id=id)
-
-    return render(request, 'detalhes_servico.html', {'servico': servico})
+class ServicoDetailView(DetailView):
+    model = Servico
+    template_name = 'detalhes_servico.html'
+    content_object_name = 'servico'
