@@ -6,7 +6,7 @@ urlpatterns = [
     path('logout/', views.UsuarioLogoutView.as_view(), name='logout'),
     path('usuarios/', views.UsuarioListView.as_view(), name='listar_usuarios'),
     path('cadastro/', views.UsuarioCreateView.as_view(), name='cadastrar_usuario'),
-    path('perfil/', views.perfil_usuario, name='perfil_usuario'),
-    path('deletar/', views.deletar_usuario, name='deletar_usuario'),
-    path('editar/', views.editar_usuario, name='editar_perfil'),
+    path('perfil/', views.PefilUsuarioView.as_view(), name='perfil_usuario'),
+    path('deletar/', views.UsuarioDeleteView.as_view(), name='deletar_usuario'),
+    path('editar/', views.UsuarioUpdateView.as_view(), name='editar_perfil'),
 ]

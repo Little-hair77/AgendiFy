@@ -1,9 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse_lazy
 from ..forms import RegistroUsuarioForm, EditarUsuarioForm
@@ -56,34 +56,40 @@ class UsuarioLogoutView(LogoutView):
             
         return super().dispatch(request, *args, **kwargs)
 
-def perfil_usuario(request):
-    return render(request, 'perfil_usuario.html', {'usuarios': request.user})
+class PefilUsuarioView(LoginRequiredMixin, TemplateView):
+    template_name =  'perfil_usuario.html'
 
-def editar_usuario(request):
-    usuario = request.user
+class UsuarioUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = User
+    template_name = 'cadastrar_usuario.html'
+    success_url = reverse_lazy('perfil_usuario')
+    success_message = "Seus dados foram atualizados com sucesso!"
 
-    if request.method == 'POST':
-        form = EditarUsuarioForm(request.POST, instance=usuario)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Perfil atualizado com sucesso!")
-            return redirect('perfil_usuario')
-        else:
-            messages.error(request, "Erro ao atualizar o perfil. Verifique os dados.")
-    else:
-        form = EditarUsuarioForm(instance=usuario)
-
-    return render(request, 'cadastrar_usuario.html', {
-        'usuario': usuario,
-        'form': form,
-        'modo': 'editar'
-    })
-
-def deletar_usuario(request):
-    usuario = request.user
-    if request.method == 'POST':
-        usuario.delete()
-        messages.success(request, "Conta excluida com sucesso!")
-        return redirect('home')
+    def get_object(self, queryset = None):
+        return self.request.user
     
-    return render(request, 'perfil_usuario.html', {'usuario':usuario, 'modo': 'deletar'})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['modo'] = 'editar'
+        return context
+
+class UsuarioDeleteView(UserPassesTestMixin,DeleteView):
+    model = User
+    template_name = 'pefil_usuario'
+    success_url = reverse_lazy('lista_usuarios')
+    pk_url_kwarg = 'id'
+
+    def test_func(self):
+        return self.request.user.is_superuser
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['modo'] = 'deletar'
+        context['usuario'] = self.object
+
+        return  context
+    
+    def form_valid(self, form):
+        messages.success(self.request, "Usuário excluído com sucesso do sistema!")
+        return super().form_valid(form)
