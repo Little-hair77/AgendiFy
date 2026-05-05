@@ -1,54 +1,60 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.forms import AuthenticationForm
+from django.urls import reverse_lazy
 from ..forms import RegistroUsuarioForm, EditarUsuarioForm
 from ..models import Usuario
 
 User = get_user_model()
 
-def listar_usuarios(request):
-    usuarios = Usuario.objects.all()
+class UsuarioListView(ListView):
+    model = Usuario
+    template_name = 'listar_usuarios.html'
+    context_object_name = 'usuarios'
 
-    return render(request, 'listar_usuarios.html', {'usuarios': usuarios})
+class UsuarioCreateView(CreateView):
+    template_name  = 'cadastrar_usuario.html'
+    form_class = RegistroUsuarioForm
+    success_url = reverse_lazy('login')
 
-def cadastrar_usuario(request):
-    if request.method == 'POST':
-        form = RegistroUsuarioForm(request.POST)
+    success_message = "Usuário registrado com sucesso! Faça Login."
 
-        if form.is_valid() :
-            form.save()
-            messages.success(request, "Usuário registrado com sucesso! Faça login.")
-            return redirect('login')
-        else:
-            messages.error(request, "Erro ao registrar usuário. Verifique os campos.")
-    else:
-        form = RegistroUsuarioForm()
+    def form_invalid(self, form):
+        messages.error(self.request, "Erro ao registrar o usuário. Verifique os campos.")
+
+        return super().form_invalid(form)
+
+class UsuarioLoginView(LoginView):
+    template_name = 'login.html'
+    redirect_authenticated_user = True
+
+
+    def get_success_url(self):
+        return reverse_lazy('home')
     
-    return render(request, 'cadastrar_usuario.html', {'form': form})
+    def form_valid(self, form):
+        user = form.get_user()
 
-def login_usuario(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            messages.success(request, f"Bem-vindo, {user.first_name}!")
-            return redirect('home') 
-        else:
-            messages.error(request, "Usuário ou senha inválidos.")
-    else:
-        form = AuthenticationForm()
+        messages.success(self.request, f"Bem-vindo, {user.first_name}!")
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, "Usuário ou senha inválidos.")
+        return super().form_invalid(form)
 
-    return render(request, 'login.html', {'form': form})
+class UsuarioLogoutView(LogoutView):
+    next_page = reverse_lazy('login')
 
-def logout_usuario(request):
-    logout(request)
-    messages.success(request, "Você saiu da sua conta.")
-    return redirect('login')
+    def dispatch(self, request, *args, **kwargs):
+
+        if request.user.is_authenticated:
+            messages.info(request, "Você saiu da sua conta com sucesso. Até logo!")
+            
+        return super().dispatch(request, *args, **kwargs)
 
 def perfil_usuario(request):
     return render(request, 'perfil_usuario.html', {'usuarios': request.user})
