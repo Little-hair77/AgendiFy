@@ -58,23 +58,24 @@ class ProfissionalCreateView(UserPassesTestMixin, CreateView):
 
         return reverse_lazy('listar_profissionais_por_empresa', kwargs={'empresa_id': empresa_id})
 
-def editar_profissional(request, pk):
-    profissional = get_object_or_404(Profissional, pk=pk)
+class ProfissionalUpdateView(UserPassesTestMixin,UpdateView):
+    model = Profissional
+    form_class = ProfissionalForm
+    template_name = 'cadastrar_profissional.html'
+    success_message = "Dados do profissional atualizados com sucesso!"
+    pk_url_kwarg = 'id'
 
-    if request.method == 'POST':
-        form = ProfissionalForm(request.POST, instance=profissional)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_profissionais')
-    else:
-        form = ProfissionalForm(instance=profissional)
-    
-    return render(request, 'cadastrar_profissional.html', {
-        'form': form,
-        'profissional': profissional,
-        'modo': 'editar'
-    })
+    def test_func(self):
+        return super().request.user.is_superuser
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['mode'] = 'editar'
+        return  context
+     
+    def get_success_url(self):
+        empresa_id = self.object.empresa.id
+        return reverse_lazy('listar_profissionais_por_empresa', kwargs = {'empresa_id': empresa_id})
 
 def deletar_profissional(request, pk):
     profissional = get_object_or_404(Profissional, pk=pk)
