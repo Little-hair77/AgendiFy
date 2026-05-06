@@ -1,5 +1,7 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView, DetailView,  DeleteView
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from ..models import Profissional 
 from ..forms import ProfissionalForm
@@ -18,6 +20,8 @@ class ProfissionalPorEmpresaListView(ListView):
 
     def get_queryset(self):
         empresa_id = self.kwargs.get('empresa_id')
+
+        return Profissional.objects.filter(empresa_id = empresa_id)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -26,20 +30,33 @@ class ProfissionalPorEmpresaListView(ListView):
 
         return context
 
-def cadastrar_profissional(request):
-    if request.method == 'POST':
-        form = ProfissionalForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_profissionais')
-    else:
-        form = ProfissionalForm()
+class ProfissionalCreateView(UserPassesTestMixin, CreateView):
+    model = Profissional
+    form_class = ProfissionalForm
+    template_name = 'cadastrar_profissional.html'
+    success_message = "Profissional cadastrado com sucesso!"
 
-    return render(request, 'cadastrar_profissional.html', {
-        'form': form,
-        'modo': 'cadastrar'
-    })
+    def test_func(self):
+        return self.request.user.is_superuser
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        empresa_id = self.kwargs.get('empresa_id')
+        context['empresa'] = get_object_or_404(Empresa, id=empresa_id)
 
+        return context
+    
+    def form_valid(self, form):
+        empresa = get_object_or_404(Empresa, id=self.kwargs.get('empresa_id'))
+        
+        form.isinstance.empresa = empresa
+
+        return super().form_valid(form)
+    
+    def get_sucess_url(self):
+        empresa_id = self.kwargs.get('empresa_id')
+
+        return reverse_lazy('listar_profissionais_por_empresa', kwargs={'empresa_id': empresa_id})
 
 def editar_profissional(request, pk):
     profissional = get_object_or_404(Profissional, pk=pk)
