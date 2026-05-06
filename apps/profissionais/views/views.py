@@ -1,21 +1,30 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from ..models import Profissional        
+from django.views.generic import ListView, CreateView, UpdateView, DetailView,  DeleteView
+from django.urls import reverse_lazy
+from ..models import Profissional 
 from ..forms import ProfissionalForm
 from apps.empresas.models import Empresa
 
 
-def listar_profissionais(request):
-    profissionais = Profissional.objects.all()
-    return render(request, 'listar_profissionais.html', {'profissionais': profissionais})
+class ProfissionalListView(ListView):
+    model = Profissional
+    template_name  = 'listar_profissional.html'
+    context_object_name = 'profissionais'
 
-def listar_profissionais_por_empresa(request, empresa_id):
-    empresa = get_object_or_404(Empresa, id=empresa_id)
-    profissionais = Profissional.objects.filter(empresa=empresa)
+class ProfissionalPorEmpresaListView(ListView):
+    model = Profissional
+    template_name = 'listar_profissionais.html'
+    context_object_name = 'profissionais'
 
-    return render(request, 'listar_profissionais.html', {
-        'profissionais': profissionais,
-        'empresa': empresa
-    })
+    def get_queryset(self):
+        empresa_id = self.kwargs.get('empresa_id')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        empresa_id = self.kwargs.get('empresa_id')
+        context['empresa'] = get_object_or_404(Empresa, id=empresa_id)
+
+        return context
 
 def cadastrar_profissional(request):
     if request.method == 'POST':
