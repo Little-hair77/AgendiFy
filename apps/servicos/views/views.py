@@ -17,7 +17,6 @@ class ServicoCreateView(UserPassesTestMixin,CreateView):
     success_url = reverse_lazy('listar_servicos')
 
     def test_func(self):
-        # Garante que Apenas o SuperUser possa cadastrar
         return self.request.user.is_superuser
 
 class ServicoUpdateView(UserPassesTestMixin,UpdateView):

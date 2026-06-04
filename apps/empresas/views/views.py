@@ -1,51 +1,62 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
 from ..models import Empresa
 from ..forms import EmpresaForm, EditarEmpresaForm
 
-def listar_empresas(request):    
-    empresas = Empresa.objects.all()
-    return render(request, 'listar_empresas.html', {'empresas':empresas})
+class EmpresaListView(ListView):
+    model = Empresa
+    template_name = 'listar_empresas.html'
+    context_object_name = 'empresas'
 
-def detalhes_empresa(request, id):
-    empresa = get_object_or_404(Empresa, id=id)
-    return render(request, 'detalhes_empresa.html', {'empresa': empresa})
 
-def cadastrar_empresa(request):
-    if request.method == 'POST':
-        form = EmpresaForm(request.POST)
-        if form.is_valid():
-            empresa = form.save(commit=False)
-            empresa.dono = request.user   
-            empresa.save()
-            return redirect('listar_empresas')
-    else:
-        form = EmpresaForm()
+class EmpresaDetailView(DetailView):
+    model = Empresa
+    template_name = 'detalhes_empresa.html'
+    context_object_name = 'empresa'
+    pk_url_kwarg = 'id'
 
-    return render(request, 'cadastrar_empresa.html', {'form': form})
 
-def editar_empresa(request, id):
-    empresa = get_object_or_404(Empresa, id=id)
-    form = EditarEmpresaForm(request.POST or None, instance=empresa)
+class EmpresaCreateView(UserPassesTestMixin, SuccessMessageMixin, CreateView):
+    model = Empresa
+    form_class = EmpresaForm
+    template_name = 'cadastrar_empresa.html'
+    success_url = reverse_lazy('listar_empresas')
+    success_message = "A empresa foi cadastrada com sucesso!"
 
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        return redirect('listar_empresas')
-    
-    return render(request, 'cadastrar_empresa.html', {
-        'form': form,
-        'empresa': empresa,
-        'modo': 'editar'
-    })
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_superuser
 
-def deletar_empresa(request, id):
-    empresa = get_object_or_404(Empresa, id=id)
 
-    if request.method == 'POST':
-        empresa.delete()
-        return redirect('listar_empresas')
-    
-    return render(request, 'detalhes_empresa.html', {
-        'empresa': empresa,
-        'modo': 'deletar'
-    })
+class EmpresaUpdateView(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    model = Empresa
+    form_class = EditarEmpresaForm
+    template_name = 'cadastrar_empresa.html'
+    success_url = reverse_lazy('listar_empresas')
+    pk_url_kwarg = 'id'
+    success_message = "Os dados da empresa foram atualizados com sucesso!"
+
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_superuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['modo'] = 'editar'
+        return context
+
+
+class EmpresaDeleteView(UserPassesTestMixin, SuccessMessageMixin, DeleteView):
+    model = Empresa
+    template_name = 'detalhes_empresa.html'
+    success_url = reverse_lazy('listar_empresas')
+    pk_url_kwarg = 'id'
+    success_message = "A empresa foi removida do sistema com sucesso!"
+
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_superuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['modo'] = 'deletar'
+        return context
