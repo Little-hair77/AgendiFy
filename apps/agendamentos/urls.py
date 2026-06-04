@@ -2,10 +2,10 @@ from django.urls import path
 from .views import views
 
 urlpatterns = [
-    path('agendamentos/', views.listar_agendamentos_usuario , name='listar_agendamentos_usuario'),
-    path('agendamentos/', views.listar_agendamentos_empresa, name='listar_agendamentos_empresa'),
-    path('agendar/<int:id>/', views.cadastrar_agendamento, name='cadastrar_agendamento'),
-    path('<int:id>/editar/', views.editar_agendamento, name='editar_agendamento'),
-    path('<int:id>/deletar/', views.deletar_agendamento, name='deletar_agendamento'),
-    path('<int:id>/detalhes/', views.detalhes_agendamento, name='detalhes_agendamento'),
+    path('agendamentos/', views.AgendamentoUsuarioListView.as_view() , name='listar_agendamentos_usuario'),
+    path('agendamentos/', views.AgendamentoEmpresaListView.as_view(), name='listar_agendamentos_empresa'),
+    path('agendar/<int:servico_id>/', views.AgendamentoCreateView.as_view(), name='cadastrar_agendamento'),
+    path('<int:id>/editar/', views.AgendamentoUpdateView.as_view(), name='editar_agendamento'),
+    path('<int:id>/deletar/', views.AgendamentoDeleteView.as_view(), name='deletar_agendamento'),
+    path('<int:id>/detalhes/', views.AgendamentoDetailView.as_view(), name='detalhes_agendamento'),
 ]

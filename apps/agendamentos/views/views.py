@@ -1,78 +1,96 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 from apps.servicos.models import Servico
 from ..models import Agendamento
 from ..forms import AgendamentoForm
 
-# Create your views here.
-@login_required
-def listar_agendamentos_usuario(request):
-    agendamentos = Agendamento.objects.filter(usuario=request.user)
-    return render(request, 'listar_agendamentos.html', {'agendamentos': agendamentos})
 
-@login_required
-def listar_agendamentos_empresa(request):
-    agendamentos = Agendamento.objects.filter(
-        servico__empresa__dono=request.user
-    )
-    return render(request, 'listar_agendamentos.html', {'agendamentos': agendamentos})
+class AgendamentoUsuarioListView(LoginRequiredMixin, ListView):
+    model = Agendamento
+    template_name = 'listar_agendamentos.html'
+    context_object_name = 'agendamentos'
 
-@login_required
-def cadastrar_agendamento(request, id):
-    servico = get_object_or_404(Servico, id=id)
+    def get_queryset(self):
+        return Agendamento.objects.filter(usuario=self.request.user)
 
-    if request.method == 'POST':
-        form = AgendamentoForm(request.POST)
 
-        if form.is_valid():
-            agendamento = form.save(commit=False)
-            agendamento.usuario = request.user
-            agendamento.servico = servico
-            agendamento.empresa = servico.empresa
-            agendamento.save()
+class AgendamentoCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Agendamento
+    form_class = AgendamentoForm
+    template_name = 'cadastrar_agendamento.html'
+    success_url = reverse_lazy('listar_agendamentos_usuario')
+    success_message = "Seu agendamento foi realizado com sucesso!"
 
-            return redirect('listar_agendamentos_usuario')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Captura o id do serviço vindo da URL para exibir dados na tela se necessário
+        context['servico'] = get_object_or_404(Servico, id=self.kwargs.get('servico_id'))
+        return context
 
-    else:
-        form = AgendamentoForm()
+    def form_valid(self, form):
+        servico = get_object_or_404(Servico, id=self.kwargs.get('servico_id'))
+        
+        form.instance.usuario = self.request.user
+        form.instance.servico = servico
+        form.instance.empresa = servico.empresa  
+        
+        return super().form_valid(form)
 
-    return render(request, 'cadastrar_agendamento.html', {
-        'form': form,
-        'servico': servico
-    })
 
-@login_required
-def editar_agendamento(request, id):
-    agendamento = get_object_or_404(Agendamento, id= id, usuario=request.user)
+class AgendamentoDetailView(LoginRequiredMixin, DetailView):
+    model = Agendamento
+    template_name = 'perfil_agendamentos.html'
+    context_object_name = 'agendamento'
+    pk_url_kwarg = 'id'
 
-    if request.method == 'POST':
-        form = AgendamentoForm(request.POST, instance=agendamento)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_agendamentos_usuario')
-    else:
-        form = AgendamentoForm(instance=agendamento)
+    def get_queryset(self):
+        return Agendamento.objects.filter(usuario=self.request.user)
 
-    return render(request, 'cadastrar_agendamento.html', {
-        'form': form,
-        'agendamento': agendamento,
-        'modo': 'editar'
-    })
 
-@login_required
-def deletar_agendamento(request, id):
-    agendamento = get_object_or_404(Agendamento, id=id, usuario=request.user)
+class AgendamentoUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    model = Agendamento
+    form_class = AgendamentoForm
+    template_name = 'cadastrar_agendamento.html'
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('listar_agendamentos_usuario')
+    success_message = "Agendamento atualizado com sucesso!"
 
-    if request.method == 'POST':
-        agendamento.delete()
-        return redirect('listar_agendamentos_usuario')
+    def test_func(self):
+        agendamento = self.get_object()
+        return agendamento.usuario == self.request.user
 
-    return render(request, 'perfil_agendamentos.html', {
-        'agendamento': agendamento,
-        'modo': 'deletar'
-    })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['modo'] = 'editar'
+        return context
 
-@login_required
-def detalhes_agendamento(request, id):
-    agendamento = get_object_or_404(Agendamento, id=id, usuario=request.user)
-    return render(request, 'perfil_agendamentos.html', {'agendamento': agendamento})
+
+class AgendamentoDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):
+    model = Agendamento
+    template_name = 'perfil_agendamentos.html'
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('listar_agendamentos_usuario')
+    success_message = "Agendamento cancelado com sucesso!"
+
+    def test_func(self):
+        # Só permite deletar se o agendamento pertencer ao usuário logado
+        agendamento = self.get_object()
+        return agendamento.usuario == self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['modo'] = 'deletar'
+        return context
+
+
+class AgendamentoEmpresaListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Agendamento
+    template_name = 'listar_agendamentos.html'
+    context_object_name = 'agendamentos'
+
+    def test_func(self):
+        # Apenas o Administrador Geral pode ter acesso a essa visão macro de relatórios
+        return self.request.user.is_authenticated and self.request.user.is_superuser
