@@ -10,7 +10,7 @@ from apps.empresas.models import Empresa
 
 class ProfissionalListView(ListView):
     model = Profissional
-    template_name  = 'listar_profissional.html'
+    template_name  = 'listar_profissionais.html'
     context_object_name = 'profissionais'
 
 class ProfissionalPorEmpresaListView(ListView):
