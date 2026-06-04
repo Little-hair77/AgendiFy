@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from ..models import Empresa
 from ..forms import EmpresaForm, EditarEmpresaForm
 
+
 class EmpresaListView(ListView):
     model = Empresa
     template_name = 'listar_empresas.html'
