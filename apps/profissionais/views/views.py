@@ -30,7 +30,7 @@ class ProfissionalPorEmpresaListView(ListView):
 
         return context
 
-class ProfissionalCreateView(UserPassesTestMixin, CreateView):
+class ProfissionalCreateView(UserPassesTestMixin,SuccessMessageMixin, CreateView):
     model = Profissional
     form_class = ProfissionalForm
     template_name = 'cadastrar_profissional.html'
@@ -49,21 +49,20 @@ class ProfissionalCreateView(UserPassesTestMixin, CreateView):
     def form_valid(self, form):
         empresa = get_object_or_404(Empresa, id=self.kwargs.get('empresa_id'))
         
-        form.isinstance.empresa = empresa
+        form.instance.empresa = empresa
 
         return super().form_valid(form)
     
-    def get_sucess_url(self):
+    def get_success_url(self):
         empresa_id = self.kwargs.get('empresa_id')
 
         return reverse_lazy('listar_profissionais_por_empresa', kwargs={'empresa_id': empresa_id})
 
-class ProfissionalUpdateView(UserPassesTestMixin,UpdateView):
+class ProfissionalUpdateView(UserPassesTestMixin,SuccessMessageMixin, UpdateView):
     model = Profissional
     form_class = ProfissionalForm
     template_name = 'cadastrar_profissional.html'
     success_message = "Dados do profissional atualizados com sucesso!"
-    pk_url_kwarg = 'id'
 
     def test_func(self):
         return super().request.user.is_superuser
@@ -77,22 +76,28 @@ class ProfissionalUpdateView(UserPassesTestMixin,UpdateView):
         empresa_id = self.object.empresa.id
         return reverse_lazy('listar_profissionais_por_empresa', kwargs = {'empresa_id': empresa_id})
 
-def deletar_profissional(request, pk):
-    profissional = get_object_or_404(Profissional, pk=pk)
+class ProfissionalDetailView (DetailView):
+    model = Profissional
+    template_name = 'perfil_profissional.html'
+    context_object_name = 'profissional'
 
-    if request.method == 'POST':
-        profissional.delete()
-        return redirect('listar_profissionais')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    return render(request, 'perfil_profissional.html', {
-        'profissional': profissional,
-        'modo': 'deletar'
-    })
+        context['modo'] = 'detalhes'
+        return context
 
-def detalhes_profissional(request, pk):
-    profissional = get_object_or_404(Profissional, pk=pk)
+class ProfissionalDeleteView(UserPassesTestMixin, DeleteView):
+    model = Profissional
+    template_name = 'perfil_profissional.html'
+    context_object_name = 'profissional'
+    success_url = reverse_lazy('listar_profissionais')
 
-    return render(request, 'perfil_profissional.html', {
-        'profissional': profissional,
-        'modo': 'detalhes'
-    })
+    def test_func(self):
+        return self.request.user.is_superuser
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['modo'] = 'deletar'
+        return context

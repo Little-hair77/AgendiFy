@@ -54,3 +54,4 @@ class ServicoDetailView(DetailView):
     model = Servico
     template_name = 'detalhes_servico.html'
     content_object_name = 'servico'
+    pk_url_kwarg = 'id'
