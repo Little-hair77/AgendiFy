@@ -100,7 +100,7 @@
         padding-left: 10px; border-left: 4px solid #a617ff;
     }
 
-    /* === MODO DELETAR (NOVO) === */
+    /* === MODO DELETAR === */
     .delete-overlay {
         background-color: #fff;
         border: 2px solid #fc8181;
@@ -126,7 +126,6 @@
 
 <div class="container py-5">
     
-    <!-- === 1. BLOCO DE CONFIRMAÇÃO DE EXCLUSÃO === -->
     {% if modo == 'deletar' %}
     <div class="delete-overlay">
         <i class="bi bi-exclamation-triangle-fill text-danger mb-3" style="font-size: 3rem;"></i>
@@ -139,7 +138,6 @@
         <form method="post">
             {% csrf_token %}
             <div class="d-flex justify-content-center gap-3">
-                <!-- Cancelar volta para a visualização normal (assumindo nome da url 'detalhe_empresa') -->
                 <a href="{% url 'detalhes_empresa' empresa.id %}" class="btn btn-outline-secondary rounded-pill px-4 fw-bold">
                     Cancelar
                 </a>
@@ -151,7 +149,6 @@
     </div>
     {% endif %}
 
-    <!-- === CONTEÚDO PRINCIPAL (Ofuscado se estiver deletando) === -->
     <div class="{% if modo == 'deletar' %}blur-content{% endif %}">
         
         <div class="company-header-card">
@@ -170,17 +167,23 @@
                                 <span class="badge bg-light text-primary border mb-2">Empresa Verificada <i class="bi bi-patch-check-fill"></i></span>
                             </div>
                             
-                            <!-- Botões do Dono (Editar e Excluir) -->
-                            {% if request.user == empresa.dono %}
-                            <div class="d-flex gap-2">
-                                <a href="{% url 'editar_empresa' empresa.id %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
-                                    <i class="bi bi-pencil"></i> Editar
-                                </a>
-                                <!-- Botão que chama a view de deletar (GET mostra o alerta acima) -->
-                                <a href="{% url 'deletar_empresa' empresa.id %}" class="btn btn-outline-danger btn-sm rounded-pill px-3">
-                                    <i class="bi bi-trash"></i> Excluir
-                                </a>
-                            </div>
+                            {% if request.user.is_authenticated and request.user.is_superuser %}
+                                <div class="d-flex gap-2 mb-2">
+                                    <a href="{% url 'listar_profissionais_por_empresa' empresa.id %}" class="btn btn-primary btn-sm rounded-pill px-3 fw-bold shadow-sm">
+                                        <i class="bi bi-people-fill me-1"></i> Gerenciar Equipe
+                                    </a>
+                                    
+                                    <a href="{% url 'cadastrar_servico' empresa.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-bold shadow-sm">
+                                        <i class="bi bi-plus-circle-fill me-1"></i> Novo Serviço
+                                    </a>
+
+                                    <a href="{% url 'editar_empresa' empresa.id %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </a>
+                                    <a href="{% url 'deletar_empresa' empresa.id %}" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                                        <i class="bi bi-trash"></i> Excluir
+                                    </a>
+                                </div>
                             {% endif %}
                         </div>
                         
@@ -257,7 +260,7 @@
                                 </div>
                             </div>
                         </div>
-                        {% empty %}
+                        {% empty %} 
                             <div class="text-center py-5">
                                 <i class="bi bi-inbox fs-1 text-muted"></i>
                                 <p class="text-muted mt-2">Esta empresa ainda não cadastrou serviços.</p>

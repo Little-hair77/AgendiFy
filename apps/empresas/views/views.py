@@ -28,6 +28,10 @@ class EmpresaCreateView(UserPassesTestMixin, SuccessMessageMixin, CreateView):
 
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.is_superuser
+    
+    def form_valid(self, form):
+        form.instance.dono = self.request.user
+        return super().form_valid(form)
 
 
 class EmpresaUpdateView(UserPassesTestMixin, SuccessMessageMixin, UpdateView):

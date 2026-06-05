@@ -4,9 +4,8 @@ from .models import Servico
 class ServicoForm(forms.ModelForm):
     class Meta:
         model = Servico
-        fields = ['empresa', 'nome', 'descricao', 'preco', 'tags']
+        fields = ['nome', 'descricao', 'preco', 'tags']
         widgets = {
-            'empresa': forms.Select(attrs={'class': 'form-select'}),
             'nome': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Nome do serviço'
@@ -20,7 +19,6 @@ class ServicoForm(forms.ModelForm):
             'tags': forms.SelectMultiple(attrs={'class':'form-select'})
         }
         labels = {
-            'empresa': 'Empresa responsável',
             'nome': 'Nome do serviço',
             'descricao': 'Descrição',
             'preco': 'Preço (R$)',

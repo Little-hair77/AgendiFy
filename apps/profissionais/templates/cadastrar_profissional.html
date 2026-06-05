@@ -179,14 +179,16 @@
                         
                         <!-- Empresa -->
                         <div class="mb-4">
-                            <label for="{{ form.empresa.id_for_label }}" class="form-label">
+                            <label class="form-label">
                                 <i class="bi bi-building me-1 text-primary"></i> Empresa
                             </label>
-                            {{ form.empresa }}
-
-                            {% if form.empresa.errors %}
-                                <div class="text-danger small mt-1">{{ form.empresa.errors.0 }}</div>
-                            {% endif %}
+                            <div class="form-control bg-light text-muted fw-bold d-flex align-items-center" style="cursor: not-allowed;">
+                                {% if object %}
+                                    {{ object.empresa.nome }}
+                                {% else %}
+                                    {{ empresa.nome }}
+                                {% endif %}
+                            </div>
                         </div>
 
                         <!-- Serviços (Select Multiple) -->
@@ -223,9 +225,15 @@
                             {% endif %}
                         </button>
 
-                        <a href="{% url 'listar_profissionais' %}" class="btn-cancel"> <!-- Ajuste a URL para onde deve voltar (ex: listar_profissionais) -->
-                            Cancelar e voltar
-                        </a>
+                        {% if modo == 'editar' %}
+                            <a href="{% url 'listar_profissionais_por_empresa' object.empresa.id %}" class="btn-cancel">
+                                Cancelar
+                            </a>
+                        {% else %}
+                            <a href="{% url 'listar_profissionais_por_empresa' empresa.id %}" class="btn-cancel">
+                                Cancelar
+                            </a>
+                        {% endif %}
                         {% if form.errors %}
                         <div class="alert alert-danger mt-3">
                             {{ form.errors }}

@@ -143,7 +143,6 @@
                 
                 <div class="service-form-card">
                     
-                    <!-- Ícone Decorativo (Muda conforme o modo) -->
                     <div class="d-flex justify-content-center">
                         <div class="form-header-icon">
                             {% if modo == 'editar' %}
@@ -154,30 +153,38 @@
                         </div>
                     </div>
 
-                    <!-- Título Dinâmico -->
                     <div class="text-center mb-5">
                         {% if modo == 'editar' %}
                             <h2 class="fw-bold mb-2 text-dark">Editar Serviço</h2>
                             <p class="text-muted">Atualize as informações deste serviço.</p>
                         {% else %}
                             <h2 class="fw-bold mb-2 text-dark">Novo Serviço</h2>
-                            <p class="text-muted">Preencha os dados para adicionar ao seu portfólio.</p>
+                            <p class="text-muted">Preencha os dados para adicionar ao portfólio da empresa.</p>
                         {% endif %}
                     </div>
 
                     <form method="post">
                         {% csrf_token %}
-                        <!-- Empresa Responsável -->
+                        
                         <div class="mb-4">
-                            <label for="{{ form.empresa.id_for_label }}" class="form-label">
+                            <label class="form-label">
                                 <i class="bi bi-building me-1 text-primary"></i> Empresa responsável
                             </label>
-                            {{ form.empresa }}
+                            
+                            {% if modo == 'editar' %}
+                                {{ form.empresa }}
+                            {% else %}
+                                <div class="form-control bg-light text-muted fw-bold d-flex align-items-center" style="cursor: not-allowed;">
+                                    {{ empresa.nome }}
+                                </div>
+                                <input type="hidden" name="empresa" value="{{ empresa.id }}">
+                            {% endif %}
+                            
                             {% if form.empresa.errors %}
                                 <div class="text-danger small mt-1">{{ form.empresa.errors.0 }}</div>
                             {% endif %}
                         </div>
-                        <!-- Nome do Serviço -->
+
                         <div class="mb-4">
                             <label for="{{ form.nome.id_for_label }}" class="form-label">
                                 <i class="bi bi-tag me-1 text-primary"></i> Nome do Serviço
@@ -188,7 +195,6 @@
                             {% endif %}
                         </div>
 
-                        <!-- Preço -->
                         <div class="mb-4">
                             <label for="{{ form.preco.id_for_label }}" class="form-label">
                                 <i class="bi bi-currency-dollar me-1 text-primary"></i> Valor (R$)
@@ -202,7 +208,6 @@
                             {% endif %}
                         </div>
 
-                        <!-- Descrição -->
                         <div class="mb-4">
                             <label for="{{ form.descricao.id_for_label }}" class="form-label">
                                 <i class="bi bi-file-text me-1 text-primary"></i> Descrição Detalhada
@@ -211,7 +216,6 @@
                             <div class="form-text small text-muted">Descreva o que está incluso.</div>
                         </div>
 
-                        <!-- Tags (Select Multiple) -->
                         <div class="mb-5">
                             <label for="{{ form.tags.id_for_label }}" class="form-label">
                                 <i class="bi bi-bookmarks me-1 text-primary"></i> Tags / Categorias
@@ -222,10 +226,13 @@
                             </div>
                         </div>
 
-                        <!-- Botões de Ação -->
                         <div class="row g-3">
                             <div class="col-6">
-                                <a href="{% url 'listar_servicos' %}" class="btn-cancel">Cancelar</a>
+                                {% if modo == 'editar' %}
+                                    <a href="{% url 'detalhes_empresa' object.empresa.id %}" class="btn-cancel">Cancelar</a>
+                                {% else %}
+                                    <a href="{% url 'detalhes_empresa' empresa.id %}" class="btn-cancel">Cancelar</a>
+                                {% endif %}
                             </div>
                             <div class="col-6">
                                 <button type="submit" class="btn-save">

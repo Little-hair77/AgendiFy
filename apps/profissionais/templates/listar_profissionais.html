@@ -86,21 +86,27 @@
 
 <div class="container py-5">
     
-    <!-- Cabeçalho -->
     <div class="section-header">
         <div>
-            <h2 class="fw-bold text-dark">Minha Equipe</h2>
-            <p class="text-muted mb-0">Gerencie os profissionais da sua empresa.</p>
+            <h2 class="fw-bold text-dark">
+                {% if empresa %} Equipe: {{ empresa.nome }} {% else %} Minha Equipe {% endif %}
+            </h2>
+            <p class="text-muted mb-0">Gerencie os profissionais cadastrados no sistema.</p>
         </div>
 
-        {% if request.user.is_superuser %}
-        <a href="{% url 'cadastrar_profissional' %}" class="btn btn-brand rounded-pill px-4 py-2 fw-bold shadow-sm">
-            <i class="bi bi-person-plus-fill me-2"></i> Novo Profissional
-        </a>
+        {% if request.user.is_superuser and empresa %}
+            {% if profissionais %}
+                <a href="{% url 'cadastrar_profissional' profissionais.first.empresa.id %}" class="btn btn-brand rounded-pill px-4 py-2 fw-bold shadow-sm">
+                    <i class="bi bi-person-plus-fill me-2"></i> Novo Profissional
+                </a>
+            {% else %}
+                <a href="{% url 'cadastrar_profissional' empresa.id %}" class="btn btn-brand rounded-pill px-4 py-2 fw-bold shadow-sm">
+                    <i class="bi bi-person-plus-fill me-2"></i> Cadastrar Primeiro Profissional
+                </a>
+            {% endif %}
         {% endif %}
     </div>
-
-    <!-- Grid -->
+s
     <div class="row g-4">
         {% for profissional in profissionais %}
         <div class="col-md-6 col-lg-3">
@@ -132,25 +138,21 @@
                     {% empty %}
                         <small class="text-muted fst-italic">Nenhum serviço vinculado.</small>
                     {% endfor %}
-                    {% if profissional.servicos.count > 3 %}
+                    {% if profesional.servicos.count > 3 %}
                         <span class="service-badge">+{{ profissional.servicos.count|add:"-3" }}</span>
                     {% endif %}
                 </div>
 
                 <div class="pro-actions">
-
-                    <!-- Ver Perfil -->
                     <a href="{% url 'detalhes_profissional' profissional.pk %}" class="btn-icon" title="Ver Perfil">
                         <i class="bi bi-eye-fill"></i>
                     </a>
 
                     {% if request.user.is_superuser %}
-                    <!-- Editar -->
                     <a href="{% url 'editar_profissional' profissional.pk %}" class="btn-icon" title="Editar">
                         <i class="bi bi-pencil-fill"></i>
                     </a>
 
-                    <!-- Excluir -->
                     <a href="{% url 'deletar_profissional' profissional.pk %}" class="btn-icon delete" title="Excluir">
                         <i class="bi bi-trash-fill"></i>
                     </a>
@@ -161,9 +163,11 @@
         </div>
         {% empty %}
         <div class="col-12 text-center py-5">
-            <h4 class="fw-bold text-muted">Nenhum profissional encontrado.</h4>
-            {% if request.user.is_superuser %}
-            <a href="{% url 'cadastrar_profissional' %}" class="btn btn-outline-primary rounded-pill px-4">Adicionar Profissional</a>
+            <h4 class="fw-bold text-muted mb-3">Nenhum profissional cadastrado para esta empresa.</h4>
+            {% if request.user.is_superuser and empresa %}
+                <a href="{% url 'cadastrar_profissional' empresa.id %}" class="btn btn-outline-primary rounded-pill px-4">
+                    <i class="bi bi-person-plus-fill me-1"></i> Adicionar Primeiro Profissional
+                </a>
             {% endif %}
         </div>
         {% endfor %}

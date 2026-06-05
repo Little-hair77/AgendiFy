@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView, DetailView,  DeleteView
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from ..models import Profissional 
 from ..forms import ProfissionalForm
 from apps.empresas.models import Empresa
@@ -39,19 +39,18 @@ class ProfissionalCreateView(UserPassesTestMixin,SuccessMessageMixin, CreateView
     def test_func(self):
         return self.request.user.is_superuser
     
+    def form_valid(self, form):
+        empresa_id = self.kwargs.get('empresa_id')
+        form.instance.empresa_id = empresa_id
+        return super().form_valid(form)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
         empresa_id = self.kwargs.get('empresa_id')
         context['empresa'] = get_object_or_404(Empresa, id=empresa_id)
-
-        return context
-    
-    def form_valid(self, form):
-        empresa = get_object_or_404(Empresa, id=self.kwargs.get('empresa_id'))
         
-        form.instance.empresa = empresa
-
-        return super().form_valid(form)
+        return context
     
     def get_success_url(self):
         empresa_id = self.kwargs.get('empresa_id')
@@ -65,16 +64,16 @@ class ProfissionalUpdateView(UserPassesTestMixin,SuccessMessageMixin, UpdateView
     success_message = "Dados do profissional atualizados com sucesso!"
 
     def test_func(self):
-        return super().request.user.is_superuser
+        return self.request.user.is_superuser
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['mode'] = 'editar'
+        context['modo'] = 'editar'
         return  context
      
     def get_success_url(self):
         empresa_id = self.object.empresa.id
-        return reverse_lazy('listar_profissionais_por_empresa', kwargs = {'empresa_id': empresa_id})
+        return reverse('listar_profissionais_por_empresa', kwargs = {'empresa_id': empresa_id})
 
 class ProfissionalDetailView (DetailView):
     model = Profissional

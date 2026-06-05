@@ -1,6 +1,8 @@
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse_lazy
+from ...empresas.models import Empresa 
 from ..models import Servico
 from ..forms import ServicoForm
 
@@ -16,8 +18,19 @@ class ServicoCreateView(UserPassesTestMixin,CreateView):
     template_name = 'cadastrar_servico.html'
     success_url = reverse_lazy('listar_servicos')
 
+    def form_valid(self, form):
+        empresa_id = self.kwargs.get('empresa_id')
+        form.instance.empresa = get_object_or_404(Empresa, empresa_id)
+        return super().form_valid(form)
+
     def test_func(self):
         return self.request.user.is_superuser
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['empresa'] = get_object_or_404(Empresa, id=self.kwargs.get('empresa_id'))
+        context['modo'] = 'cadastrar'
+        return context
 
 class ServicoUpdateView(UserPassesTestMixin,UpdateView):
     model = Servico
