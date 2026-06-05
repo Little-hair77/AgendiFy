@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'oauth2_provider',
 
     # Meus apps
     'apps.usuarios',
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
     'apps.home',
     'apps.profissionais',
     'apps.dashboard',
+    'apps.api',
 ]
 
 AUTH_USER_MODEL = 'usuarios.Usuario'
@@ -138,3 +141,12 @@ LOGIN_REDIRECT_URL = 'dashboard'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated', # Tranca a API inteira
+    )
+}

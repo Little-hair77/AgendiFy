@@ -1,21 +1,30 @@
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Django
+# =========================
+# BANCO DE DADOS E CHAVES
+# =========================
 db.sqlite3
-/staticfiles/
-/media/
+.env
 
-# Virtual env
+# =========================
+# AMBIENTE VIRTUAL
+# =========================
 venv/
 env/
+.venv/
 
-# VSCode
-.vscode/
+# =========================
+# CACHE E ARQUIVOS COMPILADOS DO PYTHON
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
 
-# Sistema operacional
+# =========================
+# ARQUIVOS DE SISTEMA OPERACIONAL
+# =========================
 .DS_Store
 Thumbs.db
+
+# =========================
+# MÍDIAS E ESTÁTICOS LOCAIS
+# =========================
+media/

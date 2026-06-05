@@ -34,4 +34,10 @@ urlpatterns = [
 
     # Autenticação
     path('accounts/', include('apps.usuarios.urls')),
+
+    # Rota do OAuth2  (Geração de Tokens)
+    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+
+    # Rota da API
+    path('api/', include('apps.api.urls')),
 ]
