@@ -65,6 +65,8 @@ class UsuarioUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_url = reverse_lazy('perfil_usuario')
     success_message = "Seus dados foram atualizados com sucesso!"
 
+    fields = ['first_name', 'email', 'telefone']
+
     def get_object(self, queryset = None):
         return self.request.user
     

@@ -5,10 +5,8 @@ from ..managers import UsuarioManager
 
 class Usuario(AbstractUser):
 
-    # REMOVER username
     username = None
 
-    # EMAIL vira o campo de login
     email = models.EmailField(unique=True)
 
     USERNAME_FIELD = 'email'
