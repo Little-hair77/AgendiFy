@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'oauth2_provider',
+    'corsheaders',
 
     # Meus apps
     'apps.usuarios',
@@ -56,6 +57,7 @@ AUTH_USER_MODEL = 'usuarios.Usuario'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -150,3 +152,11 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated', # Tranca a API inteira
     )
 }
+
+# =========================
+# CONFIGURAÇÕES DE CORS
+# =========================
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173", # Porta do Vite 
+    "http://localhost:3000", # Porta do Create React App
+]
