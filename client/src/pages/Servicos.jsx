@@ -2,16 +2,15 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout"; 
 import api from "../services/api"; 
-import "./Servicos.css"; 
+// Importação do CSS Empresa para estilização de botões
+import "./Empresas.css"; 
 
 function Servicos() {
   const navigate = useNavigate();
   
-  // 1. Estados
   const [servicos, setServicos] = useState([]);
   const [carregando, setCarregando] = useState(true);
 
-  // 2. Busca ao carregar a página
   useEffect(() => {
     carregarServicos();
   }, []);
@@ -29,7 +28,6 @@ function Servicos() {
     }
   };
 
-  // 3. Função de Exclusão
   const handleDeletar = async (id) => {
     const confirmar = window.confirm("Tem certeza que deseja excluir este serviço?");
     if (!confirmar) return;
@@ -72,10 +70,9 @@ function Servicos() {
             <thead>
               <tr>
                 <th>ID</th>
-                {/* Ajuste o nome do campo abaixo se no seu Django ele se chamar "nome" em vez de "servico" */}
                 <th>Serviço</th> 
                 <th>Valor</th>
-                <th>Ações</th>
+                <th style={{ textAlign: "center" }}>Ações</th>
               </tr>
             </thead>
             
@@ -84,16 +81,36 @@ function Servicos() {
                 servicos.map((servico) => (
                   <tr key={servico.id}>
                     <td>{servico.id}</td>
-                    {/* Aqui renderizamos os campos reais do banco. Se for 'nome' e 'preco', mude aqui */}
                     <td>{servico.nome || servico.descricao || "-"}</td>
-                    <td>{formatarValor(servico.valor || servico.preco || 0)}</td>
-                    <td>
+                    <td>{formatarValor(servico.preco || servico.valor || 0)}</td>
+                    <td style={{ display: "flex", justifyItems: "center", justifyContent: "center", gap: "10px" }}>
+                      
+                      {/* Botão de Edição */}
                       <button 
-                        className="btn-danger"
-                        onClick={() => handleDeletar(servico.id)}
+                        className="btn-icon btn-edit"
+                        onClick={() => navigate(`/servicos/editar/${servico.id}`)}
+                        title="Editar Serviço"
                       >
-                        Excluir
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
                       </button>
+
+                      {/* Botão de Exclusão */}
+                      <button 
+                        className="btn-icon btn-danger"
+                        onClick={() => handleDeletar(servico.id)}
+                        title="Excluir Serviço"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          <line x1="10" y1="11" x2="10" y2="17"></line>
+                          <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                      </button>
+
                     </td>
                   </tr>
                 ))

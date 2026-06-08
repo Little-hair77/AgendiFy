@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout"; 
 import api from "../services/api"; 
-// Lembre-se de usar o mesmo CSS das empresas para herdar as classes .btn-icon e .btn-edit
+// Importação do CSS Empresa para estilização de botões
 import "./Empresas.css"; 
 
 function Profissionais() {
