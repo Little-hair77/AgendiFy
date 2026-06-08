@@ -1,97 +1,95 @@
-/* Cabeçalho da Página */
+/* client/src/pages/Empresas.css */
+
+/* --- CABEÇALHO DA PÁGINA --- */
 .page-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Empurra o título pra esquerda e o botão pra direita */
   align-items: center;
-  margin-bottom: 30px;
+  margin: 0 auto 30px auto; /* Centraliza na tela e dá espaço embaixo */
+  max-width: 1100px; /* Define um tamanho máximo elegante para telas gigantes */
+  width: 100%;
 }
 
 .page-title {
-  color: #1e3a8a;
-  font-size: 2rem;
+  color: #1e293b;
+  font-size: 2.2rem;
   font-weight: 800;
   margin: 0;
+  letter-spacing: -0.5px;
 }
 
-/* Botão Principal Novo */
-.btn-primary {
-  background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(166, 23, 255, 0.2);
-}
-
-/* Container da Tabela */
+/* --- CONTAINER DA TABELA --- */
 .table-container {
-  background: white;
+  background: #ffffff;
   border-radius: 12px;
-  padding: 25px;
-  box-shadow: 0 10px 30px rgba(0, 74, 173, 0.05);
-  border: 1px solid #f1f5f9;
-  overflow-x: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); /* Sombra bem suave */
+  padding: 30px;
+  max-width: 1100px; /* Mesmo tamanho máximo do cabeçalho para alinhamento perfeito */
+  margin: 0 auto; /* O segredo para centralizar o bloco na tela */
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* A Tabela */
+/* --- TABELA DE DADOS --- */
 .data-table {
-  width: 100%;
+  width: 100%; /* Força a tabela a esticar e ocupar todo o container branco */
   border-collapse: collapse;
+  text-align: left;
 }
 
 .data-table th {
-  text-align: left;
-  padding: 15px;
+  padding: 16px 20px;
   color: #64748b;
+  font-size: 0.85rem;
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid #e2e8f0;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #f1f5f9;
 }
 
 .data-table td {
-  padding: 15px;
-  color: #2d3748;
-  font-size: 0.95rem;
+  padding: 16px 20px;
+  color: #334155;
+  font-size: 1rem;
   border-bottom: 1px solid #f1f5f9;
   vertical-align: middle;
 }
 
-.data-table tr:hover td {
-  background-color: #f8fafc;
+.data-table tr:hover {
+  background-color: #f8fafc; /* Efeito de hover suave nas linhas */
 }
 
-/* Botão de Deletar */
+/* --- BOTÕES --- */
+.btn-primary {
+  background-color: #8b5cf6; /* Roxo combinando com a Sidebar */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.btn-primary:hover {
+  background-color: #7c3aed;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+}
+
 .btn-danger {
-  background-color: #fee2e2;
+  background: rgba(239, 68, 68, 0.1);
   color: #ef4444;
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
-  cursor: pointer;
   font-weight: 600;
-  font-size: 0.85rem;
-  transition: all 0.2s;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .btn-danger:hover {
-  background-color: #ef4444;
+  background: #ef4444;
   color: white;
-}
-
-/* Estado de Carregamento */
-.loading-state {
-  text-align: center;
-  padding: 40px;
-  color: #64748b;
-  font-weight: 600;
 }
