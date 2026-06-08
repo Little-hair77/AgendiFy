@@ -58,7 +58,7 @@ function Servicos() {
         <h1 className="page-title">Serviços</h1>
         <button 
           className="btn-primary"
-          onClick={() => navigate("/servicos/novo")}
+          onClick={() => navigate("/servicos/cadastrar")}
         >
           + Novo Serviço
         </button>
