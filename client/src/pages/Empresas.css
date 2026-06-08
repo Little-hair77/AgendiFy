@@ -1,12 +1,10 @@
-/* client/src/pages/Empresas.css */
-
 /* --- CABEÇALHO DA PÁGINA --- */
 .page-header {
   display: flex;
-  justify-content: space-between; /* Empurra o título pra esquerda e o botão pra direita */
+  justify-content: space-between; 
   align-items: center;
-  margin: 0 auto 30px auto; /* Centraliza na tela e dá espaço embaixo */
-  max-width: 1100px; /* Define um tamanho máximo elegante para telas gigantes */
+  margin: 0 auto 30px auto; 
+  max-width: 1100px; 
   width: 100%;
 }
 
@@ -22,10 +20,10 @@
 .table-container {
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); /* Sombra bem suave */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); 
   padding: 30px;
-  max-width: 1100px; /* Mesmo tamanho máximo do cabeçalho para alinhamento perfeito */
-  margin: 0 auto; /* O segredo para centralizar o bloco na tela */
+  max-width: 1100px; 
+  margin: 0 auto; 
   width: 100%;
   box-sizing: border-box;
 }
@@ -56,12 +54,12 @@
 }
 
 .data-table tr:hover {
-  background-color: #f8fafc; /* Efeito de hover suave nas linhas */
+  background-color: #f8fafc; 
 }
 
 /* --- BOTÕES --- */
 .btn-primary {
-  background-color: #8b5cf6; /* Roxo combinando com a Sidebar */
+  background-color: #8b5cf6; 
   color: white;
   border: none;
   padding: 12px 24px;
@@ -92,4 +90,31 @@
 .btn-danger:hover {
   background: #ef4444;
   color: white;
+}
+
+/* --- BOTÕES DE ÍCONE (AÇÕES DA TABELA) --- */
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-edit {
+  background: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6; /* Nosso roxo padrão */
+}
+
+.btn-edit:hover {
+  background: #8b5cf6;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.btn-danger:hover svg {
+  stroke: white;
 }

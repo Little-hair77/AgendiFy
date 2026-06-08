@@ -28,13 +28,11 @@ function Empresas() {
   };
 
   const handleDeletar = async (id) => {
-    // Confirmação de segurança
     const confirmar = window.confirm("Tem certeza que deseja excluir esta empresa?");
     if (!confirmar) return;
 
     try {
       await api.delete(`/empresas/${id}/`);
-      // Atualiza a lista na tela removendo a empresa deletada sem precisar recarregar a página
       setEmpresas(empresas.filter((empresa) => empresa.id !== id));
       alert("Empresa excluída com sucesso!");
     } catch (error) {
@@ -64,8 +62,9 @@ function Empresas() {
               <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>CNPJ</th>
-                <th>Ações</th>
+                <th>E-mail</th>
+                <th>Telefone</th>
+                <th style={{ textAlign: "center" }}>Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -74,20 +73,42 @@ function Empresas() {
                   <tr key={empresa.id}>
                     <td>{empresa.id}</td>
                     <td>{empresa.nome}</td>
-                    <td>{empresa.cnpj}</td>
-                    <td>
+                    <td>{empresa.email}</td>
+                    <td>{empresa.telefone}</td>
+                    <td style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+                      
+                      {/* Botão de Edição */}
                       <button 
-                        className="btn-danger"
-                        onClick={() => handleDeletar(empresa.id)}
+                        className="btn-icon btn-edit"
+                        onClick={() => navigate(`/empresas/editar/${empresa.id}`)}
+                        title="Editar Empresa"
                       >
-                        Excluir
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
                       </button>
+
+                      {/* Botão de Exclusão */}
+                      <button 
+                        className="btn-icon btn-danger"
+                        onClick={() => handleDeletar(empresa.id)}
+                        title="Excluir Empresa"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          <line x1="10" y1="11" x2="10" y2="17"></line>
+                          <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                      </button>
+
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" style={{ textAlign: "center", padding: "30px", color: "#64748b" }}>
+                  <td colSpan="5" style={{ textAlign: "center", padding: "30px", color: "#64748b" }}>
                     Nenhuma empresa cadastrada ainda.
                   </td>
                 </tr>

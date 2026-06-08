@@ -5,7 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Empresas from "./pages/Empresas";
 import Profissionais from "./pages/Profissionais";
 import Servicos from "./pages/Servicos";
-import NovaEmpresa from "./pages/NovaEmpresa";
+import FormularioEmpresa from "./pages/FormEmpresa";
 import NovoProfissional from "./pages/NovoProfissional";
 import NovoServico from "./pages/NovoServico";
 
@@ -23,7 +23,8 @@ function App() {
         <Route path="/empresas" element={<Empresas />} />
         <Route path="/profissionais" element={<Profissionais />} />
         <Route path="/servicos" element={<Servicos />} />
-        <Route path="/empresas/cadastrar" element={<NovaEmpresa/>}/>
+        <Route path="/empresas/cadastrar" element={<FormularioEmpresa/>}/>
+        <Route path="/empresas/editar/:id" element={<FormularioEmpresa/>}/>
         <Route path="/profissionais/cadastrar" element={<NovoProfissional/>}/>
         <Route path="/servicos/cadastrar" element={<NovoServico/>}/>
 
