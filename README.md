@@ -1,121 +1,252 @@
-# 🏥 Sistema de Agendamento de Serviços – Empresas Parceiras
+# AgendiFy - Sistema de Agendamento de Serviços
 
-Este projeto foi desenvolvido como parte da disciplina **Segurança em Sistemas de Informação** do **Instituto Federal Baiano**.  
-O sistema permite o gerenciamento de **empresas parceiras**, **serviços**, **profissionais** e **agendamentos**, oferecendo um ambiente simples e seguro para controle de atendimentos.
+## 📌 Sobre o Projeto
 
----
+O **AgendiFy** é um sistema web desenvolvido para o gerenciamento de empresas parceiras, profissionais e serviços, permitindo o controle de agendamentos de forma segura e eficiente.
 
-## 🎯 Objetivo do Projeto
-
-O objetivo deste sistema é:
-
-- Facilitar o gerenciamento de **profissionais**, **empresas** e **serviços**;
-- Permitir que administradores cadastrem e controlem todos os recursos;
-- Oferecer aos usuários comuns apenas a função de visualização e **Agendar** seus **Serviços**;
-- Demonstrar boas práticas de segurança e autorização no **Django**;
-- Servir como base para aprendizado de desenvolvimento web seguro.
+O projeto foi desenvolvido como trabalho acadêmico para a disciplina de **Laboratório de Programação  Web II** do **Instituto Federal Baiano (IF Baiano)**, utilizando uma arquitetura desacoplada entre Backend e Frontend.
 
 ---
 
-## 🚀 Projeto Django: Sistema de Gestão de Atividades
+## 🎯 Objetivos do Projeto
 
- - Este é um projeto de aplicação web desenvolvido em Django e Python, focado em demonstrar conceitos de desenvolvimento full-stack, segurança básica e padrões de design (FBVs).
+Este sistema foi idealizado não apenas como um requisito acadêmico, mas como a simulação de um produto real. Os principais objetivos desde a sua concepção incluem:
 
-## 🛠️ Ferramentas Necessárias
+* **Digitalizar a Gestão de Atendimentos:** Oferecer uma plataforma centralizada para que empresas parceiras administrem seus profissionais, catálogo de serviços e agendamentos de forma intuitiva.
+* **Estabelecer Controle de Privilégios:** Criar fluxos de acesso distintos, garantindo que administradores gerenciem os recursos enquanto usuários comuns interagem apenas com as funções de agendamento.
+* **Desacoplar a Arquitetura (Full-Stack):** Separar as responsabilidades do sistema, criando um Backend robusto e independente que alimenta uma aplicação Cliente dinâmica, simulando um ambiente real de produção.
+* **Garantir a Segurança dos Dados:** Implementar uma API RESTful blindada com mecanismos de autenticação e autorização padrão de mercado (OAuth2), protegendo rotas sensíveis contra acessos indevidos.
+* **Proporcionar uma Experiência Moderna:** Desenvolver uma interface de usuário responsiva, fluida e amigável no frontend, com feedback visual em tempo real.
+* **Aplicar a Teoria na Prática:** Consolidar os conhecimentos de engenharia de software e servir como um laboratório real para demonstrar os conceitos de Segurança em Sistemas de Informação.
+---
 
- - Para rodar este projeto em seu ambiente local, você precisará das seguintes ferramentas:
+## 🏗️ Arquitetura do Sistema
 
- - Python (Versão Recomendada 3.8+): Linguagem de programação principal.
+O projeto evoluiu para uma arquitetura híbrida e desacoplada, demonstrando a versatilidade do ecossistema, dividido em duas frentes:
 
- - pip (Gerenciador de Pacotes Python): Usado para instalar as dependências do Django.
+### 1. Aplicação Principal (Django Full-Stack & API RESTful)
+O núcleo central do sistema. Além de possuir sua própria estrutura web completa nativa do Django (incluindo painel administrativo e gestão de banco de dados), ele atua como o motor de regras de negócio. Através do **Django Rest Framework (DRF)**, esta aplicação expõe os endpoints protegidos para o mundo externo, gerenciando a persistência de dados e a emissão de tokens de autenticação.
 
- - Git: Para clonar o repositório e gerenciar versões.
+### 2. Cliente Externo (React API Client)
+Uma aplicação frontend totalmente isolada, desenvolvida em React. Ela atua exclusivamente como um **cliente consumidor da API**, atendendo ao requisito de integração com tecnologias externas. Seu papel é realizar a autenticação via OAuth2, armazenar o token com segurança e renderizar uma interface moderna (Dashboard e Listagens) consumindo os dados do servidor Django de forma assíncrona.
 
- - Banco de Dados: SQLite (padrão do Django) ou outro SGBD configurado.
-
-⚙️ Instruções de Execução
-
- - Siga os passos abaixo para colocar o projeto no ar:
-
-1. Clonar o Repositório e Configurar o Ambiente
-
-# 1. Clone o repositório
-```bash
- git clone [(https://github.com/Little-hair77/Sistema-Agendamento-de-Servico)]
- cd [Sistema-Agendamento-de-Servico/Agendamento_de_Servico]
-```
-# 2. Crie e ative um ambiente virtual (RECOMENDADO)
-```bash
- python -m venv venv
- source venv/Scripts/activate  # No Windows
- source venv/bin/activate    # No Linux/macOS
-```
-# 3. Instale as dependências (Django e outras bibliotecas)
-```bash
- pip install -r requirements.txt
+```text
+AgendiFy/
+│
+├── api/        → Backend Django REST Framework
+│
+└── client/     → Frontend React + Vite
 ```
 
-2. Configurar o Banco de Dados e Rodar Migrações
+---
 
-Você deve aplicar as migrações e, em seguida, popular o banco de dados com os usuários de teste.
+## 🛠️ Tecnologias Utilizadas
 
-# 4. Aplicar as migrações (cria as tabelas no BD)
+### Backend
+
+* Python 3.8+
+* Django
+* Django REST Framework
+* Django OAuth Toolkit
+* django-cors-headers
+* SQLite
+
+### Frontend
+
+* React
+* Vite
+* React Router DOM
+* Axios
+* JavaScript
+
+---
+
+## 🔒 Segurança Implementada
+
+O projeto utiliza o protocolo OAuth2 através do Django OAuth Toolkit para autenticação dos usuários.
+
+Principais recursos de segurança:
+
+* Autenticação via Bearer Token
+* Controle de acesso baseado em permissões
+* Proteção de endpoints da API
+* Comunicação segura entre frontend e backend
+* Controle de CORS
+
+---
+
+## ⚙️ Instalação e Execução
+
+### 1. Clonar o Repositório
+
 ```bash
- python manage.py migrate
- ```
+git clone https://github.com/Little-hair77/AgendiFy.git
 
-# 5. Criar o superusuário (necessário para o ambiente Admin)
-```bash
- python manage.py createsuperuser
+cd AgendiFy
 ```
-# 6. (OPCIONAL) Carregar dados de teste
-Se houver um arquivo de fixtures (initial_data.json)
+
+---
+
+## 🚀 Executando o (Django Full-Stack & API RESTful)
+
+Entre na pasta da API:
+
 ```bash
- python manage.py loaddata initial_data.json
+cd api
 ```
 
-# 7. Iniciar o Servidor
+Crie o ambiente virtual:
+
+### Windows
+
 ```bash
+python -m venv venv
 
- python manage.py runserver
-
+venv\Scripts\activate
 ```
-Acesse a aplicação em seu navegador: http://127.0.0.1:8000/
 
-## 🔑 Credenciais de Acesso (Para Teste)
+### Linux/Mac
 
- - Use estas contas para testar os diferentes níveis de acesso no sistema.
-
-## ▶️ Instruções de Execução Super User
-
-Esta conta tem acesso total ao Admin Django e a todas as funcionalidades.
-
-SuperUser: admin@gmail.com
-
-Senha: 1234
-
-## ▶️ Instruções de Execução Usuários
-
-Estas contas são para simular o acesso de usuários comuns e testar as permissões padrão.
-
-Usuário 1: pablo.henrique@gmail.com
-
-Usuário 2: pablohenrique@gmail.com - (Usuário Privilegiado)
-
-Usuário 3: higoalvesads@gmail.com - (Usuário Privilegiado)
-
-Usuário 4: jhonrels@gmail.com
-
-Usuário 5: joaopedro@gmail.com
-
-Usuário 6: viniclussilva@gmail.com
-
-Senha (para todos os usuários): 1234 
-
-### **1. Clone o repositório**
 ```bash
-git clone <https://github.com/Little-hair77/Sistema-Agendamento-de-Servico>
-cd <Sistema de Agendamento>
+python3 -m venv venv
+
+source venv/bin/activate
 ```
-## ▶️ Link do vídeo no Youtube
-https://youtu.be/gxNI8q4tj4U
+
+Instale as dependências:
+
+```bash
+pip install -r requirements.txt
+```
+
+Execute as migrações:
+
+```bash
+python manage.py migrate
+```
+
+Crie um superusuário (opcional):
+
+```bash
+python manage.py createsuperuser
+```
+
+Inicie o servidor:
+
+```bash
+python manage.py runserver
+```
+
+A API estará disponível em:
+
+```text
+http://localhost:8000/
+```
+
+---
+
+## 🔑 Configuração OAuth2
+
+Acesse o painel administrativo:
+
+```text
+http://localhost:8000/admin/
+```
+
+Crie uma nova aplicação OAuth:
+
+### Configurações
+
+| Campo                    | Valor                         |
+| ------------------------ | ----------------------------- |
+| Client Type              | Confidential                  |
+| Authorization Grant Type | Resource Owner Password-Based |
+| Name                     | React Client                  |
+
+Após salvar, copie:
+
+* Client ID
+* Client Secret
+
+Essas informações serão utilizadas pelo frontend.
+
+---
+
+## 💻 Executando o Frontend
+
+Abra um novo terminal:
+
+```bash
+cd client
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Crie um arquivo `.env`:
+
+```env
+VITE_CLIENT_ID=seu_client_id
+
+VITE_CLIENT_SECRET=seu_client_secret
+```
+
+Inicie o servidor React:
+
+```bash
+npm run dev
+```
+
+A aplicação estará disponível em:
+
+```text
+http://localhost:5173/
+```
+
+---
+
+## 📂 Funcionalidades do Cliente (React)
+
+> **Nota de Arquitetura:** Este frontend foi desenvolvido especificamente como uma simulação (Proof of Concept) para demonstrar o consumo seguro da API por uma aplicação externa em outra linguagem, cumprindo o requisito técnico do trabalho. Por esse motivo, a interface React foca na integração das operações essenciais de apenas 3 models principais, enquanto o sistema Django completo gerencia o restante das regras de negócio nos bastidores.
+
+###  Empresas
+* Listar empresas
+* Cadastrar nova empresa
+* Excluir empresa
+
+###  Profissionais
+* Listar profissionais
+* Cadastrar novo profissional
+* Excluir profissional
+
+###  Serviços
+* Listar serviços
+* Cadastrar novo serviço
+* Excluir serviço
+### Autenticação
+
+* Login OAuth2
+* Controle de permissões
+* Logout seguro
+
+---
+
+## 👨‍💻 Autores
+
+**Pablo Henrique**
+**Higo Pereira Alves**
+
+Instituto Federal Baiano (IF Baiano)
+
+Curso: Análise e Desenvolvimento de Sistemas
+
+Disciplina: Laboratório de Programação Web II
+
+---
+
+## 📜 Licença
+
+Este projeto foi desenvolvido exclusivamente para fins acadêmicos.
