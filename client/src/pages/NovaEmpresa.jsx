@@ -8,7 +8,11 @@ function NovaEmpresa() {
   const navigate = useNavigate();
   
   const [nome, setNome] = useState("");
-  const [cnpj, setCnpj] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [endereco, setEndereco] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [email, setEmail] = useState("");
+  
   const [salvando, setSalvando] = useState(false);
 
   const handleSalvar = async (e) => {
@@ -16,18 +20,19 @@ function NovaEmpresa() {
     setSalvando(true);
 
     try {
-      // Manda os dados para a API do Django
       await api.post("/empresas/", {
         nome: nome,
-        cnpj: cnpj
+        descricao: descricao,
+        endereco: endereco,
+        telefone: telefone,
+        email: email
       });
 
       alert("Empresa cadastrada com sucesso!");
-      // Volta para a tabela de listagem
       navigate("/empresas"); 
     } catch (error) {
       console.error("Erro ao salvar:", error);
-      alert("Erro ao cadastrar empresa. Verifique os dados.");
+      alert("Erro ao cadastrar empresa. Verifique os dados e tente novamente.");
     } finally {
       setSalvando(false);
     }
@@ -43,10 +48,10 @@ function NovaEmpresa() {
         <form onSubmit={handleSalvar}>
           
           <div className="form-group">
-            <label>Nome da Empresa</label>
+            <label>Nome da Empresa *</label>
             <input 
               type="text" 
-              placeholder="Ex: Barbearia do Higo"
+              placeholder="Ex: The Wise Robótica Educacional"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
               required
@@ -54,13 +59,55 @@ function NovaEmpresa() {
           </div>
 
           <div className="form-group">
-            <label>CNPJ</label>
+            <label>E-mail *</label>
+            <input 
+              type="email" 
+              placeholder="contato@empresa.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Telefone *</label>
+            <input 
+              type="tel" 
+              placeholder="(00) 00000-0000"
+              value={telefone}
+              onChange={(e) => setTelefone(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Endereço *</label>
             <input 
               type="text" 
-              placeholder="00.000.000/0000-00"
-              value={cnpj}
-              onChange={(e) => setCnpj(e.target.value)}
+              placeholder="Rua, Número, Bairro, Cidade"
+              value={endereco}
+              onChange={(e) => setEndereco(e.target.value)}
               required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Descrição</label>
+            <textarea 
+              placeholder="Uma breve descrição sobre a empresa..."
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+              rows="4"
+              style={{
+                width: "100%",
+                padding: "12px 16px",
+                borderRadius: "8px",
+                border: "1px solid #e2e8f0",
+                backgroundColor: "#f8fafc",
+                fontSize: "1rem",
+                fontFamily: "inherit",
+                resize: "vertical"
+              }}
             />
           </div>
 

@@ -8,6 +8,9 @@ class EmpresaSerializer(serializers.ModelSerializer):
         model = Empresa
         fields = '__all__'
 
+        # Garante que o campo dono seja preencido automaticamente 
+        read_only_fields = ['dono']
+
 class ProfissionalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profissional

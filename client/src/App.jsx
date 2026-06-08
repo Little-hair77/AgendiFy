@@ -21,7 +21,7 @@ function App() {
         <Route path="/empresas" element={<Empresas />} />
         <Route path="/profissionais" element={<Profissionais />} />
         <Route path="/servicos" element={<Servicos />} />
-        <Route path="/empresa/nova" element={<NovaEmpresa/>}/>
+        <Route path="/empresas/nova" element={<NovaEmpresa/>}/>
 
         {/* Rotas de Criação (Desativadas até construirmos as telas) */}
         {/* <Route path="/empresas/nova" element={<NovaEmpresa />} /> */}
