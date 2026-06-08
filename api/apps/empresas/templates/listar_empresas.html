@@ -4,7 +4,6 @@
 {% block content %}
 
 <style>
-    /* Fundo suave para destacar os cartões brancos */
     body {
         background-color: #f8f9fa;
     }
@@ -49,7 +48,7 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         height: 100%;
         position: relative;
-        display: flex;       /* Flex para empurrar botões para o final */
+        display: flex;       
         flex-direction: column;
     }
 
@@ -63,7 +62,7 @@
         height: 80px;
         background: linear-gradient(135deg, #f0f4ff 0%, #eaddff 100%);
         position: relative;
-        flex-shrink: 0; /* Impede o banner de encolher */
+        flex-shrink: 0;
     }
 
     /* Logo da Empresa */
@@ -95,7 +94,7 @@
     .card-content {
         padding: 50px 20px 20px;
         text-align: center;
-        flex-grow: 1; /* Faz o conteúdo ocupar o espaço disponível */
+        flex-grow: 1; 
         display: flex;
         flex-direction: column;
     }
@@ -141,7 +140,7 @@
     /* Botão Secundário (Detalhes) */
     .btn-details {
         background-color: transparent;
-        color: #6c757d; /* Cinza */
+        color: #6c757d; 
         border: 1px solid #e9ecef;
         font-weight: 600;
         border-radius: 50px;
@@ -152,15 +151,21 @@
     }
 
     .btn-details:hover {
-        border-color: #a617ff; /* Borda roxa ao passar o mouse */
+        border-color: #a617ff; 
         color: #a617ff;
         background-color: #fcfaff;
     }
 
     /* Container dos botões no rodapé do card */
     .card-actions {
-        margin-top: auto; /* Empurra para o fundo do card */
+        margin-top: auto; 
         padding-top: 15px;
+    }
+
+    .btn-create-company:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(166, 23, 255, 0.3);
+        color: white;
     }
 </style>
 
@@ -182,13 +187,23 @@
 
 <div class="container pb-5">
     
-    <div class="d-flex gap-2 mb-4 overflow-auto pb-2 justify-content-center">
+    <div class="d-flex gap-2 mb-3 overflow-auto pb-2 justify-content-center">
         <button class="btn btn-dark rounded-pill btn-sm px-3">Todos</button>
         <button class="btn btn-light border rounded-pill btn-sm px-3">Assistência Técnica</button>
         <button class="btn btn-light border rounded-pill btn-sm px-3">Limpeza</button>
         <button class="btn btn-light border rounded-pill btn-sm px-3">Saúde & Beleza</button>
         <button class="btn btn-light border rounded-pill btn-sm px-3">Reformas</button>
     </div>
+
+    {% if request.user.is_superuser %}
+    <div class="d-flex justify-content-end mb-4">
+        <a href="{% url 'cadastrar_empresa' %}" 
+           class="btn text-white rounded-pill fw-bold shadow-sm px-4 py-2 d-flex align-items-center gap-2 border-0"
+           style="background: linear-gradient(90deg, #a617ff 0%, #004aad 100%);">
+            <i class="bi bi-plus-circle-fill fs-5"></i> Nova Empresa
+        </a>
+    </div>
+    {% endif %}
 
     <div class="row g-4">
         {% for empresa in empresas %}
