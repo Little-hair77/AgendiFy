@@ -1,0 +1,14 @@
+/* client/src/components/Layout.css */
+.layout-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc; 
+}
+
+.layout-main {
+  flex: 1;
+  margin-left: 250px; 
+  padding: 40px 50px;
+  width: calc(100% - 250px);
+  box-sizing: border-box;
+}

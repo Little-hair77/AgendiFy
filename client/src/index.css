@@ -1,0 +1,43 @@
+/* =========================================
+   RESET GLOBAL - AGENDIFY
+   Isso remove as bordas, margens e bloqueios
+   padrões do navegador e do Vite.
+========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  width: 100%;
+  min-height: 100vh;
+  /* Fonte moderna, sem serifa */
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f8fafc; /* Cinza super clarinho para o fundo do sistema */
+  color: #1e293b;
+  overflow-x: hidden; /* Impede a tela de rolar para os lados sem querer */
+}
+
+/* Onde o React injeta o código */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+}
+
+/* Scrollbar personalizada para ficar elegante */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
