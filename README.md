@@ -247,6 +247,14 @@ Disciplina: Laboratório de Programação Web II
 
 ---
 
-## 📜 Licença
+## ▶️ Vídeos de Demonstração
 
-Este projeto foi desenvolvido exclusivamente para fins acadêmicos.
+Como o desenvolvimento foi documentado desde as etapas iniciais do projeto, a apresentação do sistema foi dividida em dois vídeos. Isso demonstra a evolução real do trabalho e facilita a avaliação de todos os requisitos exigidos:
+
+**1. Estrutura do Backend e API (Django)**
+* 🔗 **Link:** [Assistir no YouTube](https://youtu.be/gxNI8q4tj4U)
+* 📝 **Resumo:** Apresentação da arquitetura do servidor, criação dos models relacionados e configuração base do sistema.
+
+**2. Consumo da API e Interface Cliente (React, DRF e DOT)**
+* 🔗 **Link:** [link do novo vídeo]
+* 📝 **Resumo:** Demonstração prática do ecossistema completo em funcionamento. Aborda o fluxo de login e geração de token via OAuth2 (DOT), a interface do Cliente (React), a execução do CRUD completo consumindo a API RESTful (DRF) e testes práticos de segurança provando a proteção das rotas contra acessos não autorizados.
