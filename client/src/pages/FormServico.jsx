@@ -189,7 +189,7 @@ function FormularioServico() {
                 className="btn-submit"
                 disabled={salvando || carregandoEmpresas}
               >
-                {salvando ? "Salvando..." : isEdicao ? "Salvar Alterações" : "Cadastrar Serviço"}
+                {salvando ? "Salvando..." : isEdicao ? "Salvar Alterações" : "Cadastrar"}
               </button>
             </div>
 

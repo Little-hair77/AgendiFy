@@ -164,7 +164,7 @@ function FormularioProfissional() {
                 className="btn-submit"
                 disabled={salvando || carregandoEmpresas}
               >
-                {salvando ? "Salvando..." : isEdicao ? "Salvar Alterações" : "Cadastrar Profissional"}
+                {salvando ? "Salvando..." : isEdicao ? "Salvar Alterações" : "Cadastrar"}
               </button>
             </div>
 

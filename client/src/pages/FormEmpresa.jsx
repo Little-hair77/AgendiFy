@@ -162,7 +162,7 @@ function FormularioEmpresa() {
                 disabled={salvando}
               >
                 {/* Botão dinâmico */}
-                {salvando ? "Salvando..." : isEdicao ? "Salvar Alterações" : "Cadastrar Empresa"}
+                {salvando ? "Salvando..." : isEdicao ? "Salvar Alterações" : "Cadastrar "}
               </button>
             </div>
 
