@@ -49,7 +49,7 @@ function Empresas() {
         <h1 className="page-title">Empresas</h1>
         <button 
           className="btn-primary"
-          onClick={() => navigate("/empresas/nova")}
+          onClick={() => navigate("/empresas/cadastrar")}
         >
           + Nova Empresa
         </button>

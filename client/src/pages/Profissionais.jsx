@@ -47,7 +47,7 @@ function Profissionais() {
         <h1 className="page-title">Profissionais</h1>
         <button 
           className="btn-primary"
-          onClick={() => navigate("/profissionais/novo")}
+          onClick={() => navigate("/profissionais/cadastrar")}
         >
           + Novo Profissional
         </button>

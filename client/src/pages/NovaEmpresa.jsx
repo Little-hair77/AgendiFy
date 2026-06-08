@@ -125,7 +125,7 @@ function NovaEmpresa() {
               className="btn-submit"
               disabled={salvando}
             >
-              {salvando ? "Salvando no banco..." : "Salvar Empresa"}
+              {salvando ? "Salvando no banco..." : "Salvar"}
             </button>
           </div>
 

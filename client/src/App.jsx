@@ -6,6 +6,7 @@ import Empresas from "./pages/Empresas";
 import Profissionais from "./pages/Profissionais";
 import Servicos from "./pages/Servicos";
 import NovaEmpresa from "./pages/NovaEmpresa";
+import NovoProfissional from "./pages/NovoProfissional";
 
 
 function App() {
@@ -21,7 +22,8 @@ function App() {
         <Route path="/empresas" element={<Empresas />} />
         <Route path="/profissionais" element={<Profissionais />} />
         <Route path="/servicos" element={<Servicos />} />
-        <Route path="/empresas/nova" element={<NovaEmpresa/>}/>
+        <Route path="/empresas/cadastrar" element={<NovaEmpresa/>}/>
+        <Route path="/profissionais/cadastrar" element={<NovoProfissional/>}/>
 
         {/* Rotas de Criação (Desativadas até construirmos as telas) */}
         {/* <Route path="/empresas/nova" element={<NovaEmpresa />} /> */}
