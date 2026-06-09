@@ -256,5 +256,5 @@ Como o desenvolvimento foi documentado desde as etapas iniciais do projeto, a ap
 * 📝 **Resumo:** Apresentação da arquitetura do servidor, criação dos models relacionados e configuração base do sistema.
 
 **2. Consumo da API e Interface Cliente (React, DRF e DOT)**
-* 🔗 **Link:** [link do novo vídeo]
+* 🔗 **Link:** [Assistir no YouTube](https://www.youtube.com/watch?v=O_Z1OnllXyA)
 * 📝 **Resumo:** Demonstração prática do ecossistema completo em funcionamento. Aborda o fluxo de login e geração de token via OAuth2 (DOT), a interface do Cliente (React), a execução do CRUD completo consumindo a API RESTful (DRF) e testes práticos de segurança provando a proteção das rotas contra acessos não autorizados.
